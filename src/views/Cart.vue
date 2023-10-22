@@ -1,8 +1,7 @@
-<script setup></script>
-
 <template>
-  <main>
-    This Cart
-    <TheWelcome />
-  </main>
+  <div>
+    <h2>Your Cart</h2>
+  </div>
 </template>
+
+<script setup></script>

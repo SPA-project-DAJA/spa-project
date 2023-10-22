@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
   <main>
     <h2>English Training Course</h2>
@@ -24,7 +22,7 @@
         To enroll in our English training course, simply click the "Enroll"
         button below. We offer flexible schedules and affordable pricing.
       </p>
-      <button class="enroll-button">Enroll</button>
+      <button @click="addToCart(offer)">Add to Cart</button>
     </div>
     <TheWelcome />
   </main>
@@ -72,3 +70,5 @@ ul {
   background-color: #0056b3;
 }
 </style>
+
+<script setup></script>
