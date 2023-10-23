@@ -1,6 +1,6430 @@
-import {
-  Vue$1
-} from "./chunk-GAMRAGV7.js";
+// node_modules/bootstrap-vue/node_modules/vue/dist/vue.runtime.esm.js
+var emptyObject = Object.freeze({});
+var isArray = Array.isArray;
+function isUndef(v) {
+  return v === void 0 || v === null;
+}
+function isDef(v) {
+  return v !== void 0 && v !== null;
+}
+function isTrue(v) {
+  return v === true;
+}
+function isFalse(v) {
+  return v === false;
+}
+function isPrimitive(value2) {
+  return typeof value2 === "string" || typeof value2 === "number" || // $flow-disable-line
+  typeof value2 === "symbol" || typeof value2 === "boolean";
+}
+function isFunction(value2) {
+  return typeof value2 === "function";
+}
+function isObject(obj) {
+  return obj !== null && typeof obj === "object";
+}
+var _toString = Object.prototype.toString;
+function toRawType(value2) {
+  return _toString.call(value2).slice(8, -1);
+}
+function isPlainObject(obj) {
+  return _toString.call(obj) === "[object Object]";
+}
+function isRegExp(v) {
+  return _toString.call(v) === "[object RegExp]";
+}
+function isValidArrayIndex(val) {
+  var n = parseFloat(String(val));
+  return n >= 0 && Math.floor(n) === n && isFinite(val);
+}
+function isPromise(val) {
+  return isDef(val) && typeof val.then === "function" && typeof val.catch === "function";
+}
+function toString(val) {
+  return val == null ? "" : Array.isArray(val) || isPlainObject(val) && val.toString === _toString ? JSON.stringify(val, null, 2) : String(val);
+}
+function toNumber(val) {
+  var n = parseFloat(val);
+  return isNaN(n) ? val : n;
+}
+function makeMap(str, expectsLowerCase) {
+  var map = /* @__PURE__ */ Object.create(null);
+  var list = str.split(",");
+  for (var i = 0; i < list.length; i++) {
+    map[list[i]] = true;
+  }
+  return expectsLowerCase ? function(val) {
+    return map[val.toLowerCase()];
+  } : function(val) {
+    return map[val];
+  };
+}
+var isBuiltInTag = makeMap("slot,component", true);
+var isReservedAttribute = makeMap("key,ref,slot,slot-scope,is");
+function remove$2(arr, item) {
+  var len = arr.length;
+  if (len) {
+    if (item === arr[len - 1]) {
+      arr.length = len - 1;
+      return;
+    }
+    var index3 = arr.indexOf(item);
+    if (index3 > -1) {
+      return arr.splice(index3, 1);
+    }
+  }
+}
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+function hasOwn(obj, key) {
+  return hasOwnProperty.call(obj, key);
+}
+function cached(fn) {
+  var cache = /* @__PURE__ */ Object.create(null);
+  return function cachedFn(str) {
+    var hit = cache[str];
+    return hit || (cache[str] = fn(str));
+  };
+}
+var camelizeRE = /-(\w)/g;
+var camelize = cached(function(str) {
+  return str.replace(camelizeRE, function(_, c) {
+    return c ? c.toUpperCase() : "";
+  });
+});
+var capitalize = cached(function(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+});
+var hyphenateRE = /\B([A-Z])/g;
+var hyphenate = cached(function(str) {
+  return str.replace(hyphenateRE, "-$1").toLowerCase();
+});
+function polyfillBind(fn, ctx) {
+  function boundFn(a2) {
+    var l = arguments.length;
+    return l ? l > 1 ? fn.apply(ctx, arguments) : fn.call(ctx, a2) : fn.call(ctx);
+  }
+  boundFn._length = fn.length;
+  return boundFn;
+}
+function nativeBind(fn, ctx) {
+  return fn.bind(ctx);
+}
+var bind = Function.prototype.bind ? nativeBind : polyfillBind;
+function toArray(list, start2) {
+  start2 = start2 || 0;
+  var i = list.length - start2;
+  var ret = new Array(i);
+  while (i--) {
+    ret[i] = list[i + start2];
+  }
+  return ret;
+}
+function extend(to2, _from) {
+  for (var key in _from) {
+    to2[key] = _from[key];
+  }
+  return to2;
+}
+function toObject(arr) {
+  var res = {};
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i]) {
+      extend(res, arr[i]);
+    }
+  }
+  return res;
+}
+function noop(a2, b, c) {
+}
+var no = function(a2, b, c) {
+  return false;
+};
+var identity = function(_) {
+  return _;
+};
+function looseEqual(a2, b) {
+  if (a2 === b)
+    return true;
+  var isObjectA = isObject(a2);
+  var isObjectB = isObject(b);
+  if (isObjectA && isObjectB) {
+    try {
+      var isArrayA = Array.isArray(a2);
+      var isArrayB = Array.isArray(b);
+      if (isArrayA && isArrayB) {
+        return a2.length === b.length && a2.every(function(e2, i) {
+          return looseEqual(e2, b[i]);
+        });
+      } else if (a2 instanceof Date && b instanceof Date) {
+        return a2.getTime() === b.getTime();
+      } else if (!isArrayA && !isArrayB) {
+        var keysA = Object.keys(a2);
+        var keysB = Object.keys(b);
+        return keysA.length === keysB.length && keysA.every(function(key) {
+          return looseEqual(a2[key], b[key]);
+        });
+      } else {
+        return false;
+      }
+    } catch (e2) {
+      return false;
+    }
+  } else if (!isObjectA && !isObjectB) {
+    return String(a2) === String(b);
+  } else {
+    return false;
+  }
+}
+function looseIndexOf(arr, val) {
+  for (var i = 0; i < arr.length; i++) {
+    if (looseEqual(arr[i], val))
+      return i;
+  }
+  return -1;
+}
+function once(fn) {
+  var called = false;
+  return function() {
+    if (!called) {
+      called = true;
+      fn.apply(this, arguments);
+    }
+  };
+}
+function hasChanged(x, y) {
+  if (x === y) {
+    return x === 0 && 1 / x !== 1 / y;
+  } else {
+    return x === x || y === y;
+  }
+}
+var SSR_ATTR = "data-server-rendered";
+var ASSET_TYPES = ["component", "directive", "filter"];
+var LIFECYCLE_HOOKS = [
+  "beforeCreate",
+  "created",
+  "beforeMount",
+  "mounted",
+  "beforeUpdate",
+  "updated",
+  "beforeDestroy",
+  "destroyed",
+  "activated",
+  "deactivated",
+  "errorCaptured",
+  "serverPrefetch",
+  "renderTracked",
+  "renderTriggered"
+];
+var config = {
+  /**
+   * Option merge strategies (used in core/util/options)
+   */
+  // $flow-disable-line
+  optionMergeStrategies: /* @__PURE__ */ Object.create(null),
+  /**
+   * Whether to suppress warnings.
+   */
+  silent: false,
+  /**
+   * Show production mode tip message on boot?
+   */
+  productionTip: true,
+  /**
+   * Whether to enable devtools
+   */
+  devtools: true,
+  /**
+   * Whether to record perf
+   */
+  performance: false,
+  /**
+   * Error handler for watcher errors
+   */
+  errorHandler: null,
+  /**
+   * Warn handler for watcher warns
+   */
+  warnHandler: null,
+  /**
+   * Ignore certain custom elements
+   */
+  ignoredElements: [],
+  /**
+   * Custom user key aliases for v-on
+   */
+  // $flow-disable-line
+  keyCodes: /* @__PURE__ */ Object.create(null),
+  /**
+   * Check if a tag is reserved so that it cannot be registered as a
+   * component. This is platform-dependent and may be overwritten.
+   */
+  isReservedTag: no,
+  /**
+   * Check if an attribute is reserved so that it cannot be used as a component
+   * prop. This is platform-dependent and may be overwritten.
+   */
+  isReservedAttr: no,
+  /**
+   * Check if a tag is an unknown element.
+   * Platform-dependent.
+   */
+  isUnknownElement: no,
+  /**
+   * Get the namespace of an element
+   */
+  getTagNamespace: noop,
+  /**
+   * Parse the real tag name for the specific platform.
+   */
+  parsePlatformTagName: identity,
+  /**
+   * Check if an attribute must be bound using property, e.g. value
+   * Platform-dependent.
+   */
+  mustUseProp: no,
+  /**
+   * Perform updates asynchronously. Intended to be used by Vue Test Utils
+   * This will significantly reduce performance if set to false.
+   */
+  async: true,
+  /**
+   * Exposed for legacy reasons
+   */
+  _lifecycleHooks: LIFECYCLE_HOOKS
+};
+var unicodeRegExp = /a-zA-Z\u00B7\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u037D\u037F-\u1FFF\u200C-\u200D\u203F-\u2040\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD/;
+function isReserved(str) {
+  var c = (str + "").charCodeAt(0);
+  return c === 36 || c === 95;
+}
+function def(obj, key, val, enumerable) {
+  Object.defineProperty(obj, key, {
+    value: val,
+    enumerable: !!enumerable,
+    writable: true,
+    configurable: true
+  });
+}
+var bailRE = new RegExp("[^".concat(unicodeRegExp.source, ".$_\\d]"));
+function parsePath(path) {
+  if (bailRE.test(path)) {
+    return;
+  }
+  var segments = path.split(".");
+  return function(obj) {
+    for (var i = 0; i < segments.length; i++) {
+      if (!obj)
+        return;
+      obj = obj[segments[i]];
+    }
+    return obj;
+  };
+}
+var hasProto = "__proto__" in {};
+var inBrowser = typeof window !== "undefined";
+var UA = inBrowser && window.navigator.userAgent.toLowerCase();
+var isIE = UA && /msie|trident/.test(UA);
+var isIE9 = UA && UA.indexOf("msie 9.0") > 0;
+var isEdge = UA && UA.indexOf("edge/") > 0;
+UA && UA.indexOf("android") > 0;
+var isIOS = UA && /iphone|ipad|ipod|ios/.test(UA);
+UA && /chrome\/\d+/.test(UA) && !isEdge;
+UA && /phantomjs/.test(UA);
+var isFF = UA && UA.match(/firefox\/(\d+)/);
+var nativeWatch = {}.watch;
+var supportsPassive = false;
+if (inBrowser) {
+  try {
+    opts = {};
+    Object.defineProperty(opts, "passive", {
+      get: function() {
+        supportsPassive = true;
+      }
+    });
+    window.addEventListener("test-passive", null, opts);
+  } catch (e2) {
+  }
+}
+var opts;
+var _isServer;
+var isServerRendering = function() {
+  if (_isServer === void 0) {
+    if (!inBrowser && typeof global !== "undefined") {
+      _isServer = global["process"] && global["process"].env.VUE_ENV === "server";
+    } else {
+      _isServer = false;
+    }
+  }
+  return _isServer;
+};
+var devtools = inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+function isNative(Ctor) {
+  return typeof Ctor === "function" && /native code/.test(Ctor.toString());
+}
+var hasSymbol = typeof Symbol !== "undefined" && isNative(Symbol) && typeof Reflect !== "undefined" && isNative(Reflect.ownKeys);
+var _Set;
+if (typeof Set !== "undefined" && isNative(Set)) {
+  _Set = Set;
+} else {
+  _Set = /** @class */
+  function() {
+    function Set2() {
+      this.set = /* @__PURE__ */ Object.create(null);
+    }
+    Set2.prototype.has = function(key) {
+      return this.set[key] === true;
+    };
+    Set2.prototype.add = function(key) {
+      this.set[key] = true;
+    };
+    Set2.prototype.clear = function() {
+      this.set = /* @__PURE__ */ Object.create(null);
+    };
+    return Set2;
+  }();
+}
+var currentInstance = null;
+function setCurrentInstance(vm) {
+  if (vm === void 0) {
+    vm = null;
+  }
+  if (!vm)
+    currentInstance && currentInstance._scope.off();
+  currentInstance = vm;
+  vm && vm._scope.on();
+}
+var VNode = (
+  /** @class */
+  function() {
+    function VNode2(tag3, data48, children2, text, elm, context7, componentOptions, asyncFactory) {
+      this.tag = tag3;
+      this.data = data48;
+      this.children = children2;
+      this.text = text;
+      this.elm = elm;
+      this.ns = void 0;
+      this.context = context7;
+      this.fnContext = void 0;
+      this.fnOptions = void 0;
+      this.fnScopeId = void 0;
+      this.key = data48 && data48.key;
+      this.componentOptions = componentOptions;
+      this.componentInstance = void 0;
+      this.parent = void 0;
+      this.raw = false;
+      this.isStatic = false;
+      this.isRootInsert = true;
+      this.isComment = false;
+      this.isCloned = false;
+      this.isOnce = false;
+      this.asyncFactory = asyncFactory;
+      this.asyncMeta = void 0;
+      this.isAsyncPlaceholder = false;
+    }
+    Object.defineProperty(VNode2.prototype, "child", {
+      // DEPRECATED: alias for componentInstance for backwards compat.
+      /* istanbul ignore next */
+      get: function() {
+        return this.componentInstance;
+      },
+      enumerable: false,
+      configurable: true
+    });
+    return VNode2;
+  }()
+);
+var createEmptyVNode = function(text) {
+  if (text === void 0) {
+    text = "";
+  }
+  var node = new VNode();
+  node.text = text;
+  node.isComment = true;
+  return node;
+};
+function createTextVNode(val) {
+  return new VNode(void 0, void 0, void 0, String(val));
+}
+function cloneVNode(vnode) {
+  var cloned = new VNode(
+    vnode.tag,
+    vnode.data,
+    // #7975
+    // clone children array to avoid mutating original in case of cloning
+    // a child.
+    vnode.children && vnode.children.slice(),
+    vnode.text,
+    vnode.elm,
+    vnode.context,
+    vnode.componentOptions,
+    vnode.asyncFactory
+  );
+  cloned.ns = vnode.ns;
+  cloned.isStatic = vnode.isStatic;
+  cloned.key = vnode.key;
+  cloned.isComment = vnode.isComment;
+  cloned.fnContext = vnode.fnContext;
+  cloned.fnOptions = vnode.fnOptions;
+  cloned.fnScopeId = vnode.fnScopeId;
+  cloned.asyncMeta = vnode.asyncMeta;
+  cloned.isCloned = true;
+  return cloned;
+}
+var __assign = function() {
+  __assign = Object.assign || function __assign2(t2) {
+    for (var s2, i = 1, n = arguments.length; i < n; i++) {
+      s2 = arguments[i];
+      for (var p in s2)
+        if (Object.prototype.hasOwnProperty.call(s2, p))
+          t2[p] = s2[p];
+    }
+    return t2;
+  };
+  return __assign.apply(this, arguments);
+};
+var uid$2 = 0;
+var pendingCleanupDeps = [];
+var cleanupDeps = function() {
+  for (var i = 0; i < pendingCleanupDeps.length; i++) {
+    var dep = pendingCleanupDeps[i];
+    dep.subs = dep.subs.filter(function(s2) {
+      return s2;
+    });
+    dep._pending = false;
+  }
+  pendingCleanupDeps.length = 0;
+};
+var Dep = (
+  /** @class */
+  function() {
+    function Dep2() {
+      this._pending = false;
+      this.id = uid$2++;
+      this.subs = [];
+    }
+    Dep2.prototype.addSub = function(sub) {
+      this.subs.push(sub);
+    };
+    Dep2.prototype.removeSub = function(sub) {
+      this.subs[this.subs.indexOf(sub)] = null;
+      if (!this._pending) {
+        this._pending = true;
+        pendingCleanupDeps.push(this);
+      }
+    };
+    Dep2.prototype.depend = function(info) {
+      if (Dep2.target) {
+        Dep2.target.addDep(this);
+        if (info && Dep2.target.onTrack) {
+          Dep2.target.onTrack(__assign({ effect: Dep2.target }, info));
+        }
+      }
+    };
+    Dep2.prototype.notify = function(info) {
+      var subs = this.subs.filter(function(s2) {
+        return s2;
+      });
+      if (!config.async) {
+        subs.sort(function(a2, b) {
+          return a2.id - b.id;
+        });
+      }
+      for (var i = 0, l = subs.length; i < l; i++) {
+        var sub = subs[i];
+        if (info) {
+          sub.onTrigger && sub.onTrigger(__assign({ effect: subs[i] }, info));
+        }
+        sub.update();
+      }
+    };
+    return Dep2;
+  }()
+);
+Dep.target = null;
+var targetStack = [];
+function pushTarget(target2) {
+  targetStack.push(target2);
+  Dep.target = target2;
+}
+function popTarget() {
+  targetStack.pop();
+  Dep.target = targetStack[targetStack.length - 1];
+}
+var arrayProto = Array.prototype;
+var arrayMethods = Object.create(arrayProto);
+var methodsToPatch = [
+  "push",
+  "pop",
+  "shift",
+  "unshift",
+  "splice",
+  "sort",
+  "reverse"
+];
+methodsToPatch.forEach(function(method) {
+  var original = arrayProto[method];
+  def(arrayMethods, method, function mutator() {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      args[_i] = arguments[_i];
+    }
+    var result = original.apply(this, args);
+    var ob = this.__ob__;
+    var inserted2;
+    switch (method) {
+      case "push":
+      case "unshift":
+        inserted2 = args;
+        break;
+      case "splice":
+        inserted2 = args.slice(2);
+        break;
+    }
+    if (inserted2)
+      ob.observeArray(inserted2);
+    if (true) {
+      ob.dep.notify({
+        type: "array mutation",
+        target: this,
+        key: method
+      });
+    } else {
+      ob.dep.notify();
+    }
+    return result;
+  });
+});
+var arrayKeys = Object.getOwnPropertyNames(arrayMethods);
+var NO_INIITIAL_VALUE = {};
+var shouldObserve = true;
+function toggleObserving(value2) {
+  shouldObserve = value2;
+}
+var mockDep = {
+  notify: noop,
+  depend: noop,
+  addSub: noop,
+  removeSub: noop
+};
+var Observer = (
+  /** @class */
+  function() {
+    function Observer2(value2, shallow, mock) {
+      if (shallow === void 0) {
+        shallow = false;
+      }
+      if (mock === void 0) {
+        mock = false;
+      }
+      this.value = value2;
+      this.shallow = shallow;
+      this.mock = mock;
+      this.dep = mock ? mockDep : new Dep();
+      this.vmCount = 0;
+      def(value2, "__ob__", this);
+      if (isArray(value2)) {
+        if (!mock) {
+          if (hasProto) {
+            value2.__proto__ = arrayMethods;
+          } else {
+            for (var i = 0, l = arrayKeys.length; i < l; i++) {
+              var key = arrayKeys[i];
+              def(value2, key, arrayMethods[key]);
+            }
+          }
+        }
+        if (!shallow) {
+          this.observeArray(value2);
+        }
+      } else {
+        var keys3 = Object.keys(value2);
+        for (var i = 0; i < keys3.length; i++) {
+          var key = keys3[i];
+          defineReactive(value2, key, NO_INIITIAL_VALUE, void 0, shallow, mock);
+        }
+      }
+    }
+    Observer2.prototype.observeArray = function(value2) {
+      for (var i = 0, l = value2.length; i < l; i++) {
+        observe(value2[i], false, this.mock);
+      }
+    };
+    return Observer2;
+  }()
+);
+function observe(value2, shallow, ssrMockReactivity) {
+  if (value2 && hasOwn(value2, "__ob__") && value2.__ob__ instanceof Observer) {
+    return value2.__ob__;
+  }
+  if (shouldObserve && (ssrMockReactivity || !isServerRendering()) && (isArray(value2) || isPlainObject(value2)) && Object.isExtensible(value2) && !value2.__v_skip && !isRef(value2) && !(value2 instanceof VNode)) {
+    return new Observer(value2, shallow, ssrMockReactivity);
+  }
+}
+function defineReactive(obj, key, val, customSetter, shallow, mock) {
+  var dep = new Dep();
+  var property = Object.getOwnPropertyDescriptor(obj, key);
+  if (property && property.configurable === false) {
+    return;
+  }
+  var getter = property && property.get;
+  var setter = property && property.set;
+  if ((!getter || setter) && (val === NO_INIITIAL_VALUE || arguments.length === 2)) {
+    val = obj[key];
+  }
+  var childOb = !shallow && observe(val, false, mock);
+  Object.defineProperty(obj, key, {
+    enumerable: true,
+    configurable: true,
+    get: function reactiveGetter() {
+      var value2 = getter ? getter.call(obj) : val;
+      if (Dep.target) {
+        if (true) {
+          dep.depend({
+            target: obj,
+            type: "get",
+            key
+          });
+        } else {
+          dep.depend();
+        }
+        if (childOb) {
+          childOb.dep.depend();
+          if (isArray(value2)) {
+            dependArray(value2);
+          }
+        }
+      }
+      return isRef(value2) && !shallow ? value2.value : value2;
+    },
+    set: function reactiveSetter(newVal) {
+      var value2 = getter ? getter.call(obj) : val;
+      if (!hasChanged(value2, newVal)) {
+        return;
+      }
+      if (customSetter) {
+        customSetter();
+      }
+      if (setter) {
+        setter.call(obj, newVal);
+      } else if (getter) {
+        return;
+      } else if (!shallow && isRef(value2) && !isRef(newVal)) {
+        value2.value = newVal;
+        return;
+      } else {
+        val = newVal;
+      }
+      childOb = !shallow && observe(newVal, false, mock);
+      if (true) {
+        dep.notify({
+          type: "set",
+          target: obj,
+          key,
+          newValue: newVal,
+          oldValue: value2
+        });
+      } else {
+        dep.notify();
+      }
+    }
+  });
+  return dep;
+}
+function set(target2, key, val) {
+  if (isUndef(target2) || isPrimitive(target2)) {
+    warn("Cannot set reactive property on undefined, null, or primitive value: ".concat(target2));
+  }
+  if (isReadonly(target2)) {
+    warn('Set operation on key "'.concat(key, '" failed: target is readonly.'));
+    return;
+  }
+  var ob = target2.__ob__;
+  if (isArray(target2) && isValidArrayIndex(key)) {
+    target2.length = Math.max(target2.length, key);
+    target2.splice(key, 1, val);
+    if (ob && !ob.shallow && ob.mock) {
+      observe(val, false, true);
+    }
+    return val;
+  }
+  if (key in target2 && !(key in Object.prototype)) {
+    target2[key] = val;
+    return val;
+  }
+  if (target2._isVue || ob && ob.vmCount) {
+    warn("Avoid adding reactive properties to a Vue instance or its root $data at runtime - declare it upfront in the data option.");
+    return val;
+  }
+  if (!ob) {
+    target2[key] = val;
+    return val;
+  }
+  defineReactive(ob.value, key, val, void 0, ob.shallow, ob.mock);
+  if (true) {
+    ob.dep.notify({
+      type: "add",
+      target: target2,
+      key,
+      newValue: val,
+      oldValue: void 0
+    });
+  } else {
+    ob.dep.notify();
+  }
+  return val;
+}
+function del(target2, key) {
+  if (isUndef(target2) || isPrimitive(target2)) {
+    warn("Cannot delete reactive property on undefined, null, or primitive value: ".concat(target2));
+  }
+  if (isArray(target2) && isValidArrayIndex(key)) {
+    target2.splice(key, 1);
+    return;
+  }
+  var ob = target2.__ob__;
+  if (target2._isVue || ob && ob.vmCount) {
+    warn("Avoid deleting properties on a Vue instance or its root $data - just set it to null.");
+    return;
+  }
+  if (isReadonly(target2)) {
+    warn('Delete operation on key "'.concat(key, '" failed: target is readonly.'));
+    return;
+  }
+  if (!hasOwn(target2, key)) {
+    return;
+  }
+  delete target2[key];
+  if (!ob) {
+    return;
+  }
+  if (true) {
+    ob.dep.notify({
+      type: "delete",
+      target: target2,
+      key
+    });
+  } else {
+    ob.dep.notify();
+  }
+}
+function dependArray(value2) {
+  for (var e2 = void 0, i = 0, l = value2.length; i < l; i++) {
+    e2 = value2[i];
+    if (e2 && e2.__ob__) {
+      e2.__ob__.dep.depend();
+    }
+    if (isArray(e2)) {
+      dependArray(e2);
+    }
+  }
+}
+function shallowReactive(target2) {
+  makeReactive(target2, true);
+  def(target2, "__v_isShallow", true);
+  return target2;
+}
+function makeReactive(target2, shallow) {
+  if (!isReadonly(target2)) {
+    if (true) {
+      if (isArray(target2)) {
+        warn("Avoid using Array as root value for ".concat(shallow ? "shallowReactive()" : "reactive()", " as it cannot be tracked in watch() or watchEffect(). Use ").concat(shallow ? "shallowRef()" : "ref()", " instead. This is a Vue-2-only limitation."));
+      }
+      var existingOb = target2 && target2.__ob__;
+      if (existingOb && existingOb.shallow !== shallow) {
+        warn("Target is already a ".concat(existingOb.shallow ? "" : "non-", "shallow reactive object, and cannot be converted to ").concat(shallow ? "" : "non-", "shallow."));
+      }
+    }
+    var ob = observe(
+      target2,
+      shallow,
+      isServerRendering()
+      /* ssr mock reactivity */
+    );
+    if (!ob) {
+      if (target2 == null || isPrimitive(target2)) {
+        warn("value cannot be made reactive: ".concat(String(target2)));
+      }
+      if (isCollectionType(target2)) {
+        warn("Vue 2 does not support reactive collection types such as Map or Set.");
+      }
+    }
+  }
+}
+function isReadonly(value2) {
+  return !!(value2 && value2.__v_isReadonly);
+}
+function isCollectionType(value2) {
+  var type2 = toRawType(value2);
+  return type2 === "Map" || type2 === "WeakMap" || type2 === "Set" || type2 === "WeakSet";
+}
+function isRef(r2) {
+  return !!(r2 && r2.__v_isRef === true);
+}
+function proxyWithRefUnwrap(target2, source, key) {
+  Object.defineProperty(target2, key, {
+    enumerable: true,
+    configurable: true,
+    get: function() {
+      var val = source[key];
+      if (isRef(val)) {
+        return val.value;
+      } else {
+        var ob = val && val.__ob__;
+        if (ob)
+          ob.dep.depend();
+        return val;
+      }
+    },
+    set: function(value2) {
+      var oldValue = source[key];
+      if (isRef(oldValue) && !isRef(value2)) {
+        oldValue.value = value2;
+      } else {
+        source[key] = value2;
+      }
+    }
+  });
+}
+var WATCHER = "watcher";
+var WATCHER_CB = "".concat(WATCHER, " callback");
+var WATCHER_GETTER = "".concat(WATCHER, " getter");
+var WATCHER_CLEANUP = "".concat(WATCHER, " cleanup");
+var activeEffectScope;
+var EffectScope = (
+  /** @class */
+  function() {
+    function EffectScope2(detached) {
+      if (detached === void 0) {
+        detached = false;
+      }
+      this.detached = detached;
+      this.active = true;
+      this.effects = [];
+      this.cleanups = [];
+      this.parent = activeEffectScope;
+      if (!detached && activeEffectScope) {
+        this.index = (activeEffectScope.scopes || (activeEffectScope.scopes = [])).push(this) - 1;
+      }
+    }
+    EffectScope2.prototype.run = function(fn) {
+      if (this.active) {
+        var currentEffectScope = activeEffectScope;
+        try {
+          activeEffectScope = this;
+          return fn();
+        } finally {
+          activeEffectScope = currentEffectScope;
+        }
+      } else if (true) {
+        warn("cannot run an inactive effect scope.");
+      }
+    };
+    EffectScope2.prototype.on = function() {
+      activeEffectScope = this;
+    };
+    EffectScope2.prototype.off = function() {
+      activeEffectScope = this.parent;
+    };
+    EffectScope2.prototype.stop = function(fromParent) {
+      if (this.active) {
+        var i = void 0, l = void 0;
+        for (i = 0, l = this.effects.length; i < l; i++) {
+          this.effects[i].teardown();
+        }
+        for (i = 0, l = this.cleanups.length; i < l; i++) {
+          this.cleanups[i]();
+        }
+        if (this.scopes) {
+          for (i = 0, l = this.scopes.length; i < l; i++) {
+            this.scopes[i].stop(true);
+          }
+        }
+        if (!this.detached && this.parent && !fromParent) {
+          var last = this.parent.scopes.pop();
+          if (last && last !== this) {
+            this.parent.scopes[this.index] = last;
+            last.index = this.index;
+          }
+        }
+        this.parent = void 0;
+        this.active = false;
+      }
+    };
+    return EffectScope2;
+  }()
+);
+function recordEffectScope(effect, scope) {
+  if (scope === void 0) {
+    scope = activeEffectScope;
+  }
+  if (scope && scope.active) {
+    scope.effects.push(effect);
+  }
+}
+function resolveProvided(vm) {
+  var existing = vm._provided;
+  var parentProvides = vm.$parent && vm.$parent._provided;
+  if (parentProvides === existing) {
+    return vm._provided = Object.create(parentProvides);
+  } else {
+    return existing;
+  }
+}
+var normalizeEvent = cached(function(name2) {
+  var passive = name2.charAt(0) === "&";
+  name2 = passive ? name2.slice(1) : name2;
+  var once2 = name2.charAt(0) === "~";
+  name2 = once2 ? name2.slice(1) : name2;
+  var capture = name2.charAt(0) === "!";
+  name2 = capture ? name2.slice(1) : name2;
+  return {
+    name: name2,
+    once: once2,
+    capture,
+    passive
+  };
+});
+function createFnInvoker(fns, vm) {
+  function invoker() {
+    var fns2 = invoker.fns;
+    if (isArray(fns2)) {
+      var cloned = fns2.slice();
+      for (var i = 0; i < cloned.length; i++) {
+        invokeWithErrorHandling(cloned[i], null, arguments, vm, "v-on handler");
+      }
+    } else {
+      return invokeWithErrorHandling(fns2, null, arguments, vm, "v-on handler");
+    }
+  }
+  invoker.fns = fns;
+  return invoker;
+}
+function updateListeners(on, oldOn, add2, remove2, createOnceHandler2, vm) {
+  var name2, cur, old, event2;
+  for (name2 in on) {
+    cur = on[name2];
+    old = oldOn[name2];
+    event2 = normalizeEvent(name2);
+    if (isUndef(cur)) {
+      warn('Invalid handler for event "'.concat(event2.name, '": got ') + String(cur), vm);
+    } else if (isUndef(old)) {
+      if (isUndef(cur.fns)) {
+        cur = on[name2] = createFnInvoker(cur, vm);
+      }
+      if (isTrue(event2.once)) {
+        cur = on[name2] = createOnceHandler2(event2.name, cur, event2.capture);
+      }
+      add2(event2.name, cur, event2.capture, event2.passive, event2.params);
+    } else if (cur !== old) {
+      old.fns = cur;
+      on[name2] = old;
+    }
+  }
+  for (name2 in oldOn) {
+    if (isUndef(on[name2])) {
+      event2 = normalizeEvent(name2);
+      remove2(event2.name, oldOn[name2], event2.capture);
+    }
+  }
+}
+function mergeVNodeHook(def2, hookKey, hook) {
+  if (def2 instanceof VNode) {
+    def2 = def2.data.hook || (def2.data.hook = {});
+  }
+  var invoker;
+  var oldHook = def2[hookKey];
+  function wrappedHook() {
+    hook.apply(this, arguments);
+    remove$2(invoker.fns, wrappedHook);
+  }
+  if (isUndef(oldHook)) {
+    invoker = createFnInvoker([wrappedHook]);
+  } else {
+    if (isDef(oldHook.fns) && isTrue(oldHook.merged)) {
+      invoker = oldHook;
+      invoker.fns.push(wrappedHook);
+    } else {
+      invoker = createFnInvoker([oldHook, wrappedHook]);
+    }
+  }
+  invoker.merged = true;
+  def2[hookKey] = invoker;
+}
+function extractPropsFromVNodeData(data48, Ctor, tag3) {
+  var propOptions = Ctor.options.props;
+  if (isUndef(propOptions)) {
+    return;
+  }
+  var res = {};
+  var attrs2 = data48.attrs, props153 = data48.props;
+  if (isDef(attrs2) || isDef(props153)) {
+    for (var key in propOptions) {
+      var altKey = hyphenate(key);
+      if (true) {
+        var keyInLowerCase = key.toLowerCase();
+        if (key !== keyInLowerCase && attrs2 && hasOwn(attrs2, keyInLowerCase)) {
+          tip('Prop "'.concat(keyInLowerCase, '" is passed to component ') + "".concat(formatComponentName(
+            // @ts-expect-error tag is string
+            tag3 || Ctor
+          ), ", but the declared prop name is") + ' "'.concat(key, '". ') + "Note that HTML attributes are case-insensitive and camelCased props need to use their kebab-case equivalents when using in-DOM " + 'templates. You should probably use "'.concat(altKey, '" instead of "').concat(key, '".'));
+        }
+      }
+      checkProp(res, props153, key, altKey, true) || checkProp(res, attrs2, key, altKey, false);
+    }
+  }
+  return res;
+}
+function checkProp(res, hash, key, altKey, preserve) {
+  if (isDef(hash)) {
+    if (hasOwn(hash, key)) {
+      res[key] = hash[key];
+      if (!preserve) {
+        delete hash[key];
+      }
+      return true;
+    } else if (hasOwn(hash, altKey)) {
+      res[key] = hash[altKey];
+      if (!preserve) {
+        delete hash[altKey];
+      }
+      return true;
+    }
+  }
+  return false;
+}
+function simpleNormalizeChildren(children2) {
+  for (var i = 0; i < children2.length; i++) {
+    if (isArray(children2[i])) {
+      return Array.prototype.concat.apply([], children2);
+    }
+  }
+  return children2;
+}
+function normalizeChildren(children2) {
+  return isPrimitive(children2) ? [createTextVNode(children2)] : isArray(children2) ? normalizeArrayChildren(children2) : void 0;
+}
+function isTextNode(node) {
+  return isDef(node) && isDef(node.text) && isFalse(node.isComment);
+}
+function normalizeArrayChildren(children2, nestedIndex) {
+  var res = [];
+  var i, c, lastIndex, last;
+  for (i = 0; i < children2.length; i++) {
+    c = children2[i];
+    if (isUndef(c) || typeof c === "boolean")
+      continue;
+    lastIndex = res.length - 1;
+    last = res[lastIndex];
+    if (isArray(c)) {
+      if (c.length > 0) {
+        c = normalizeArrayChildren(c, "".concat(nestedIndex || "", "_").concat(i));
+        if (isTextNode(c[0]) && isTextNode(last)) {
+          res[lastIndex] = createTextVNode(last.text + c[0].text);
+          c.shift();
+        }
+        res.push.apply(res, c);
+      }
+    } else if (isPrimitive(c)) {
+      if (isTextNode(last)) {
+        res[lastIndex] = createTextVNode(last.text + c);
+      } else if (c !== "") {
+        res.push(createTextVNode(c));
+      }
+    } else {
+      if (isTextNode(c) && isTextNode(last)) {
+        res[lastIndex] = createTextVNode(last.text + c.text);
+      } else {
+        if (isTrue(children2._isVList) && isDef(c.tag) && isUndef(c.key) && isDef(nestedIndex)) {
+          c.key = "__vlist".concat(nestedIndex, "_").concat(i, "__");
+        }
+        res.push(c);
+      }
+    }
+  }
+  return res;
+}
+function renderList(val, render123) {
+  var ret = null, i, l, keys3, key;
+  if (isArray(val) || typeof val === "string") {
+    ret = new Array(val.length);
+    for (i = 0, l = val.length; i < l; i++) {
+      ret[i] = render123(val[i], i);
+    }
+  } else if (typeof val === "number") {
+    ret = new Array(val);
+    for (i = 0; i < val; i++) {
+      ret[i] = render123(i + 1, i);
+    }
+  } else if (isObject(val)) {
+    if (hasSymbol && val[Symbol.iterator]) {
+      ret = [];
+      var iterator = val[Symbol.iterator]();
+      var result = iterator.next();
+      while (!result.done) {
+        ret.push(render123(result.value, ret.length));
+        result = iterator.next();
+      }
+    } else {
+      keys3 = Object.keys(val);
+      ret = new Array(keys3.length);
+      for (i = 0, l = keys3.length; i < l; i++) {
+        key = keys3[i];
+        ret[i] = render123(val[key], key, i);
+      }
+    }
+  }
+  if (!isDef(ret)) {
+    ret = [];
+  }
+  ret._isVList = true;
+  return ret;
+}
+function renderSlot(name2, fallbackRender, props153, bindObject) {
+  var scopedSlotFn = this.$scopedSlots[name2];
+  var nodes;
+  if (scopedSlotFn) {
+    props153 = props153 || {};
+    if (bindObject) {
+      if (!isObject(bindObject)) {
+        warn("slot v-bind without argument expects an Object", this);
+      }
+      props153 = extend(extend({}, bindObject), props153);
+    }
+    nodes = scopedSlotFn(props153) || (isFunction(fallbackRender) ? fallbackRender() : fallbackRender);
+  } else {
+    nodes = this.$slots[name2] || (isFunction(fallbackRender) ? fallbackRender() : fallbackRender);
+  }
+  var target2 = props153 && props153.slot;
+  if (target2) {
+    return this.$createElement("template", { slot: target2 }, nodes);
+  } else {
+    return nodes;
+  }
+}
+function resolveFilter(id) {
+  return resolveAsset(this.$options, "filters", id, true) || identity;
+}
+function isKeyNotMatch(expect, actual) {
+  if (isArray(expect)) {
+    return expect.indexOf(actual) === -1;
+  } else {
+    return expect !== actual;
+  }
+}
+function checkKeyCodes(eventKeyCode, key, builtInKeyCode, eventKeyName, builtInKeyName) {
+  var mappedKeyCode = config.keyCodes[key] || builtInKeyCode;
+  if (builtInKeyName && eventKeyName && !config.keyCodes[key]) {
+    return isKeyNotMatch(builtInKeyName, eventKeyName);
+  } else if (mappedKeyCode) {
+    return isKeyNotMatch(mappedKeyCode, eventKeyCode);
+  } else if (eventKeyName) {
+    return hyphenate(eventKeyName) !== key;
+  }
+  return eventKeyCode === void 0;
+}
+function bindObjectProps(data48, tag3, value2, asProp, isSync) {
+  if (value2) {
+    if (!isObject(value2)) {
+      warn("v-bind without argument expects an Object or Array value", this);
+    } else {
+      if (isArray(value2)) {
+        value2 = toObject(value2);
+      }
+      var hash = void 0;
+      var _loop_1 = function(key2) {
+        if (key2 === "class" || key2 === "style" || isReservedAttribute(key2)) {
+          hash = data48;
+        } else {
+          var type2 = data48.attrs && data48.attrs.type;
+          hash = asProp || config.mustUseProp(tag3, type2, key2) ? data48.domProps || (data48.domProps = {}) : data48.attrs || (data48.attrs = {});
+        }
+        var camelizedKey = camelize(key2);
+        var hyphenatedKey = hyphenate(key2);
+        if (!(camelizedKey in hash) && !(hyphenatedKey in hash)) {
+          hash[key2] = value2[key2];
+          if (isSync) {
+            var on = data48.on || (data48.on = {});
+            on["update:".concat(key2)] = function($event) {
+              value2[key2] = $event;
+            };
+          }
+        }
+      };
+      for (var key in value2) {
+        _loop_1(key);
+      }
+    }
+  }
+  return data48;
+}
+function renderStatic(index3, isInFor) {
+  var cached2 = this._staticTrees || (this._staticTrees = []);
+  var tree = cached2[index3];
+  if (tree && !isInFor) {
+    return tree;
+  }
+  tree = cached2[index3] = this.$options.staticRenderFns[index3].call(
+    this._renderProxy,
+    this._c,
+    this
+    // for render fns generated for functional component templates
+  );
+  markStatic(tree, "__static__".concat(index3), false);
+  return tree;
+}
+function markOnce(tree, index3, key) {
+  markStatic(tree, "__once__".concat(index3).concat(key ? "_".concat(key) : ""), true);
+  return tree;
+}
+function markStatic(tree, key, isOnce) {
+  if (isArray(tree)) {
+    for (var i = 0; i < tree.length; i++) {
+      if (tree[i] && typeof tree[i] !== "string") {
+        markStaticNode(tree[i], "".concat(key, "_").concat(i), isOnce);
+      }
+    }
+  } else {
+    markStaticNode(tree, key, isOnce);
+  }
+}
+function markStaticNode(node, key, isOnce) {
+  node.isStatic = true;
+  node.key = key;
+  node.isOnce = isOnce;
+}
+function bindObjectListeners(data48, value2) {
+  if (value2) {
+    if (!isPlainObject(value2)) {
+      warn("v-on without argument expects an Object value", this);
+    } else {
+      var on = data48.on = data48.on ? extend({}, data48.on) : {};
+      for (var key in value2) {
+        var existing = on[key];
+        var ours = value2[key];
+        on[key] = existing ? [].concat(existing, ours) : ours;
+      }
+    }
+  }
+  return data48;
+}
+function resolveScopedSlots(fns, res, hasDynamicKeys, contentHashKey) {
+  res = res || { $stable: !hasDynamicKeys };
+  for (var i = 0; i < fns.length; i++) {
+    var slot = fns[i];
+    if (isArray(slot)) {
+      resolveScopedSlots(slot, res, hasDynamicKeys);
+    } else if (slot) {
+      if (slot.proxy) {
+        slot.fn.proxy = true;
+      }
+      res[slot.key] = slot.fn;
+    }
+  }
+  if (contentHashKey) {
+    res.$key = contentHashKey;
+  }
+  return res;
+}
+function bindDynamicKeys(baseObj, values) {
+  for (var i = 0; i < values.length; i += 2) {
+    var key = values[i];
+    if (typeof key === "string" && key) {
+      baseObj[values[i]] = values[i + 1];
+    } else if (key !== "" && key !== null) {
+      warn("Invalid value for dynamic directive argument (expected string or null): ".concat(key), this);
+    }
+  }
+  return baseObj;
+}
+function prependModifier(value2, symbol) {
+  return typeof value2 === "string" ? symbol + value2 : value2;
+}
+function installRenderHelpers(target2) {
+  target2._o = markOnce;
+  target2._n = toNumber;
+  target2._s = toString;
+  target2._l = renderList;
+  target2._t = renderSlot;
+  target2._q = looseEqual;
+  target2._i = looseIndexOf;
+  target2._m = renderStatic;
+  target2._f = resolveFilter;
+  target2._k = checkKeyCodes;
+  target2._b = bindObjectProps;
+  target2._v = createTextVNode;
+  target2._e = createEmptyVNode;
+  target2._u = resolveScopedSlots;
+  target2._g = bindObjectListeners;
+  target2._d = bindDynamicKeys;
+  target2._p = prependModifier;
+}
+function resolveSlots(children2, context7) {
+  if (!children2 || !children2.length) {
+    return {};
+  }
+  var slots = {};
+  for (var i = 0, l = children2.length; i < l; i++) {
+    var child = children2[i];
+    var data48 = child.data;
+    if (data48 && data48.attrs && data48.attrs.slot) {
+      delete data48.attrs.slot;
+    }
+    if ((child.context === context7 || child.fnContext === context7) && data48 && data48.slot != null) {
+      var name_1 = data48.slot;
+      var slot = slots[name_1] || (slots[name_1] = []);
+      if (child.tag === "template") {
+        slot.push.apply(slot, child.children || []);
+      } else {
+        slot.push(child);
+      }
+    } else {
+      (slots.default || (slots.default = [])).push(child);
+    }
+  }
+  for (var name_2 in slots) {
+    if (slots[name_2].every(isWhitespace)) {
+      delete slots[name_2];
+    }
+  }
+  return slots;
+}
+function isWhitespace(node) {
+  return node.isComment && !node.asyncFactory || node.text === " ";
+}
+function isAsyncPlaceholder(node) {
+  return node.isComment && node.asyncFactory;
+}
+function normalizeScopedSlots(ownerVm, scopedSlots, normalSlots, prevScopedSlots) {
+  var res;
+  var hasNormalSlots = Object.keys(normalSlots).length > 0;
+  var isStable = scopedSlots ? !!scopedSlots.$stable : !hasNormalSlots;
+  var key = scopedSlots && scopedSlots.$key;
+  if (!scopedSlots) {
+    res = {};
+  } else if (scopedSlots._normalized) {
+    return scopedSlots._normalized;
+  } else if (isStable && prevScopedSlots && prevScopedSlots !== emptyObject && key === prevScopedSlots.$key && !hasNormalSlots && !prevScopedSlots.$hasNormal) {
+    return prevScopedSlots;
+  } else {
+    res = {};
+    for (var key_1 in scopedSlots) {
+      if (scopedSlots[key_1] && key_1[0] !== "$") {
+        res[key_1] = normalizeScopedSlot(ownerVm, normalSlots, key_1, scopedSlots[key_1]);
+      }
+    }
+  }
+  for (var key_2 in normalSlots) {
+    if (!(key_2 in res)) {
+      res[key_2] = proxyNormalSlot(normalSlots, key_2);
+    }
+  }
+  if (scopedSlots && Object.isExtensible(scopedSlots)) {
+    scopedSlots._normalized = res;
+  }
+  def(res, "$stable", isStable);
+  def(res, "$key", key);
+  def(res, "$hasNormal", hasNormalSlots);
+  return res;
+}
+function normalizeScopedSlot(vm, normalSlots, key, fn) {
+  var normalized = function() {
+    var cur = currentInstance;
+    setCurrentInstance(vm);
+    var res = arguments.length ? fn.apply(null, arguments) : fn({});
+    res = res && typeof res === "object" && !isArray(res) ? [res] : normalizeChildren(res);
+    var vnode = res && res[0];
+    setCurrentInstance(cur);
+    return res && (!vnode || res.length === 1 && vnode.isComment && !isAsyncPlaceholder(vnode)) ? void 0 : res;
+  };
+  if (fn.proxy) {
+    Object.defineProperty(normalSlots, key, {
+      get: normalized,
+      enumerable: true,
+      configurable: true
+    });
+  }
+  return normalized;
+}
+function proxyNormalSlot(slots, key) {
+  return function() {
+    return slots[key];
+  };
+}
+function initSetup(vm) {
+  var options = vm.$options;
+  var setup = options.setup;
+  if (setup) {
+    var ctx = vm._setupContext = createSetupContext(vm);
+    setCurrentInstance(vm);
+    pushTarget();
+    var setupResult = invokeWithErrorHandling(setup, null, [vm._props || shallowReactive({}), ctx], vm, "setup");
+    popTarget();
+    setCurrentInstance();
+    if (isFunction(setupResult)) {
+      options.render = setupResult;
+    } else if (isObject(setupResult)) {
+      if (setupResult instanceof VNode) {
+        warn("setup() should not return VNodes directly - return a render function instead.");
+      }
+      vm._setupState = setupResult;
+      if (!setupResult.__sfc) {
+        for (var key in setupResult) {
+          if (!isReserved(key)) {
+            proxyWithRefUnwrap(vm, setupResult, key);
+          } else if (true) {
+            warn("Avoid using variables that start with _ or $ in setup().");
+          }
+        }
+      } else {
+        var proxy2 = vm._setupProxy = {};
+        for (var key in setupResult) {
+          if (key !== "__sfc") {
+            proxyWithRefUnwrap(proxy2, setupResult, key);
+          }
+        }
+      }
+    } else if (setupResult !== void 0) {
+      warn("setup() should return an object. Received: ".concat(setupResult === null ? "null" : typeof setupResult));
+    }
+  }
+}
+function createSetupContext(vm) {
+  var exposeCalled = false;
+  return {
+    get attrs() {
+      if (!vm._attrsProxy) {
+        var proxy2 = vm._attrsProxy = {};
+        def(proxy2, "_v_attr_proxy", true);
+        syncSetupProxy(proxy2, vm.$attrs, emptyObject, vm, "$attrs");
+      }
+      return vm._attrsProxy;
+    },
+    get listeners() {
+      if (!vm._listenersProxy) {
+        var proxy2 = vm._listenersProxy = {};
+        syncSetupProxy(proxy2, vm.$listeners, emptyObject, vm, "$listeners");
+      }
+      return vm._listenersProxy;
+    },
+    get slots() {
+      return initSlotsProxy(vm);
+    },
+    emit: bind(vm.$emit, vm),
+    expose: function(exposed) {
+      if (true) {
+        if (exposeCalled) {
+          warn("expose() should be called only once per setup().", vm);
+        }
+        exposeCalled = true;
+      }
+      if (exposed) {
+        Object.keys(exposed).forEach(function(key) {
+          return proxyWithRefUnwrap(vm, exposed, key);
+        });
+      }
+    }
+  };
+}
+function syncSetupProxy(to2, from3, prev2, instance, type2) {
+  var changed = false;
+  for (var key in from3) {
+    if (!(key in to2)) {
+      changed = true;
+      defineProxyAttr(to2, key, instance, type2);
+    } else if (from3[key] !== prev2[key]) {
+      changed = true;
+    }
+  }
+  for (var key in to2) {
+    if (!(key in from3)) {
+      changed = true;
+      delete to2[key];
+    }
+  }
+  return changed;
+}
+function defineProxyAttr(proxy2, key, instance, type2) {
+  Object.defineProperty(proxy2, key, {
+    enumerable: true,
+    configurable: true,
+    get: function() {
+      return instance[type2][key];
+    }
+  });
+}
+function initSlotsProxy(vm) {
+  if (!vm._slotsProxy) {
+    syncSetupSlots(vm._slotsProxy = {}, vm.$scopedSlots);
+  }
+  return vm._slotsProxy;
+}
+function syncSetupSlots(to2, from3) {
+  for (var key in from3) {
+    to2[key] = from3[key];
+  }
+  for (var key in to2) {
+    if (!(key in from3)) {
+      delete to2[key];
+    }
+  }
+}
+function initRender(vm) {
+  vm._vnode = null;
+  vm._staticTrees = null;
+  var options = vm.$options;
+  var parentVnode = vm.$vnode = options._parentVnode;
+  var renderContext = parentVnode && parentVnode.context;
+  vm.$slots = resolveSlots(options._renderChildren, renderContext);
+  vm.$scopedSlots = parentVnode ? normalizeScopedSlots(vm.$parent, parentVnode.data.scopedSlots, vm.$slots) : emptyObject;
+  vm._c = function(a2, b, c, d) {
+    return createElement$1(vm, a2, b, c, d, false);
+  };
+  vm.$createElement = function(a2, b, c, d) {
+    return createElement$1(vm, a2, b, c, d, true);
+  };
+  var parentData = parentVnode && parentVnode.data;
+  if (true) {
+    defineReactive(vm, "$attrs", parentData && parentData.attrs || emptyObject, function() {
+      !isUpdatingChildComponent && warn("$attrs is readonly.", vm);
+    }, true);
+    defineReactive(vm, "$listeners", options._parentListeners || emptyObject, function() {
+      !isUpdatingChildComponent && warn("$listeners is readonly.", vm);
+    }, true);
+  } else {
+    defineReactive(vm, "$attrs", parentData && parentData.attrs || emptyObject, null, true);
+    defineReactive(vm, "$listeners", options._parentListeners || emptyObject, null, true);
+  }
+}
+var currentRenderingInstance = null;
+function renderMixin(Vue2) {
+  installRenderHelpers(Vue2.prototype);
+  Vue2.prototype.$nextTick = function(fn) {
+    return nextTick(fn, this);
+  };
+  Vue2.prototype._render = function() {
+    var vm = this;
+    var _a = vm.$options, render123 = _a.render, _parentVnode = _a._parentVnode;
+    if (_parentVnode && vm._isMounted) {
+      vm.$scopedSlots = normalizeScopedSlots(vm.$parent, _parentVnode.data.scopedSlots, vm.$slots, vm.$scopedSlots);
+      if (vm._slotsProxy) {
+        syncSetupSlots(vm._slotsProxy, vm.$scopedSlots);
+      }
+    }
+    vm.$vnode = _parentVnode;
+    var vnode;
+    try {
+      setCurrentInstance(vm);
+      currentRenderingInstance = vm;
+      vnode = render123.call(vm._renderProxy, vm.$createElement);
+    } catch (e2) {
+      handleError(e2, vm, "render");
+      if (vm.$options.renderError) {
+        try {
+          vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e2);
+        } catch (e3) {
+          handleError(e3, vm, "renderError");
+          vnode = vm._vnode;
+        }
+      } else {
+        vnode = vm._vnode;
+      }
+    } finally {
+      currentRenderingInstance = null;
+      setCurrentInstance();
+    }
+    if (isArray(vnode) && vnode.length === 1) {
+      vnode = vnode[0];
+    }
+    if (!(vnode instanceof VNode)) {
+      if (isArray(vnode)) {
+        warn("Multiple root nodes returned from render function. Render function should return a single root node.", vm);
+      }
+      vnode = createEmptyVNode();
+    }
+    vnode.parent = _parentVnode;
+    return vnode;
+  };
+}
+function ensureCtor(comp, base) {
+  if (comp.__esModule || hasSymbol && comp[Symbol.toStringTag] === "Module") {
+    comp = comp.default;
+  }
+  return isObject(comp) ? base.extend(comp) : comp;
+}
+function createAsyncPlaceholder(factory, data48, context7, children2, tag3) {
+  var node = createEmptyVNode();
+  node.asyncFactory = factory;
+  node.asyncMeta = { data: data48, context: context7, children: children2, tag: tag3 };
+  return node;
+}
+function resolveAsyncComponent(factory, baseCtor) {
+  if (isTrue(factory.error) && isDef(factory.errorComp)) {
+    return factory.errorComp;
+  }
+  if (isDef(factory.resolved)) {
+    return factory.resolved;
+  }
+  var owner = currentRenderingInstance;
+  if (owner && isDef(factory.owners) && factory.owners.indexOf(owner) === -1) {
+    factory.owners.push(owner);
+  }
+  if (isTrue(factory.loading) && isDef(factory.loadingComp)) {
+    return factory.loadingComp;
+  }
+  if (owner && !isDef(factory.owners)) {
+    var owners_1 = factory.owners = [owner];
+    var sync_1 = true;
+    var timerLoading_1 = null;
+    var timerTimeout_1 = null;
+    owner.$on("hook:destroyed", function() {
+      return remove$2(owners_1, owner);
+    });
+    var forceRender_1 = function(renderCompleted) {
+      for (var i = 0, l = owners_1.length; i < l; i++) {
+        owners_1[i].$forceUpdate();
+      }
+      if (renderCompleted) {
+        owners_1.length = 0;
+        if (timerLoading_1 !== null) {
+          clearTimeout(timerLoading_1);
+          timerLoading_1 = null;
+        }
+        if (timerTimeout_1 !== null) {
+          clearTimeout(timerTimeout_1);
+          timerTimeout_1 = null;
+        }
+      }
+    };
+    var resolve = once(function(res) {
+      factory.resolved = ensureCtor(res, baseCtor);
+      if (!sync_1) {
+        forceRender_1(true);
+      } else {
+        owners_1.length = 0;
+      }
+    });
+    var reject_1 = once(function(reason) {
+      warn("Failed to resolve async component: ".concat(String(factory)) + (reason ? "\nReason: ".concat(reason) : ""));
+      if (isDef(factory.errorComp)) {
+        factory.error = true;
+        forceRender_1(true);
+      }
+    });
+    var res_1 = factory(resolve, reject_1);
+    if (isObject(res_1)) {
+      if (isPromise(res_1)) {
+        if (isUndef(factory.resolved)) {
+          res_1.then(resolve, reject_1);
+        }
+      } else if (isPromise(res_1.component)) {
+        res_1.component.then(resolve, reject_1);
+        if (isDef(res_1.error)) {
+          factory.errorComp = ensureCtor(res_1.error, baseCtor);
+        }
+        if (isDef(res_1.loading)) {
+          factory.loadingComp = ensureCtor(res_1.loading, baseCtor);
+          if (res_1.delay === 0) {
+            factory.loading = true;
+          } else {
+            timerLoading_1 = setTimeout(function() {
+              timerLoading_1 = null;
+              if (isUndef(factory.resolved) && isUndef(factory.error)) {
+                factory.loading = true;
+                forceRender_1(false);
+              }
+            }, res_1.delay || 200);
+          }
+        }
+        if (isDef(res_1.timeout)) {
+          timerTimeout_1 = setTimeout(function() {
+            timerTimeout_1 = null;
+            if (isUndef(factory.resolved)) {
+              reject_1(true ? "timeout (".concat(res_1.timeout, "ms)") : null);
+            }
+          }, res_1.timeout);
+        }
+      }
+    }
+    sync_1 = false;
+    return factory.loading ? factory.loadingComp : factory.resolved;
+  }
+}
+function getFirstComponentChild(children2) {
+  if (isArray(children2)) {
+    for (var i = 0; i < children2.length; i++) {
+      var c = children2[i];
+      if (isDef(c) && (isDef(c.componentOptions) || isAsyncPlaceholder(c))) {
+        return c;
+      }
+    }
+  }
+}
+var SIMPLE_NORMALIZE = 1;
+var ALWAYS_NORMALIZE = 2;
+function createElement$1(context7, tag3, data48, children2, normalizationType, alwaysNormalize) {
+  if (isArray(data48) || isPrimitive(data48)) {
+    normalizationType = children2;
+    children2 = data48;
+    data48 = void 0;
+  }
+  if (isTrue(alwaysNormalize)) {
+    normalizationType = ALWAYS_NORMALIZE;
+  }
+  return _createElement(context7, tag3, data48, children2, normalizationType);
+}
+function _createElement(context7, tag3, data48, children2, normalizationType) {
+  if (isDef(data48) && isDef(data48.__ob__)) {
+    warn("Avoid using observed data object as vnode data: ".concat(JSON.stringify(data48), "\n") + "Always create fresh vnode data objects in each render!", context7);
+    return createEmptyVNode();
+  }
+  if (isDef(data48) && isDef(data48.is)) {
+    tag3 = data48.is;
+  }
+  if (!tag3) {
+    return createEmptyVNode();
+  }
+  if (isDef(data48) && isDef(data48.key) && !isPrimitive(data48.key)) {
+    warn("Avoid using non-primitive value as key, use string/number value instead.", context7);
+  }
+  if (isArray(children2) && isFunction(children2[0])) {
+    data48 = data48 || {};
+    data48.scopedSlots = { default: children2[0] };
+    children2.length = 0;
+  }
+  if (normalizationType === ALWAYS_NORMALIZE) {
+    children2 = normalizeChildren(children2);
+  } else if (normalizationType === SIMPLE_NORMALIZE) {
+    children2 = simpleNormalizeChildren(children2);
+  }
+  var vnode, ns;
+  if (typeof tag3 === "string") {
+    var Ctor = void 0;
+    ns = context7.$vnode && context7.$vnode.ns || config.getTagNamespace(tag3);
+    if (config.isReservedTag(tag3)) {
+      if (isDef(data48) && isDef(data48.nativeOn) && data48.tag !== "component") {
+        warn("The .native modifier for v-on is only valid on components but it was used on <".concat(tag3, ">."), context7);
+      }
+      vnode = new VNode(config.parsePlatformTagName(tag3), data48, children2, void 0, void 0, context7);
+    } else if ((!data48 || !data48.pre) && isDef(Ctor = resolveAsset(context7.$options, "components", tag3))) {
+      vnode = createComponent(Ctor, data48, context7, children2, tag3);
+    } else {
+      vnode = new VNode(tag3, data48, children2, void 0, void 0, context7);
+    }
+  } else {
+    vnode = createComponent(tag3, data48, context7, children2);
+  }
+  if (isArray(vnode)) {
+    return vnode;
+  } else if (isDef(vnode)) {
+    if (isDef(ns))
+      applyNS(vnode, ns);
+    if (isDef(data48))
+      registerDeepBindings(data48);
+    return vnode;
+  } else {
+    return createEmptyVNode();
+  }
+}
+function applyNS(vnode, ns, force) {
+  vnode.ns = ns;
+  if (vnode.tag === "foreignObject") {
+    ns = void 0;
+    force = true;
+  }
+  if (isDef(vnode.children)) {
+    for (var i = 0, l = vnode.children.length; i < l; i++) {
+      var child = vnode.children[i];
+      if (isDef(child.tag) && (isUndef(child.ns) || isTrue(force) && child.tag !== "svg")) {
+        applyNS(child, ns, force);
+      }
+    }
+  }
+}
+function registerDeepBindings(data48) {
+  if (isObject(data48.style)) {
+    traverse(data48.style);
+  }
+  if (isObject(data48.class)) {
+    traverse(data48.class);
+  }
+}
+function handleError(err, vm, info) {
+  pushTarget();
+  try {
+    if (vm) {
+      var cur = vm;
+      while (cur = cur.$parent) {
+        var hooks2 = cur.$options.errorCaptured;
+        if (hooks2) {
+          for (var i = 0; i < hooks2.length; i++) {
+            try {
+              var capture = hooks2[i].call(cur, err, vm, info) === false;
+              if (capture)
+                return;
+            } catch (e2) {
+              globalHandleError(e2, cur, "errorCaptured hook");
+            }
+          }
+        }
+      }
+    }
+    globalHandleError(err, vm, info);
+  } finally {
+    popTarget();
+  }
+}
+function invokeWithErrorHandling(handler3, context7, args, vm, info) {
+  var res;
+  try {
+    res = args ? handler3.apply(context7, args) : handler3.call(context7);
+    if (res && !res._isVue && isPromise(res) && !res._handled) {
+      res.catch(function(e2) {
+        return handleError(e2, vm, info + " (Promise/async)");
+      });
+      res._handled = true;
+    }
+  } catch (e2) {
+    handleError(e2, vm, info);
+  }
+  return res;
+}
+function globalHandleError(err, vm, info) {
+  if (config.errorHandler) {
+    try {
+      return config.errorHandler.call(null, err, vm, info);
+    } catch (e2) {
+      if (e2 !== err) {
+        logError(e2, null, "config.errorHandler");
+      }
+    }
+  }
+  logError(err, vm, info);
+}
+function logError(err, vm, info) {
+  if (true) {
+    warn("Error in ".concat(info, ': "').concat(err.toString(), '"'), vm);
+  }
+  if (inBrowser && typeof console !== "undefined") {
+    console.error(err);
+  } else {
+    throw err;
+  }
+}
+var isUsingMicroTask = false;
+var callbacks = [];
+var pending = false;
+function flushCallbacks() {
+  pending = false;
+  var copies = callbacks.slice(0);
+  callbacks.length = 0;
+  for (var i = 0; i < copies.length; i++) {
+    copies[i]();
+  }
+}
+var timerFunc;
+if (typeof Promise !== "undefined" && isNative(Promise)) {
+  p_1 = Promise.resolve();
+  timerFunc = function() {
+    p_1.then(flushCallbacks);
+    if (isIOS)
+      setTimeout(noop);
+  };
+  isUsingMicroTask = true;
+} else if (!isIE && typeof MutationObserver !== "undefined" && (isNative(MutationObserver) || // PhantomJS and iOS 7.x
+MutationObserver.toString() === "[object MutationObserverConstructor]")) {
+  counter_1 = 1;
+  observer = new MutationObserver(flushCallbacks);
+  textNode_1 = document.createTextNode(String(counter_1));
+  observer.observe(textNode_1, {
+    characterData: true
+  });
+  timerFunc = function() {
+    counter_1 = (counter_1 + 1) % 2;
+    textNode_1.data = String(counter_1);
+  };
+  isUsingMicroTask = true;
+} else if (typeof setImmediate !== "undefined" && isNative(setImmediate)) {
+  timerFunc = function() {
+    setImmediate(flushCallbacks);
+  };
+} else {
+  timerFunc = function() {
+    setTimeout(flushCallbacks, 0);
+  };
+}
+var p_1;
+var counter_1;
+var observer;
+var textNode_1;
+function nextTick(cb, ctx) {
+  var _resolve;
+  callbacks.push(function() {
+    if (cb) {
+      try {
+        cb.call(ctx);
+      } catch (e2) {
+        handleError(e2, ctx, "nextTick");
+      }
+    } else if (_resolve) {
+      _resolve(ctx);
+    }
+  });
+  if (!pending) {
+    pending = true;
+    timerFunc();
+  }
+  if (!cb && typeof Promise !== "undefined") {
+    return new Promise(function(resolve) {
+      _resolve = resolve;
+    });
+  }
+}
+function createLifeCycle(hookName) {
+  return function(fn, target2) {
+    if (target2 === void 0) {
+      target2 = currentInstance;
+    }
+    if (!target2) {
+      warn("".concat(formatName(hookName), " is called when there is no active component instance to be ") + "associated with. Lifecycle injection APIs can only be used during execution of setup().");
+      return;
+    }
+    return injectHook(target2, hookName, fn);
+  };
+}
+function formatName(name2) {
+  if (name2 === "beforeDestroy") {
+    name2 = "beforeUnmount";
+  } else if (name2 === "destroyed") {
+    name2 = "unmounted";
+  }
+  return "on".concat(name2[0].toUpperCase() + name2.slice(1));
+}
+function injectHook(instance, hookName, fn) {
+  var options = instance.$options;
+  options[hookName] = mergeLifecycleHook(options[hookName], fn);
+}
+var onBeforeMount = createLifeCycle("beforeMount");
+var onMounted = createLifeCycle("mounted");
+var onBeforeUpdate = createLifeCycle("beforeUpdate");
+var onUpdated = createLifeCycle("updated");
+var onBeforeUnmount = createLifeCycle("beforeDestroy");
+var onUnmounted = createLifeCycle("destroyed");
+var onActivated = createLifeCycle("activated");
+var onDeactivated = createLifeCycle("deactivated");
+var onServerPrefetch = createLifeCycle("serverPrefetch");
+var onRenderTracked = createLifeCycle("renderTracked");
+var onRenderTriggered = createLifeCycle("renderTriggered");
+var injectErrorCapturedHook = createLifeCycle("errorCaptured");
+var version = "2.7.14";
+var seenObjects = new _Set();
+function traverse(val) {
+  _traverse(val, seenObjects);
+  seenObjects.clear();
+  return val;
+}
+function _traverse(val, seen) {
+  var i, keys3;
+  var isA = isArray(val);
+  if (!isA && !isObject(val) || val.__v_skip || Object.isFrozen(val) || val instanceof VNode) {
+    return;
+  }
+  if (val.__ob__) {
+    var depId = val.__ob__.dep.id;
+    if (seen.has(depId)) {
+      return;
+    }
+    seen.add(depId);
+  }
+  if (isA) {
+    i = val.length;
+    while (i--)
+      _traverse(val[i], seen);
+  } else if (isRef(val)) {
+    _traverse(val.value, seen);
+  } else {
+    keys3 = Object.keys(val);
+    i = keys3.length;
+    while (i--)
+      _traverse(val[keys3[i]], seen);
+  }
+}
+var uid$1 = 0;
+var Watcher = (
+  /** @class */
+  function() {
+    function Watcher3(vm, expOrFn, cb, options, isRenderWatcher) {
+      recordEffectScope(
+        this,
+        // if the active effect scope is manually created (not a component scope),
+        // prioritize it
+        activeEffectScope && !activeEffectScope._vm ? activeEffectScope : vm ? vm._scope : void 0
+      );
+      if ((this.vm = vm) && isRenderWatcher) {
+        vm._watcher = this;
+      }
+      if (options) {
+        this.deep = !!options.deep;
+        this.user = !!options.user;
+        this.lazy = !!options.lazy;
+        this.sync = !!options.sync;
+        this.before = options.before;
+        if (true) {
+          this.onTrack = options.onTrack;
+          this.onTrigger = options.onTrigger;
+        }
+      } else {
+        this.deep = this.user = this.lazy = this.sync = false;
+      }
+      this.cb = cb;
+      this.id = ++uid$1;
+      this.active = true;
+      this.post = false;
+      this.dirty = this.lazy;
+      this.deps = [];
+      this.newDeps = [];
+      this.depIds = new _Set();
+      this.newDepIds = new _Set();
+      this.expression = true ? expOrFn.toString() : "";
+      if (isFunction(expOrFn)) {
+        this.getter = expOrFn;
+      } else {
+        this.getter = parsePath(expOrFn);
+        if (!this.getter) {
+          this.getter = noop;
+          warn('Failed watching path: "'.concat(expOrFn, '" ') + "Watcher only accepts simple dot-delimited paths. For full control, use a function instead.", vm);
+        }
+      }
+      this.value = this.lazy ? void 0 : this.get();
+    }
+    Watcher3.prototype.get = function() {
+      pushTarget(this);
+      var value2;
+      var vm = this.vm;
+      try {
+        value2 = this.getter.call(vm, vm);
+      } catch (e2) {
+        if (this.user) {
+          handleError(e2, vm, 'getter for watcher "'.concat(this.expression, '"'));
+        } else {
+          throw e2;
+        }
+      } finally {
+        if (this.deep) {
+          traverse(value2);
+        }
+        popTarget();
+        this.cleanupDeps();
+      }
+      return value2;
+    };
+    Watcher3.prototype.addDep = function(dep) {
+      var id = dep.id;
+      if (!this.newDepIds.has(id)) {
+        this.newDepIds.add(id);
+        this.newDeps.push(dep);
+        if (!this.depIds.has(id)) {
+          dep.addSub(this);
+        }
+      }
+    };
+    Watcher3.prototype.cleanupDeps = function() {
+      var i = this.deps.length;
+      while (i--) {
+        var dep = this.deps[i];
+        if (!this.newDepIds.has(dep.id)) {
+          dep.removeSub(this);
+        }
+      }
+      var tmp = this.depIds;
+      this.depIds = this.newDepIds;
+      this.newDepIds = tmp;
+      this.newDepIds.clear();
+      tmp = this.deps;
+      this.deps = this.newDeps;
+      this.newDeps = tmp;
+      this.newDeps.length = 0;
+    };
+    Watcher3.prototype.update = function() {
+      if (this.lazy) {
+        this.dirty = true;
+      } else if (this.sync) {
+        this.run();
+      } else {
+        queueWatcher(this);
+      }
+    };
+    Watcher3.prototype.run = function() {
+      if (this.active) {
+        var value2 = this.get();
+        if (value2 !== this.value || // Deep watchers and watchers on Object/Arrays should fire even
+        // when the value is the same, because the value may
+        // have mutated.
+        isObject(value2) || this.deep) {
+          var oldValue = this.value;
+          this.value = value2;
+          if (this.user) {
+            var info = 'callback for watcher "'.concat(this.expression, '"');
+            invokeWithErrorHandling(this.cb, this.vm, [value2, oldValue], this.vm, info);
+          } else {
+            this.cb.call(this.vm, value2, oldValue);
+          }
+        }
+      }
+    };
+    Watcher3.prototype.evaluate = function() {
+      this.value = this.get();
+      this.dirty = false;
+    };
+    Watcher3.prototype.depend = function() {
+      var i = this.deps.length;
+      while (i--) {
+        this.deps[i].depend();
+      }
+    };
+    Watcher3.prototype.teardown = function() {
+      if (this.vm && !this.vm._isBeingDestroyed) {
+        remove$2(this.vm._scope.effects, this);
+      }
+      if (this.active) {
+        var i = this.deps.length;
+        while (i--) {
+          this.deps[i].removeSub(this);
+        }
+        this.active = false;
+        if (this.onStop) {
+          this.onStop();
+        }
+      }
+    };
+    return Watcher3;
+  }()
+);
+var mark;
+var measure;
+if (true) {
+  perf_1 = inBrowser && window.performance;
+  if (perf_1 && // @ts-ignore
+  perf_1.mark && // @ts-ignore
+  perf_1.measure && // @ts-ignore
+  perf_1.clearMarks && // @ts-ignore
+  perf_1.clearMeasures) {
+    mark = function(tag3) {
+      return perf_1.mark(tag3);
+    };
+    measure = function(name2, startTag, endTag) {
+      perf_1.measure(name2, startTag, endTag);
+      perf_1.clearMarks(startTag);
+      perf_1.clearMarks(endTag);
+    };
+  }
+}
+var perf_1;
+function initEvents(vm) {
+  vm._events = /* @__PURE__ */ Object.create(null);
+  vm._hasHookEvent = false;
+  var listeners = vm.$options._parentListeners;
+  if (listeners) {
+    updateComponentListeners(vm, listeners);
+  }
+}
+var target$1;
+function add$1(event2, fn) {
+  target$1.$on(event2, fn);
+}
+function remove$1(event2, fn) {
+  target$1.$off(event2, fn);
+}
+function createOnceHandler$1(event2, fn) {
+  var _target = target$1;
+  return function onceHandler() {
+    var res = fn.apply(null, arguments);
+    if (res !== null) {
+      _target.$off(event2, onceHandler);
+    }
+  };
+}
+function updateComponentListeners(vm, listeners, oldListeners) {
+  target$1 = vm;
+  updateListeners(listeners, oldListeners || {}, add$1, remove$1, createOnceHandler$1, vm);
+  target$1 = void 0;
+}
+function eventsMixin(Vue2) {
+  var hookRE = /^hook:/;
+  Vue2.prototype.$on = function(event2, fn) {
+    var vm = this;
+    if (isArray(event2)) {
+      for (var i = 0, l = event2.length; i < l; i++) {
+        vm.$on(event2[i], fn);
+      }
+    } else {
+      (vm._events[event2] || (vm._events[event2] = [])).push(fn);
+      if (hookRE.test(event2)) {
+        vm._hasHookEvent = true;
+      }
+    }
+    return vm;
+  };
+  Vue2.prototype.$once = function(event2, fn) {
+    var vm = this;
+    function on() {
+      vm.$off(event2, on);
+      fn.apply(vm, arguments);
+    }
+    on.fn = fn;
+    vm.$on(event2, on);
+    return vm;
+  };
+  Vue2.prototype.$off = function(event2, fn) {
+    var vm = this;
+    if (!arguments.length) {
+      vm._events = /* @__PURE__ */ Object.create(null);
+      return vm;
+    }
+    if (isArray(event2)) {
+      for (var i_1 = 0, l = event2.length; i_1 < l; i_1++) {
+        vm.$off(event2[i_1], fn);
+      }
+      return vm;
+    }
+    var cbs = vm._events[event2];
+    if (!cbs) {
+      return vm;
+    }
+    if (!fn) {
+      vm._events[event2] = null;
+      return vm;
+    }
+    var cb;
+    var i = cbs.length;
+    while (i--) {
+      cb = cbs[i];
+      if (cb === fn || cb.fn === fn) {
+        cbs.splice(i, 1);
+        break;
+      }
+    }
+    return vm;
+  };
+  Vue2.prototype.$emit = function(event2) {
+    var vm = this;
+    if (true) {
+      var lowerCaseEvent = event2.toLowerCase();
+      if (lowerCaseEvent !== event2 && vm._events[lowerCaseEvent]) {
+        tip('Event "'.concat(lowerCaseEvent, '" is emitted in component ') + "".concat(formatComponentName(vm), ' but the handler is registered for "').concat(event2, '". ') + "Note that HTML attributes are case-insensitive and you cannot use v-on to listen to camelCase events when using in-DOM templates. " + 'You should probably use "'.concat(hyphenate(event2), '" instead of "').concat(event2, '".'));
+      }
+    }
+    var cbs = vm._events[event2];
+    if (cbs) {
+      cbs = cbs.length > 1 ? toArray(cbs) : cbs;
+      var args = toArray(arguments, 1);
+      var info = 'event handler for "'.concat(event2, '"');
+      for (var i = 0, l = cbs.length; i < l; i++) {
+        invokeWithErrorHandling(cbs[i], vm, args, vm, info);
+      }
+    }
+    return vm;
+  };
+}
+var activeInstance = null;
+var isUpdatingChildComponent = false;
+function setActiveInstance(vm) {
+  var prevActiveInstance = activeInstance;
+  activeInstance = vm;
+  return function() {
+    activeInstance = prevActiveInstance;
+  };
+}
+function initLifecycle(vm) {
+  var options = vm.$options;
+  var parent = options.parent;
+  if (parent && !options.abstract) {
+    while (parent.$options.abstract && parent.$parent) {
+      parent = parent.$parent;
+    }
+    parent.$children.push(vm);
+  }
+  vm.$parent = parent;
+  vm.$root = parent ? parent.$root : vm;
+  vm.$children = [];
+  vm.$refs = {};
+  vm._provided = parent ? parent._provided : /* @__PURE__ */ Object.create(null);
+  vm._watcher = null;
+  vm._inactive = null;
+  vm._directInactive = false;
+  vm._isMounted = false;
+  vm._isDestroyed = false;
+  vm._isBeingDestroyed = false;
+}
+function lifecycleMixin(Vue2) {
+  Vue2.prototype._update = function(vnode, hydrating) {
+    var vm = this;
+    var prevEl = vm.$el;
+    var prevVnode = vm._vnode;
+    var restoreActiveInstance = setActiveInstance(vm);
+    vm._vnode = vnode;
+    if (!prevVnode) {
+      vm.$el = vm.__patch__(
+        vm.$el,
+        vnode,
+        hydrating,
+        false
+        /* removeOnly */
+      );
+    } else {
+      vm.$el = vm.__patch__(prevVnode, vnode);
+    }
+    restoreActiveInstance();
+    if (prevEl) {
+      prevEl.__vue__ = null;
+    }
+    if (vm.$el) {
+      vm.$el.__vue__ = vm;
+    }
+    var wrapper = vm;
+    while (wrapper && wrapper.$vnode && wrapper.$parent && wrapper.$vnode === wrapper.$parent._vnode) {
+      wrapper.$parent.$el = wrapper.$el;
+      wrapper = wrapper.$parent;
+    }
+  };
+  Vue2.prototype.$forceUpdate = function() {
+    var vm = this;
+    if (vm._watcher) {
+      vm._watcher.update();
+    }
+  };
+  Vue2.prototype.$destroy = function() {
+    var vm = this;
+    if (vm._isBeingDestroyed) {
+      return;
+    }
+    callHook$1(vm, "beforeDestroy");
+    vm._isBeingDestroyed = true;
+    var parent = vm.$parent;
+    if (parent && !parent._isBeingDestroyed && !vm.$options.abstract) {
+      remove$2(parent.$children, vm);
+    }
+    vm._scope.stop();
+    if (vm._data.__ob__) {
+      vm._data.__ob__.vmCount--;
+    }
+    vm._isDestroyed = true;
+    vm.__patch__(vm._vnode, null);
+    callHook$1(vm, "destroyed");
+    vm.$off();
+    if (vm.$el) {
+      vm.$el.__vue__ = null;
+    }
+    if (vm.$vnode) {
+      vm.$vnode.parent = null;
+    }
+  };
+}
+function mountComponent(vm, el, hydrating) {
+  vm.$el = el;
+  if (!vm.$options.render) {
+    vm.$options.render = createEmptyVNode;
+    if (true) {
+      if (vm.$options.template && vm.$options.template.charAt(0) !== "#" || vm.$options.el || el) {
+        warn("You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.", vm);
+      } else {
+        warn("Failed to mount component: template or render function not defined.", vm);
+      }
+    }
+  }
+  callHook$1(vm, "beforeMount");
+  var updateComponent;
+  if (config.performance && mark) {
+    updateComponent = function() {
+      var name2 = vm._name;
+      var id = vm._uid;
+      var startTag = "vue-perf-start:".concat(id);
+      var endTag = "vue-perf-end:".concat(id);
+      mark(startTag);
+      var vnode = vm._render();
+      mark(endTag);
+      measure("vue ".concat(name2, " render"), startTag, endTag);
+      mark(startTag);
+      vm._update(vnode, hydrating);
+      mark(endTag);
+      measure("vue ".concat(name2, " patch"), startTag, endTag);
+    };
+  } else {
+    updateComponent = function() {
+      vm._update(vm._render(), hydrating);
+    };
+  }
+  var watcherOptions = {
+    before: function() {
+      if (vm._isMounted && !vm._isDestroyed) {
+        callHook$1(vm, "beforeUpdate");
+      }
+    }
+  };
+  if (true) {
+    watcherOptions.onTrack = function(e2) {
+      return callHook$1(vm, "renderTracked", [e2]);
+    };
+    watcherOptions.onTrigger = function(e2) {
+      return callHook$1(vm, "renderTriggered", [e2]);
+    };
+  }
+  new Watcher(
+    vm,
+    updateComponent,
+    noop,
+    watcherOptions,
+    true
+    /* isRenderWatcher */
+  );
+  hydrating = false;
+  var preWatchers = vm._preWatchers;
+  if (preWatchers) {
+    for (var i = 0; i < preWatchers.length; i++) {
+      preWatchers[i].run();
+    }
+  }
+  if (vm.$vnode == null) {
+    vm._isMounted = true;
+    callHook$1(vm, "mounted");
+  }
+  return vm;
+}
+function updateChildComponent(vm, propsData, listeners, parentVnode, renderChildren) {
+  if (true) {
+    isUpdatingChildComponent = true;
+  }
+  var newScopedSlots = parentVnode.data.scopedSlots;
+  var oldScopedSlots = vm.$scopedSlots;
+  var hasDynamicScopedSlot = !!(newScopedSlots && !newScopedSlots.$stable || oldScopedSlots !== emptyObject && !oldScopedSlots.$stable || newScopedSlots && vm.$scopedSlots.$key !== newScopedSlots.$key || !newScopedSlots && vm.$scopedSlots.$key);
+  var needsForceUpdate = !!(renderChildren || // has new static slots
+  vm.$options._renderChildren || // has old static slots
+  hasDynamicScopedSlot);
+  var prevVNode = vm.$vnode;
+  vm.$options._parentVnode = parentVnode;
+  vm.$vnode = parentVnode;
+  if (vm._vnode) {
+    vm._vnode.parent = parentVnode;
+  }
+  vm.$options._renderChildren = renderChildren;
+  var attrs2 = parentVnode.data.attrs || emptyObject;
+  if (vm._attrsProxy) {
+    if (syncSetupProxy(vm._attrsProxy, attrs2, prevVNode.data && prevVNode.data.attrs || emptyObject, vm, "$attrs")) {
+      needsForceUpdate = true;
+    }
+  }
+  vm.$attrs = attrs2;
+  listeners = listeners || emptyObject;
+  var prevListeners = vm.$options._parentListeners;
+  if (vm._listenersProxy) {
+    syncSetupProxy(vm._listenersProxy, listeners, prevListeners || emptyObject, vm, "$listeners");
+  }
+  vm.$listeners = vm.$options._parentListeners = listeners;
+  updateComponentListeners(vm, listeners, prevListeners);
+  if (propsData && vm.$options.props) {
+    toggleObserving(false);
+    var props153 = vm._props;
+    var propKeys = vm.$options._propKeys || [];
+    for (var i = 0; i < propKeys.length; i++) {
+      var key = propKeys[i];
+      var propOptions = vm.$options.props;
+      props153[key] = validateProp(key, propOptions, propsData, vm);
+    }
+    toggleObserving(true);
+    vm.$options.propsData = propsData;
+  }
+  if (needsForceUpdate) {
+    vm.$slots = resolveSlots(renderChildren, parentVnode.context);
+    vm.$forceUpdate();
+  }
+  if (true) {
+    isUpdatingChildComponent = false;
+  }
+}
+function isInInactiveTree(vm) {
+  while (vm && (vm = vm.$parent)) {
+    if (vm._inactive)
+      return true;
+  }
+  return false;
+}
+function activateChildComponent(vm, direct) {
+  if (direct) {
+    vm._directInactive = false;
+    if (isInInactiveTree(vm)) {
+      return;
+    }
+  } else if (vm._directInactive) {
+    return;
+  }
+  if (vm._inactive || vm._inactive === null) {
+    vm._inactive = false;
+    for (var i = 0; i < vm.$children.length; i++) {
+      activateChildComponent(vm.$children[i]);
+    }
+    callHook$1(vm, "activated");
+  }
+}
+function deactivateChildComponent(vm, direct) {
+  if (direct) {
+    vm._directInactive = true;
+    if (isInInactiveTree(vm)) {
+      return;
+    }
+  }
+  if (!vm._inactive) {
+    vm._inactive = true;
+    for (var i = 0; i < vm.$children.length; i++) {
+      deactivateChildComponent(vm.$children[i]);
+    }
+    callHook$1(vm, "deactivated");
+  }
+}
+function callHook$1(vm, hook, args, setContext) {
+  if (setContext === void 0) {
+    setContext = true;
+  }
+  pushTarget();
+  var prev2 = currentInstance;
+  setContext && setCurrentInstance(vm);
+  var handlers = vm.$options[hook];
+  var info = "".concat(hook, " hook");
+  if (handlers) {
+    for (var i = 0, j = handlers.length; i < j; i++) {
+      invokeWithErrorHandling(handlers[i], vm, args || null, vm, info);
+    }
+  }
+  if (vm._hasHookEvent) {
+    vm.$emit("hook:" + hook);
+  }
+  setContext && setCurrentInstance(prev2);
+  popTarget();
+}
+var MAX_UPDATE_COUNT = 100;
+var queue = [];
+var activatedChildren = [];
+var has = {};
+var circular = {};
+var waiting = false;
+var flushing = false;
+var index = 0;
+function resetSchedulerState() {
+  index = queue.length = activatedChildren.length = 0;
+  has = {};
+  if (true) {
+    circular = {};
+  }
+  waiting = flushing = false;
+}
+var currentFlushTimestamp = 0;
+var getNow = Date.now;
+if (inBrowser && !isIE) {
+  performance_1 = window.performance;
+  if (performance_1 && typeof performance_1.now === "function" && getNow() > document.createEvent("Event").timeStamp) {
+    getNow = function() {
+      return performance_1.now();
+    };
+  }
+}
+var performance_1;
+var sortCompareFn = function(a2, b) {
+  if (a2.post) {
+    if (!b.post)
+      return 1;
+  } else if (b.post) {
+    return -1;
+  }
+  return a2.id - b.id;
+};
+function flushSchedulerQueue() {
+  currentFlushTimestamp = getNow();
+  flushing = true;
+  var watcher, id;
+  queue.sort(sortCompareFn);
+  for (index = 0; index < queue.length; index++) {
+    watcher = queue[index];
+    if (watcher.before) {
+      watcher.before();
+    }
+    id = watcher.id;
+    has[id] = null;
+    watcher.run();
+    if (has[id] != null) {
+      circular[id] = (circular[id] || 0) + 1;
+      if (circular[id] > MAX_UPDATE_COUNT) {
+        warn("You may have an infinite update loop " + (watcher.user ? 'in watcher with expression "'.concat(watcher.expression, '"') : "in a component render function."), watcher.vm);
+        break;
+      }
+    }
+  }
+  var activatedQueue = activatedChildren.slice();
+  var updatedQueue = queue.slice();
+  resetSchedulerState();
+  callActivatedHooks(activatedQueue);
+  callUpdatedHooks(updatedQueue);
+  cleanupDeps();
+  if (devtools && config.devtools) {
+    devtools.emit("flush");
+  }
+}
+function callUpdatedHooks(queue2) {
+  var i = queue2.length;
+  while (i--) {
+    var watcher = queue2[i];
+    var vm = watcher.vm;
+    if (vm && vm._watcher === watcher && vm._isMounted && !vm._isDestroyed) {
+      callHook$1(vm, "updated");
+    }
+  }
+}
+function queueActivatedComponent(vm) {
+  vm._inactive = false;
+  activatedChildren.push(vm);
+}
+function callActivatedHooks(queue2) {
+  for (var i = 0; i < queue2.length; i++) {
+    queue2[i]._inactive = true;
+    activateChildComponent(
+      queue2[i],
+      true
+      /* true */
+    );
+  }
+}
+function queueWatcher(watcher) {
+  var id = watcher.id;
+  if (has[id] != null) {
+    return;
+  }
+  if (watcher === Dep.target && watcher.noRecurse) {
+    return;
+  }
+  has[id] = true;
+  if (!flushing) {
+    queue.push(watcher);
+  } else {
+    var i = queue.length - 1;
+    while (i > index && queue[i].id > watcher.id) {
+      i--;
+    }
+    queue.splice(i + 1, 0, watcher);
+  }
+  if (!waiting) {
+    waiting = true;
+    if (!config.async) {
+      flushSchedulerQueue();
+      return;
+    }
+    nextTick(flushSchedulerQueue);
+  }
+}
+function initProvide(vm) {
+  var provideOption = vm.$options.provide;
+  if (provideOption) {
+    var provided = isFunction(provideOption) ? provideOption.call(vm) : provideOption;
+    if (!isObject(provided)) {
+      return;
+    }
+    var source = resolveProvided(vm);
+    var keys3 = hasSymbol ? Reflect.ownKeys(provided) : Object.keys(provided);
+    for (var i = 0; i < keys3.length; i++) {
+      var key = keys3[i];
+      Object.defineProperty(source, key, Object.getOwnPropertyDescriptor(provided, key));
+    }
+  }
+}
+function initInjections(vm) {
+  var result = resolveInject(vm.$options.inject, vm);
+  if (result) {
+    toggleObserving(false);
+    Object.keys(result).forEach(function(key) {
+      if (true) {
+        defineReactive(vm, key, result[key], function() {
+          warn("Avoid mutating an injected value directly since the changes will be overwritten whenever the provided component re-renders. " + 'injection being mutated: "'.concat(key, '"'), vm);
+        });
+      } else {
+        defineReactive(vm, key, result[key]);
+      }
+    });
+    toggleObserving(true);
+  }
+}
+function resolveInject(inject, vm) {
+  if (inject) {
+    var result = /* @__PURE__ */ Object.create(null);
+    var keys3 = hasSymbol ? Reflect.ownKeys(inject) : Object.keys(inject);
+    for (var i = 0; i < keys3.length; i++) {
+      var key = keys3[i];
+      if (key === "__ob__")
+        continue;
+      var provideKey = inject[key].from;
+      if (provideKey in vm._provided) {
+        result[key] = vm._provided[provideKey];
+      } else if ("default" in inject[key]) {
+        var provideDefault = inject[key].default;
+        result[key] = isFunction(provideDefault) ? provideDefault.call(vm) : provideDefault;
+      } else if (true) {
+        warn('Injection "'.concat(key, '" not found'), vm);
+      }
+    }
+    return result;
+  }
+}
+function FunctionalRenderContext(data48, props153, children2, parent, Ctor) {
+  var _this = this;
+  var options = Ctor.options;
+  var contextVm;
+  if (hasOwn(parent, "_uid")) {
+    contextVm = Object.create(parent);
+    contextVm._original = parent;
+  } else {
+    contextVm = parent;
+    parent = parent._original;
+  }
+  var isCompiled = isTrue(options._compiled);
+  var needNormalization = !isCompiled;
+  this.data = data48;
+  this.props = props153;
+  this.children = children2;
+  this.parent = parent;
+  this.listeners = data48.on || emptyObject;
+  this.injections = resolveInject(options.inject, parent);
+  this.slots = function() {
+    if (!_this.$slots) {
+      normalizeScopedSlots(parent, data48.scopedSlots, _this.$slots = resolveSlots(children2, parent));
+    }
+    return _this.$slots;
+  };
+  Object.defineProperty(this, "scopedSlots", {
+    enumerable: true,
+    get: function() {
+      return normalizeScopedSlots(parent, data48.scopedSlots, this.slots());
+    }
+  });
+  if (isCompiled) {
+    this.$options = options;
+    this.$slots = this.slots();
+    this.$scopedSlots = normalizeScopedSlots(parent, data48.scopedSlots, this.$slots);
+  }
+  if (options._scopeId) {
+    this._c = function(a2, b, c, d) {
+      var vnode = createElement$1(contextVm, a2, b, c, d, needNormalization);
+      if (vnode && !isArray(vnode)) {
+        vnode.fnScopeId = options._scopeId;
+        vnode.fnContext = parent;
+      }
+      return vnode;
+    };
+  } else {
+    this._c = function(a2, b, c, d) {
+      return createElement$1(contextVm, a2, b, c, d, needNormalization);
+    };
+  }
+}
+installRenderHelpers(FunctionalRenderContext.prototype);
+function createFunctionalComponent(Ctor, propsData, data48, contextVm, children2) {
+  var options = Ctor.options;
+  var props153 = {};
+  var propOptions = options.props;
+  if (isDef(propOptions)) {
+    for (var key in propOptions) {
+      props153[key] = validateProp(key, propOptions, propsData || emptyObject);
+    }
+  } else {
+    if (isDef(data48.attrs))
+      mergeProps(props153, data48.attrs);
+    if (isDef(data48.props))
+      mergeProps(props153, data48.props);
+  }
+  var renderContext = new FunctionalRenderContext(data48, props153, children2, contextVm, Ctor);
+  var vnode = options.render.call(null, renderContext._c, renderContext);
+  if (vnode instanceof VNode) {
+    return cloneAndMarkFunctionalResult(vnode, data48, renderContext.parent, options, renderContext);
+  } else if (isArray(vnode)) {
+    var vnodes = normalizeChildren(vnode) || [];
+    var res = new Array(vnodes.length);
+    for (var i = 0; i < vnodes.length; i++) {
+      res[i] = cloneAndMarkFunctionalResult(vnodes[i], data48, renderContext.parent, options, renderContext);
+    }
+    return res;
+  }
+}
+function cloneAndMarkFunctionalResult(vnode, data48, contextVm, options, renderContext) {
+  var clone3 = cloneVNode(vnode);
+  clone3.fnContext = contextVm;
+  clone3.fnOptions = options;
+  if (true) {
+    (clone3.devtoolsMeta = clone3.devtoolsMeta || {}).renderContext = renderContext;
+  }
+  if (data48.slot) {
+    (clone3.data || (clone3.data = {})).slot = data48.slot;
+  }
+  return clone3;
+}
+function mergeProps(to2, from3) {
+  for (var key in from3) {
+    to2[camelize(key)] = from3[key];
+  }
+}
+function getComponentName(options) {
+  return options.name || options.__name || options._componentTag;
+}
+var componentVNodeHooks = {
+  init: function(vnode, hydrating) {
+    if (vnode.componentInstance && !vnode.componentInstance._isDestroyed && vnode.data.keepAlive) {
+      var mountedNode = vnode;
+      componentVNodeHooks.prepatch(mountedNode, mountedNode);
+    } else {
+      var child = vnode.componentInstance = createComponentInstanceForVnode(vnode, activeInstance);
+      child.$mount(hydrating ? vnode.elm : void 0, hydrating);
+    }
+  },
+  prepatch: function(oldVnode, vnode) {
+    var options = vnode.componentOptions;
+    var child = vnode.componentInstance = oldVnode.componentInstance;
+    updateChildComponent(
+      child,
+      options.propsData,
+      // updated props
+      options.listeners,
+      // updated listeners
+      vnode,
+      // new parent vnode
+      options.children
+      // new children
+    );
+  },
+  insert: function(vnode) {
+    var context7 = vnode.context, componentInstance = vnode.componentInstance;
+    if (!componentInstance._isMounted) {
+      componentInstance._isMounted = true;
+      callHook$1(componentInstance, "mounted");
+    }
+    if (vnode.data.keepAlive) {
+      if (context7._isMounted) {
+        queueActivatedComponent(componentInstance);
+      } else {
+        activateChildComponent(
+          componentInstance,
+          true
+          /* direct */
+        );
+      }
+    }
+  },
+  destroy: function(vnode) {
+    var componentInstance = vnode.componentInstance;
+    if (!componentInstance._isDestroyed) {
+      if (!vnode.data.keepAlive) {
+        componentInstance.$destroy();
+      } else {
+        deactivateChildComponent(
+          componentInstance,
+          true
+          /* direct */
+        );
+      }
+    }
+  }
+};
+var hooksToMerge = Object.keys(componentVNodeHooks);
+function createComponent(Ctor, data48, context7, children2, tag3) {
+  if (isUndef(Ctor)) {
+    return;
+  }
+  var baseCtor = context7.$options._base;
+  if (isObject(Ctor)) {
+    Ctor = baseCtor.extend(Ctor);
+  }
+  if (typeof Ctor !== "function") {
+    if (true) {
+      warn("Invalid Component definition: ".concat(String(Ctor)), context7);
+    }
+    return;
+  }
+  var asyncFactory;
+  if (isUndef(Ctor.cid)) {
+    asyncFactory = Ctor;
+    Ctor = resolveAsyncComponent(asyncFactory, baseCtor);
+    if (Ctor === void 0) {
+      return createAsyncPlaceholder(asyncFactory, data48, context7, children2, tag3);
+    }
+  }
+  data48 = data48 || {};
+  resolveConstructorOptions(Ctor);
+  if (isDef(data48.model)) {
+    transformModel(Ctor.options, data48);
+  }
+  var propsData = extractPropsFromVNodeData(data48, Ctor, tag3);
+  if (isTrue(Ctor.options.functional)) {
+    return createFunctionalComponent(Ctor, propsData, data48, context7, children2);
+  }
+  var listeners = data48.on;
+  data48.on = data48.nativeOn;
+  if (isTrue(Ctor.options.abstract)) {
+    var slot = data48.slot;
+    data48 = {};
+    if (slot) {
+      data48.slot = slot;
+    }
+  }
+  installComponentHooks(data48);
+  var name2 = getComponentName(Ctor.options) || tag3;
+  var vnode = new VNode(
+    // @ts-expect-error
+    "vue-component-".concat(Ctor.cid).concat(name2 ? "-".concat(name2) : ""),
+    data48,
+    void 0,
+    void 0,
+    void 0,
+    context7,
+    // @ts-expect-error
+    { Ctor, propsData, listeners, tag: tag3, children: children2 },
+    asyncFactory
+  );
+  return vnode;
+}
+function createComponentInstanceForVnode(vnode, parent) {
+  var options = {
+    _isComponent: true,
+    _parentVnode: vnode,
+    parent
+  };
+  var inlineTemplate = vnode.data.inlineTemplate;
+  if (isDef(inlineTemplate)) {
+    options.render = inlineTemplate.render;
+    options.staticRenderFns = inlineTemplate.staticRenderFns;
+  }
+  return new vnode.componentOptions.Ctor(options);
+}
+function installComponentHooks(data48) {
+  var hooks2 = data48.hook || (data48.hook = {});
+  for (var i = 0; i < hooksToMerge.length; i++) {
+    var key = hooksToMerge[i];
+    var existing = hooks2[key];
+    var toMerge = componentVNodeHooks[key];
+    if (existing !== toMerge && !(existing && existing._merged)) {
+      hooks2[key] = existing ? mergeHook(toMerge, existing) : toMerge;
+    }
+  }
+}
+function mergeHook(f1, f2) {
+  var merged = function(a2, b) {
+    f1(a2, b);
+    f2(a2, b);
+  };
+  merged._merged = true;
+  return merged;
+}
+function transformModel(options, data48) {
+  var prop2 = options.model && options.model.prop || "value";
+  var event2 = options.model && options.model.event || "input";
+  (data48.attrs || (data48.attrs = {}))[prop2] = data48.model.value;
+  var on = data48.on || (data48.on = {});
+  var existing = on[event2];
+  var callback = data48.model.callback;
+  if (isDef(existing)) {
+    if (isArray(existing) ? existing.indexOf(callback) === -1 : existing !== callback) {
+      on[event2] = [callback].concat(existing);
+    }
+  } else {
+    on[event2] = callback;
+  }
+}
+var warn = noop;
+var tip = noop;
+var generateComponentTrace;
+var formatComponentName;
+if (true) {
+  hasConsole_1 = typeof console !== "undefined";
+  classifyRE_1 = /(?:^|[-_])(\w)/g;
+  classify_1 = function(str) {
+    return str.replace(classifyRE_1, function(c) {
+      return c.toUpperCase();
+    }).replace(/[-_]/g, "");
+  };
+  warn = function(msg, vm) {
+    if (vm === void 0) {
+      vm = currentInstance;
+    }
+    var trace = vm ? generateComponentTrace(vm) : "";
+    if (config.warnHandler) {
+      config.warnHandler.call(null, msg, vm, trace);
+    } else if (hasConsole_1 && !config.silent) {
+      console.error("[Vue warn]: ".concat(msg).concat(trace));
+    }
+  };
+  tip = function(msg, vm) {
+    if (hasConsole_1 && !config.silent) {
+      console.warn("[Vue tip]: ".concat(msg) + (vm ? generateComponentTrace(vm) : ""));
+    }
+  };
+  formatComponentName = function(vm, includeFile) {
+    if (vm.$root === vm) {
+      return "<Root>";
+    }
+    var options = isFunction(vm) && vm.cid != null ? vm.options : vm._isVue ? vm.$options || vm.constructor.options : vm;
+    var name2 = getComponentName(options);
+    var file = options.__file;
+    if (!name2 && file) {
+      var match = file.match(/([^/\\]+)\.vue$/);
+      name2 = match && match[1];
+    }
+    return (name2 ? "<".concat(classify_1(name2), ">") : "<Anonymous>") + (file && includeFile !== false ? " at ".concat(file) : "");
+  };
+  repeat_1 = function(str, n) {
+    var res = "";
+    while (n) {
+      if (n % 2 === 1)
+        res += str;
+      if (n > 1)
+        str += str;
+      n >>= 1;
+    }
+    return res;
+  };
+  generateComponentTrace = function(vm) {
+    if (vm._isVue && vm.$parent) {
+      var tree = [];
+      var currentRecursiveSequence = 0;
+      while (vm) {
+        if (tree.length > 0) {
+          var last = tree[tree.length - 1];
+          if (last.constructor === vm.constructor) {
+            currentRecursiveSequence++;
+            vm = vm.$parent;
+            continue;
+          } else if (currentRecursiveSequence > 0) {
+            tree[tree.length - 1] = [last, currentRecursiveSequence];
+            currentRecursiveSequence = 0;
+          }
+        }
+        tree.push(vm);
+        vm = vm.$parent;
+      }
+      return "\n\nfound in\n\n" + tree.map(function(vm2, i) {
+        return "".concat(i === 0 ? "---> " : repeat_1(" ", 5 + i * 2)).concat(isArray(vm2) ? "".concat(formatComponentName(vm2[0]), "... (").concat(vm2[1], " recursive calls)") : formatComponentName(vm2));
+      }).join("\n");
+    } else {
+      return "\n\n(found in ".concat(formatComponentName(vm), ")");
+    }
+  };
+}
+var hasConsole_1;
+var classifyRE_1;
+var classify_1;
+var repeat_1;
+var strats = config.optionMergeStrategies;
+if (true) {
+  strats.el = strats.propsData = function(parent, child, vm, key) {
+    if (!vm) {
+      warn('option "'.concat(key, '" can only be used during instance ') + "creation with the `new` keyword.");
+    }
+    return defaultStrat(parent, child);
+  };
+}
+function mergeData(to2, from3, recursive) {
+  if (recursive === void 0) {
+    recursive = true;
+  }
+  if (!from3)
+    return to2;
+  var key, toVal, fromVal;
+  var keys3 = hasSymbol ? Reflect.ownKeys(from3) : Object.keys(from3);
+  for (var i = 0; i < keys3.length; i++) {
+    key = keys3[i];
+    if (key === "__ob__")
+      continue;
+    toVal = to2[key];
+    fromVal = from3[key];
+    if (!recursive || !hasOwn(to2, key)) {
+      set(to2, key, fromVal);
+    } else if (toVal !== fromVal && isPlainObject(toVal) && isPlainObject(fromVal)) {
+      mergeData(toVal, fromVal);
+    }
+  }
+  return to2;
+}
+function mergeDataOrFn(parentVal, childVal, vm) {
+  if (!vm) {
+    if (!childVal) {
+      return parentVal;
+    }
+    if (!parentVal) {
+      return childVal;
+    }
+    return function mergedDataFn() {
+      return mergeData(isFunction(childVal) ? childVal.call(this, this) : childVal, isFunction(parentVal) ? parentVal.call(this, this) : parentVal);
+    };
+  } else {
+    return function mergedInstanceDataFn() {
+      var instanceData = isFunction(childVal) ? childVal.call(vm, vm) : childVal;
+      var defaultData = isFunction(parentVal) ? parentVal.call(vm, vm) : parentVal;
+      if (instanceData) {
+        return mergeData(instanceData, defaultData);
+      } else {
+        return defaultData;
+      }
+    };
+  }
+}
+strats.data = function(parentVal, childVal, vm) {
+  if (!vm) {
+    if (childVal && typeof childVal !== "function") {
+      warn('The "data" option should be a function that returns a per-instance value in component definitions.', vm);
+      return parentVal;
+    }
+    return mergeDataOrFn(parentVal, childVal);
+  }
+  return mergeDataOrFn(parentVal, childVal, vm);
+};
+function mergeLifecycleHook(parentVal, childVal) {
+  var res = childVal ? parentVal ? parentVal.concat(childVal) : isArray(childVal) ? childVal : [childVal] : parentVal;
+  return res ? dedupeHooks(res) : res;
+}
+function dedupeHooks(hooks2) {
+  var res = [];
+  for (var i = 0; i < hooks2.length; i++) {
+    if (res.indexOf(hooks2[i]) === -1) {
+      res.push(hooks2[i]);
+    }
+  }
+  return res;
+}
+LIFECYCLE_HOOKS.forEach(function(hook) {
+  strats[hook] = mergeLifecycleHook;
+});
+function mergeAssets(parentVal, childVal, vm, key) {
+  var res = Object.create(parentVal || null);
+  if (childVal) {
+    assertObjectType(key, childVal, vm);
+    return extend(res, childVal);
+  } else {
+    return res;
+  }
+}
+ASSET_TYPES.forEach(function(type2) {
+  strats[type2 + "s"] = mergeAssets;
+});
+strats.watch = function(parentVal, childVal, vm, key) {
+  if (parentVal === nativeWatch)
+    parentVal = void 0;
+  if (childVal === nativeWatch)
+    childVal = void 0;
+  if (!childVal)
+    return Object.create(parentVal || null);
+  if (true) {
+    assertObjectType(key, childVal, vm);
+  }
+  if (!parentVal)
+    return childVal;
+  var ret = {};
+  extend(ret, parentVal);
+  for (var key_1 in childVal) {
+    var parent_1 = ret[key_1];
+    var child = childVal[key_1];
+    if (parent_1 && !isArray(parent_1)) {
+      parent_1 = [parent_1];
+    }
+    ret[key_1] = parent_1 ? parent_1.concat(child) : isArray(child) ? child : [child];
+  }
+  return ret;
+};
+strats.props = strats.methods = strats.inject = strats.computed = function(parentVal, childVal, vm, key) {
+  if (childVal && true) {
+    assertObjectType(key, childVal, vm);
+  }
+  if (!parentVal)
+    return childVal;
+  var ret = /* @__PURE__ */ Object.create(null);
+  extend(ret, parentVal);
+  if (childVal)
+    extend(ret, childVal);
+  return ret;
+};
+strats.provide = function(parentVal, childVal) {
+  if (!parentVal)
+    return childVal;
+  return function() {
+    var ret = /* @__PURE__ */ Object.create(null);
+    mergeData(ret, isFunction(parentVal) ? parentVal.call(this) : parentVal);
+    if (childVal) {
+      mergeData(
+        ret,
+        isFunction(childVal) ? childVal.call(this) : childVal,
+        false
+        // non-recursive
+      );
+    }
+    return ret;
+  };
+};
+var defaultStrat = function(parentVal, childVal) {
+  return childVal === void 0 ? parentVal : childVal;
+};
+function checkComponents(options) {
+  for (var key in options.components) {
+    validateComponentName(key);
+  }
+}
+function validateComponentName(name2) {
+  if (!new RegExp("^[a-zA-Z][\\-\\.0-9_".concat(unicodeRegExp.source, "]*$")).test(name2)) {
+    warn('Invalid component name: "' + name2 + '". Component names should conform to valid custom element name in html5 specification.');
+  }
+  if (isBuiltInTag(name2) || config.isReservedTag(name2)) {
+    warn("Do not use built-in or reserved HTML elements as component id: " + name2);
+  }
+}
+function normalizeProps(options, vm) {
+  var props153 = options.props;
+  if (!props153)
+    return;
+  var res = {};
+  var i, val, name2;
+  if (isArray(props153)) {
+    i = props153.length;
+    while (i--) {
+      val = props153[i];
+      if (typeof val === "string") {
+        name2 = camelize(val);
+        res[name2] = { type: null };
+      } else if (true) {
+        warn("props must be strings when using array syntax.");
+      }
+    }
+  } else if (isPlainObject(props153)) {
+    for (var key in props153) {
+      val = props153[key];
+      name2 = camelize(key);
+      res[name2] = isPlainObject(val) ? val : { type: val };
+    }
+  } else if (true) {
+    warn('Invalid value for option "props": expected an Array or an Object, ' + "but got ".concat(toRawType(props153), "."), vm);
+  }
+  options.props = res;
+}
+function normalizeInject(options, vm) {
+  var inject = options.inject;
+  if (!inject)
+    return;
+  var normalized = options.inject = {};
+  if (isArray(inject)) {
+    for (var i = 0; i < inject.length; i++) {
+      normalized[inject[i]] = { from: inject[i] };
+    }
+  } else if (isPlainObject(inject)) {
+    for (var key in inject) {
+      var val = inject[key];
+      normalized[key] = isPlainObject(val) ? extend({ from: key }, val) : { from: val };
+    }
+  } else if (true) {
+    warn('Invalid value for option "inject": expected an Array or an Object, ' + "but got ".concat(toRawType(inject), "."), vm);
+  }
+}
+function normalizeDirectives$1(options) {
+  var dirs = options.directives;
+  if (dirs) {
+    for (var key in dirs) {
+      var def2 = dirs[key];
+      if (isFunction(def2)) {
+        dirs[key] = { bind: def2, update: def2 };
+      }
+    }
+  }
+}
+function assertObjectType(name2, value2, vm) {
+  if (!isPlainObject(value2)) {
+    warn('Invalid value for option "'.concat(name2, '": expected an Object, ') + "but got ".concat(toRawType(value2), "."), vm);
+  }
+}
+function mergeOptions(parent, child, vm) {
+  if (true) {
+    checkComponents(child);
+  }
+  if (isFunction(child)) {
+    child = child.options;
+  }
+  normalizeProps(child, vm);
+  normalizeInject(child, vm);
+  normalizeDirectives$1(child);
+  if (!child._base) {
+    if (child.extends) {
+      parent = mergeOptions(parent, child.extends, vm);
+    }
+    if (child.mixins) {
+      for (var i = 0, l = child.mixins.length; i < l; i++) {
+        parent = mergeOptions(parent, child.mixins[i], vm);
+      }
+    }
+  }
+  var options = {};
+  var key;
+  for (key in parent) {
+    mergeField(key);
+  }
+  for (key in child) {
+    if (!hasOwn(parent, key)) {
+      mergeField(key);
+    }
+  }
+  function mergeField(key2) {
+    var strat = strats[key2] || defaultStrat;
+    options[key2] = strat(parent[key2], child[key2], vm, key2);
+  }
+  return options;
+}
+function resolveAsset(options, type2, id, warnMissing) {
+  if (typeof id !== "string") {
+    return;
+  }
+  var assets = options[type2];
+  if (hasOwn(assets, id))
+    return assets[id];
+  var camelizedId = camelize(id);
+  if (hasOwn(assets, camelizedId))
+    return assets[camelizedId];
+  var PascalCaseId = capitalize(camelizedId);
+  if (hasOwn(assets, PascalCaseId))
+    return assets[PascalCaseId];
+  var res = assets[id] || assets[camelizedId] || assets[PascalCaseId];
+  if (warnMissing && !res) {
+    warn("Failed to resolve " + type2.slice(0, -1) + ": " + id);
+  }
+  return res;
+}
+function validateProp(key, propOptions, propsData, vm) {
+  var prop2 = propOptions[key];
+  var absent = !hasOwn(propsData, key);
+  var value2 = propsData[key];
+  var booleanIndex = getTypeIndex(Boolean, prop2.type);
+  if (booleanIndex > -1) {
+    if (absent && !hasOwn(prop2, "default")) {
+      value2 = false;
+    } else if (value2 === "" || value2 === hyphenate(key)) {
+      var stringIndex = getTypeIndex(String, prop2.type);
+      if (stringIndex < 0 || booleanIndex < stringIndex) {
+        value2 = true;
+      }
+    }
+  }
+  if (value2 === void 0) {
+    value2 = getPropDefaultValue(vm, prop2, key);
+    var prevShouldObserve = shouldObserve;
+    toggleObserving(true);
+    observe(value2);
+    toggleObserving(prevShouldObserve);
+  }
+  if (true) {
+    assertProp(prop2, key, value2, vm, absent);
+  }
+  return value2;
+}
+function getPropDefaultValue(vm, prop2, key) {
+  if (!hasOwn(prop2, "default")) {
+    return void 0;
+  }
+  var def2 = prop2.default;
+  if (isObject(def2)) {
+    warn('Invalid default value for prop "' + key + '": Props with type Object/Array must use a factory function to return the default value.', vm);
+  }
+  if (vm && vm.$options.propsData && vm.$options.propsData[key] === void 0 && vm._props[key] !== void 0) {
+    return vm._props[key];
+  }
+  return isFunction(def2) && getType(prop2.type) !== "Function" ? def2.call(vm) : def2;
+}
+function assertProp(prop2, name2, value2, vm, absent) {
+  if (prop2.required && absent) {
+    warn('Missing required prop: "' + name2 + '"', vm);
+    return;
+  }
+  if (value2 == null && !prop2.required) {
+    return;
+  }
+  var type2 = prop2.type;
+  var valid = !type2 || type2 === true;
+  var expectedTypes = [];
+  if (type2) {
+    if (!isArray(type2)) {
+      type2 = [type2];
+    }
+    for (var i = 0; i < type2.length && !valid; i++) {
+      var assertedType = assertType(value2, type2[i], vm);
+      expectedTypes.push(assertedType.expectedType || "");
+      valid = assertedType.valid;
+    }
+  }
+  var haveExpectedTypes = expectedTypes.some(function(t2) {
+    return t2;
+  });
+  if (!valid && haveExpectedTypes) {
+    warn(getInvalidTypeMessage(name2, value2, expectedTypes), vm);
+    return;
+  }
+  var validator3 = prop2.validator;
+  if (validator3) {
+    if (!validator3(value2)) {
+      warn('Invalid prop: custom validator check failed for prop "' + name2 + '".', vm);
+    }
+  }
+}
+var simpleCheckRE = /^(String|Number|Boolean|Function|Symbol|BigInt)$/;
+function assertType(value2, type2, vm) {
+  var valid;
+  var expectedType = getType(type2);
+  if (simpleCheckRE.test(expectedType)) {
+    var t2 = typeof value2;
+    valid = t2 === expectedType.toLowerCase();
+    if (!valid && t2 === "object") {
+      valid = value2 instanceof type2;
+    }
+  } else if (expectedType === "Object") {
+    valid = isPlainObject(value2);
+  } else if (expectedType === "Array") {
+    valid = isArray(value2);
+  } else {
+    try {
+      valid = value2 instanceof type2;
+    } catch (e2) {
+      warn('Invalid prop type: "' + String(type2) + '" is not a constructor', vm);
+      valid = false;
+    }
+  }
+  return {
+    valid,
+    expectedType
+  };
+}
+var functionTypeCheckRE = /^\s*function (\w+)/;
+function getType(fn) {
+  var match = fn && fn.toString().match(functionTypeCheckRE);
+  return match ? match[1] : "";
+}
+function isSameType(a2, b) {
+  return getType(a2) === getType(b);
+}
+function getTypeIndex(type2, expectedTypes) {
+  if (!isArray(expectedTypes)) {
+    return isSameType(expectedTypes, type2) ? 0 : -1;
+  }
+  for (var i = 0, len = expectedTypes.length; i < len; i++) {
+    if (isSameType(expectedTypes[i], type2)) {
+      return i;
+    }
+  }
+  return -1;
+}
+function getInvalidTypeMessage(name2, value2, expectedTypes) {
+  var message = 'Invalid prop: type check failed for prop "'.concat(name2, '".') + " Expected ".concat(expectedTypes.map(capitalize).join(", "));
+  var expectedType = expectedTypes[0];
+  var receivedType = toRawType(value2);
+  if (expectedTypes.length === 1 && isExplicable(expectedType) && isExplicable(typeof value2) && !isBoolean(expectedType, receivedType)) {
+    message += " with value ".concat(styleValue(value2, expectedType));
+  }
+  message += ", got ".concat(receivedType, " ");
+  if (isExplicable(receivedType)) {
+    message += "with value ".concat(styleValue(value2, receivedType), ".");
+  }
+  return message;
+}
+function styleValue(value2, type2) {
+  if (type2 === "String") {
+    return '"'.concat(value2, '"');
+  } else if (type2 === "Number") {
+    return "".concat(Number(value2));
+  } else {
+    return "".concat(value2);
+  }
+}
+var EXPLICABLE_TYPES = ["string", "number", "boolean"];
+function isExplicable(value2) {
+  return EXPLICABLE_TYPES.some(function(elem) {
+    return value2.toLowerCase() === elem;
+  });
+}
+function isBoolean() {
+  var args = [];
+  for (var _i = 0; _i < arguments.length; _i++) {
+    args[_i] = arguments[_i];
+  }
+  return args.some(function(elem) {
+    return elem.toLowerCase() === "boolean";
+  });
+}
+var initProxy;
+if (true) {
+  allowedGlobals_1 = makeMap(
+    "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,require"
+    // for Webpack/Browserify
+  );
+  warnNonPresent_1 = function(target2, key) {
+    warn('Property or method "'.concat(key, '" is not defined on the instance but ') + "referenced during render. Make sure that this property is reactive, either in the data option, or for class-based components, by initializing the property. See: https://v2.vuejs.org/v2/guide/reactivity.html#Declaring-Reactive-Properties.", target2);
+  };
+  warnReservedPrefix_1 = function(target2, key) {
+    warn('Property "'.concat(key, '" must be accessed with "$data.').concat(key, '" because ') + 'properties starting with "$" or "_" are not proxied in the Vue instance to prevent conflicts with Vue internals. See: https://v2.vuejs.org/v2/api/#data', target2);
+  };
+  hasProxy_1 = typeof Proxy !== "undefined" && isNative(Proxy);
+  if (hasProxy_1) {
+    isBuiltInModifier_1 = makeMap("stop,prevent,self,ctrl,shift,alt,meta,exact");
+    config.keyCodes = new Proxy(config.keyCodes, {
+      set: function(target2, key, value2) {
+        if (isBuiltInModifier_1(key)) {
+          warn("Avoid overwriting built-in modifier in config.keyCodes: .".concat(key));
+          return false;
+        } else {
+          target2[key] = value2;
+          return true;
+        }
+      }
+    });
+  }
+  hasHandler_1 = {
+    has: function(target2, key) {
+      var has2 = key in target2;
+      var isAllowed = allowedGlobals_1(key) || typeof key === "string" && key.charAt(0) === "_" && !(key in target2.$data);
+      if (!has2 && !isAllowed) {
+        if (key in target2.$data)
+          warnReservedPrefix_1(target2, key);
+        else
+          warnNonPresent_1(target2, key);
+      }
+      return has2 || !isAllowed;
+    }
+  };
+  getHandler_1 = {
+    get: function(target2, key) {
+      if (typeof key === "string" && !(key in target2)) {
+        if (key in target2.$data)
+          warnReservedPrefix_1(target2, key);
+        else
+          warnNonPresent_1(target2, key);
+      }
+      return target2[key];
+    }
+  };
+  initProxy = function initProxy2(vm) {
+    if (hasProxy_1) {
+      var options = vm.$options;
+      var handlers = options.render && options.render._withStripped ? getHandler_1 : hasHandler_1;
+      vm._renderProxy = new Proxy(vm, handlers);
+    } else {
+      vm._renderProxy = vm;
+    }
+  };
+}
+var allowedGlobals_1;
+var warnNonPresent_1;
+var warnReservedPrefix_1;
+var hasProxy_1;
+var isBuiltInModifier_1;
+var hasHandler_1;
+var getHandler_1;
+var sharedPropertyDefinition = {
+  enumerable: true,
+  configurable: true,
+  get: noop,
+  set: noop
+};
+function proxy(target2, sourceKey, key) {
+  sharedPropertyDefinition.get = function proxyGetter() {
+    return this[sourceKey][key];
+  };
+  sharedPropertyDefinition.set = function proxySetter(val) {
+    this[sourceKey][key] = val;
+  };
+  Object.defineProperty(target2, key, sharedPropertyDefinition);
+}
+function initState(vm) {
+  var opts = vm.$options;
+  if (opts.props)
+    initProps$1(vm, opts.props);
+  initSetup(vm);
+  if (opts.methods)
+    initMethods(vm, opts.methods);
+  if (opts.data) {
+    initData(vm);
+  } else {
+    var ob = observe(vm._data = {});
+    ob && ob.vmCount++;
+  }
+  if (opts.computed)
+    initComputed$1(vm, opts.computed);
+  if (opts.watch && opts.watch !== nativeWatch) {
+    initWatch(vm, opts.watch);
+  }
+}
+function initProps$1(vm, propsOptions) {
+  var propsData = vm.$options.propsData || {};
+  var props153 = vm._props = shallowReactive({});
+  var keys3 = vm.$options._propKeys = [];
+  var isRoot = !vm.$parent;
+  if (!isRoot) {
+    toggleObserving(false);
+  }
+  var _loop_1 = function(key2) {
+    keys3.push(key2);
+    var value2 = validateProp(key2, propsOptions, propsData, vm);
+    if (true) {
+      var hyphenatedKey = hyphenate(key2);
+      if (isReservedAttribute(hyphenatedKey) || config.isReservedAttr(hyphenatedKey)) {
+        warn('"'.concat(hyphenatedKey, '" is a reserved attribute and cannot be used as component prop.'), vm);
+      }
+      defineReactive(props153, key2, value2, function() {
+        if (!isRoot && !isUpdatingChildComponent) {
+          warn("Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's " + 'value. Prop being mutated: "'.concat(key2, '"'), vm);
+        }
+      });
+    } else {
+      defineReactive(props153, key2, value2);
+    }
+    if (!(key2 in vm)) {
+      proxy(vm, "_props", key2);
+    }
+  };
+  for (var key in propsOptions) {
+    _loop_1(key);
+  }
+  toggleObserving(true);
+}
+function initData(vm) {
+  var data48 = vm.$options.data;
+  data48 = vm._data = isFunction(data48) ? getData(data48, vm) : data48 || {};
+  if (!isPlainObject(data48)) {
+    data48 = {};
+    warn("data functions should return an object:\nhttps://v2.vuejs.org/v2/guide/components.html#data-Must-Be-a-Function", vm);
+  }
+  var keys3 = Object.keys(data48);
+  var props153 = vm.$options.props;
+  var methods = vm.$options.methods;
+  var i = keys3.length;
+  while (i--) {
+    var key = keys3[i];
+    if (true) {
+      if (methods && hasOwn(methods, key)) {
+        warn('Method "'.concat(key, '" has already been defined as a data property.'), vm);
+      }
+    }
+    if (props153 && hasOwn(props153, key)) {
+      warn('The data property "'.concat(key, '" is already declared as a prop. ') + "Use prop default value instead.", vm);
+    } else if (!isReserved(key)) {
+      proxy(vm, "_data", key);
+    }
+  }
+  var ob = observe(data48);
+  ob && ob.vmCount++;
+}
+function getData(data48, vm) {
+  pushTarget();
+  try {
+    return data48.call(vm, vm);
+  } catch (e2) {
+    handleError(e2, vm, "data()");
+    return {};
+  } finally {
+    popTarget();
+  }
+}
+var computedWatcherOptions = { lazy: true };
+function initComputed$1(vm, computed) {
+  var watchers = vm._computedWatchers = /* @__PURE__ */ Object.create(null);
+  var isSSR = isServerRendering();
+  for (var key in computed) {
+    var userDef = computed[key];
+    var getter = isFunction(userDef) ? userDef : userDef.get;
+    if (getter == null) {
+      warn('Getter is missing for computed property "'.concat(key, '".'), vm);
+    }
+    if (!isSSR) {
+      watchers[key] = new Watcher(vm, getter || noop, noop, computedWatcherOptions);
+    }
+    if (!(key in vm)) {
+      defineComputed(vm, key, userDef);
+    } else if (true) {
+      if (key in vm.$data) {
+        warn('The computed property "'.concat(key, '" is already defined in data.'), vm);
+      } else if (vm.$options.props && key in vm.$options.props) {
+        warn('The computed property "'.concat(key, '" is already defined as a prop.'), vm);
+      } else if (vm.$options.methods && key in vm.$options.methods) {
+        warn('The computed property "'.concat(key, '" is already defined as a method.'), vm);
+      }
+    }
+  }
+}
+function defineComputed(target2, key, userDef) {
+  var shouldCache = !isServerRendering();
+  if (isFunction(userDef)) {
+    sharedPropertyDefinition.get = shouldCache ? createComputedGetter(key) : createGetterInvoker(userDef);
+    sharedPropertyDefinition.set = noop;
+  } else {
+    sharedPropertyDefinition.get = userDef.get ? shouldCache && userDef.cache !== false ? createComputedGetter(key) : createGetterInvoker(userDef.get) : noop;
+    sharedPropertyDefinition.set = userDef.set || noop;
+  }
+  if (sharedPropertyDefinition.set === noop) {
+    sharedPropertyDefinition.set = function() {
+      warn('Computed property "'.concat(key, '" was assigned to but it has no setter.'), this);
+    };
+  }
+  Object.defineProperty(target2, key, sharedPropertyDefinition);
+}
+function createComputedGetter(key) {
+  return function computedGetter() {
+    var watcher = this._computedWatchers && this._computedWatchers[key];
+    if (watcher) {
+      if (watcher.dirty) {
+        watcher.evaluate();
+      }
+      if (Dep.target) {
+        if (Dep.target.onTrack) {
+          Dep.target.onTrack({
+            effect: Dep.target,
+            target: this,
+            type: "get",
+            key
+          });
+        }
+        watcher.depend();
+      }
+      return watcher.value;
+    }
+  };
+}
+function createGetterInvoker(fn) {
+  return function computedGetter() {
+    return fn.call(this, this);
+  };
+}
+function initMethods(vm, methods) {
+  var props153 = vm.$options.props;
+  for (var key in methods) {
+    if (true) {
+      if (typeof methods[key] !== "function") {
+        warn('Method "'.concat(key, '" has type "').concat(typeof methods[key], '" in the component definition. ') + "Did you reference the function correctly?", vm);
+      }
+      if (props153 && hasOwn(props153, key)) {
+        warn('Method "'.concat(key, '" has already been defined as a prop.'), vm);
+      }
+      if (key in vm && isReserved(key)) {
+        warn('Method "'.concat(key, '" conflicts with an existing Vue instance method. ') + "Avoid defining component methods that start with _ or $.");
+      }
+    }
+    vm[key] = typeof methods[key] !== "function" ? noop : bind(methods[key], vm);
+  }
+}
+function initWatch(vm, watch) {
+  for (var key in watch) {
+    var handler3 = watch[key];
+    if (isArray(handler3)) {
+      for (var i = 0; i < handler3.length; i++) {
+        createWatcher(vm, key, handler3[i]);
+      }
+    } else {
+      createWatcher(vm, key, handler3);
+    }
+  }
+}
+function createWatcher(vm, expOrFn, handler3, options) {
+  if (isPlainObject(handler3)) {
+    options = handler3;
+    handler3 = handler3.handler;
+  }
+  if (typeof handler3 === "string") {
+    handler3 = vm[handler3];
+  }
+  return vm.$watch(expOrFn, handler3, options);
+}
+function stateMixin(Vue2) {
+  var dataDef = {};
+  dataDef.get = function() {
+    return this._data;
+  };
+  var propsDef = {};
+  propsDef.get = function() {
+    return this._props;
+  };
+  if (true) {
+    dataDef.set = function() {
+      warn("Avoid replacing instance root $data. Use nested data properties instead.", this);
+    };
+    propsDef.set = function() {
+      warn("$props is readonly.", this);
+    };
+  }
+  Object.defineProperty(Vue2.prototype, "$data", dataDef);
+  Object.defineProperty(Vue2.prototype, "$props", propsDef);
+  Vue2.prototype.$set = set;
+  Vue2.prototype.$delete = del;
+  Vue2.prototype.$watch = function(expOrFn, cb, options) {
+    var vm = this;
+    if (isPlainObject(cb)) {
+      return createWatcher(vm, expOrFn, cb, options);
+    }
+    options = options || {};
+    options.user = true;
+    var watcher = new Watcher(vm, expOrFn, cb, options);
+    if (options.immediate) {
+      var info = 'callback for immediate watcher "'.concat(watcher.expression, '"');
+      pushTarget();
+      invokeWithErrorHandling(cb, vm, [watcher.value], vm, info);
+      popTarget();
+    }
+    return function unwatchFn() {
+      watcher.teardown();
+    };
+  };
+}
+var uid = 0;
+function initMixin$1(Vue2) {
+  Vue2.prototype._init = function(options) {
+    var vm = this;
+    vm._uid = uid++;
+    var startTag, endTag;
+    if (config.performance && mark) {
+      startTag = "vue-perf-start:".concat(vm._uid);
+      endTag = "vue-perf-end:".concat(vm._uid);
+      mark(startTag);
+    }
+    vm._isVue = true;
+    vm.__v_skip = true;
+    vm._scope = new EffectScope(
+      true
+      /* detached */
+    );
+    vm._scope._vm = true;
+    if (options && options._isComponent) {
+      initInternalComponent(vm, options);
+    } else {
+      vm.$options = mergeOptions(resolveConstructorOptions(vm.constructor), options || {}, vm);
+    }
+    if (true) {
+      initProxy(vm);
+    } else {
+      vm._renderProxy = vm;
+    }
+    vm._self = vm;
+    initLifecycle(vm);
+    initEvents(vm);
+    initRender(vm);
+    callHook$1(
+      vm,
+      "beforeCreate",
+      void 0,
+      false
+      /* setContext */
+    );
+    initInjections(vm);
+    initState(vm);
+    initProvide(vm);
+    callHook$1(vm, "created");
+    if (config.performance && mark) {
+      vm._name = formatComponentName(vm, false);
+      mark(endTag);
+      measure("vue ".concat(vm._name, " init"), startTag, endTag);
+    }
+    if (vm.$options.el) {
+      vm.$mount(vm.$options.el);
+    }
+  };
+}
+function initInternalComponent(vm, options) {
+  var opts = vm.$options = Object.create(vm.constructor.options);
+  var parentVnode = options._parentVnode;
+  opts.parent = options.parent;
+  opts._parentVnode = parentVnode;
+  var vnodeComponentOptions = parentVnode.componentOptions;
+  opts.propsData = vnodeComponentOptions.propsData;
+  opts._parentListeners = vnodeComponentOptions.listeners;
+  opts._renderChildren = vnodeComponentOptions.children;
+  opts._componentTag = vnodeComponentOptions.tag;
+  if (options.render) {
+    opts.render = options.render;
+    opts.staticRenderFns = options.staticRenderFns;
+  }
+}
+function resolveConstructorOptions(Ctor) {
+  var options = Ctor.options;
+  if (Ctor.super) {
+    var superOptions = resolveConstructorOptions(Ctor.super);
+    var cachedSuperOptions = Ctor.superOptions;
+    if (superOptions !== cachedSuperOptions) {
+      Ctor.superOptions = superOptions;
+      var modifiedOptions = resolveModifiedOptions(Ctor);
+      if (modifiedOptions) {
+        extend(Ctor.extendOptions, modifiedOptions);
+      }
+      options = Ctor.options = mergeOptions(superOptions, Ctor.extendOptions);
+      if (options.name) {
+        options.components[options.name] = Ctor;
+      }
+    }
+  }
+  return options;
+}
+function resolveModifiedOptions(Ctor) {
+  var modified;
+  var latest = Ctor.options;
+  var sealed = Ctor.sealedOptions;
+  for (var key in latest) {
+    if (latest[key] !== sealed[key]) {
+      if (!modified)
+        modified = {};
+      modified[key] = latest[key];
+    }
+  }
+  return modified;
+}
+function Vue(options) {
+  if (!(this instanceof Vue)) {
+    warn("Vue is a constructor and should be called with the `new` keyword");
+  }
+  this._init(options);
+}
+initMixin$1(Vue);
+stateMixin(Vue);
+eventsMixin(Vue);
+lifecycleMixin(Vue);
+renderMixin(Vue);
+function initUse(Vue2) {
+  Vue2.use = function(plugin5) {
+    var installedPlugins = this._installedPlugins || (this._installedPlugins = []);
+    if (installedPlugins.indexOf(plugin5) > -1) {
+      return this;
+    }
+    var args = toArray(arguments, 1);
+    args.unshift(this);
+    if (isFunction(plugin5.install)) {
+      plugin5.install.apply(plugin5, args);
+    } else if (isFunction(plugin5)) {
+      plugin5.apply(null, args);
+    }
+    installedPlugins.push(plugin5);
+    return this;
+  };
+}
+function initMixin(Vue2) {
+  Vue2.mixin = function(mixin2) {
+    this.options = mergeOptions(this.options, mixin2);
+    return this;
+  };
+}
+function initExtend(Vue2) {
+  Vue2.cid = 0;
+  var cid = 1;
+  Vue2.extend = function(extendOptions) {
+    extendOptions = extendOptions || {};
+    var Super = this;
+    var SuperId = Super.cid;
+    var cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {});
+    if (cachedCtors[SuperId]) {
+      return cachedCtors[SuperId];
+    }
+    var name2 = getComponentName(extendOptions) || getComponentName(Super.options);
+    if (name2) {
+      validateComponentName(name2);
+    }
+    var Sub = function VueComponent(options) {
+      this._init(options);
+    };
+    Sub.prototype = Object.create(Super.prototype);
+    Sub.prototype.constructor = Sub;
+    Sub.cid = cid++;
+    Sub.options = mergeOptions(Super.options, extendOptions);
+    Sub["super"] = Super;
+    if (Sub.options.props) {
+      initProps(Sub);
+    }
+    if (Sub.options.computed) {
+      initComputed(Sub);
+    }
+    Sub.extend = Super.extend;
+    Sub.mixin = Super.mixin;
+    Sub.use = Super.use;
+    ASSET_TYPES.forEach(function(type2) {
+      Sub[type2] = Super[type2];
+    });
+    if (name2) {
+      Sub.options.components[name2] = Sub;
+    }
+    Sub.superOptions = Super.options;
+    Sub.extendOptions = extendOptions;
+    Sub.sealedOptions = extend({}, Sub.options);
+    cachedCtors[SuperId] = Sub;
+    return Sub;
+  };
+}
+function initProps(Comp) {
+  var props153 = Comp.options.props;
+  for (var key in props153) {
+    proxy(Comp.prototype, "_props", key);
+  }
+}
+function initComputed(Comp) {
+  var computed = Comp.options.computed;
+  for (var key in computed) {
+    defineComputed(Comp.prototype, key, computed[key]);
+  }
+}
+function initAssetRegisters(Vue2) {
+  ASSET_TYPES.forEach(function(type2) {
+    Vue2[type2] = function(id, definition) {
+      if (!definition) {
+        return this.options[type2 + "s"][id];
+      } else {
+        if (type2 === "component") {
+          validateComponentName(id);
+        }
+        if (type2 === "component" && isPlainObject(definition)) {
+          definition.name = definition.name || id;
+          definition = this.options._base.extend(definition);
+        }
+        if (type2 === "directive" && isFunction(definition)) {
+          definition = { bind: definition, update: definition };
+        }
+        this.options[type2 + "s"][id] = definition;
+        return definition;
+      }
+    };
+  });
+}
+function _getComponentName(opts) {
+  return opts && (getComponentName(opts.Ctor.options) || opts.tag);
+}
+function matches(pattern, name2) {
+  if (isArray(pattern)) {
+    return pattern.indexOf(name2) > -1;
+  } else if (typeof pattern === "string") {
+    return pattern.split(",").indexOf(name2) > -1;
+  } else if (isRegExp(pattern)) {
+    return pattern.test(name2);
+  }
+  return false;
+}
+function pruneCache(keepAliveInstance, filter) {
+  var cache = keepAliveInstance.cache, keys3 = keepAliveInstance.keys, _vnode = keepAliveInstance._vnode;
+  for (var key in cache) {
+    var entry = cache[key];
+    if (entry) {
+      var name_1 = entry.name;
+      if (name_1 && !filter(name_1)) {
+        pruneCacheEntry(cache, key, keys3, _vnode);
+      }
+    }
+  }
+}
+function pruneCacheEntry(cache, key, keys3, current) {
+  var entry = cache[key];
+  if (entry && (!current || entry.tag !== current.tag)) {
+    entry.componentInstance.$destroy();
+  }
+  cache[key] = null;
+  remove$2(keys3, key);
+}
+var patternTypes = [String, RegExp, Array];
+var KeepAlive = {
+  name: "keep-alive",
+  abstract: true,
+  props: {
+    include: patternTypes,
+    exclude: patternTypes,
+    max: [String, Number]
+  },
+  methods: {
+    cacheVNode: function() {
+      var _a = this, cache = _a.cache, keys3 = _a.keys, vnodeToCache = _a.vnodeToCache, keyToCache = _a.keyToCache;
+      if (vnodeToCache) {
+        var tag3 = vnodeToCache.tag, componentInstance = vnodeToCache.componentInstance, componentOptions = vnodeToCache.componentOptions;
+        cache[keyToCache] = {
+          name: _getComponentName(componentOptions),
+          tag: tag3,
+          componentInstance
+        };
+        keys3.push(keyToCache);
+        if (this.max && keys3.length > parseInt(this.max)) {
+          pruneCacheEntry(cache, keys3[0], keys3, this._vnode);
+        }
+        this.vnodeToCache = null;
+      }
+    }
+  },
+  created: function() {
+    this.cache = /* @__PURE__ */ Object.create(null);
+    this.keys = [];
+  },
+  destroyed: function() {
+    for (var key in this.cache) {
+      pruneCacheEntry(this.cache, key, this.keys);
+    }
+  },
+  mounted: function() {
+    var _this = this;
+    this.cacheVNode();
+    this.$watch("include", function(val) {
+      pruneCache(_this, function(name2) {
+        return matches(val, name2);
+      });
+    });
+    this.$watch("exclude", function(val) {
+      pruneCache(_this, function(name2) {
+        return !matches(val, name2);
+      });
+    });
+  },
+  updated: function() {
+    this.cacheVNode();
+  },
+  render: function() {
+    var slot = this.$slots.default;
+    var vnode = getFirstComponentChild(slot);
+    var componentOptions = vnode && vnode.componentOptions;
+    if (componentOptions) {
+      var name_2 = _getComponentName(componentOptions);
+      var _a = this, include = _a.include, exclude = _a.exclude;
+      if (
+        // not included
+        include && (!name_2 || !matches(include, name_2)) || // excluded
+        exclude && name_2 && matches(exclude, name_2)
+      ) {
+        return vnode;
+      }
+      var _b = this, cache = _b.cache, keys3 = _b.keys;
+      var key = vnode.key == null ? (
+        // same constructor may get registered as different local components
+        // so cid alone is not enough (#3269)
+        componentOptions.Ctor.cid + (componentOptions.tag ? "::".concat(componentOptions.tag) : "")
+      ) : vnode.key;
+      if (cache[key]) {
+        vnode.componentInstance = cache[key].componentInstance;
+        remove$2(keys3, key);
+        keys3.push(key);
+      } else {
+        this.vnodeToCache = vnode;
+        this.keyToCache = key;
+      }
+      vnode.data.keepAlive = true;
+    }
+    return vnode || slot && slot[0];
+  }
+};
+var builtInComponents = {
+  KeepAlive
+};
+function initGlobalAPI(Vue2) {
+  var configDef = {};
+  configDef.get = function() {
+    return config;
+  };
+  if (true) {
+    configDef.set = function() {
+      warn("Do not replace the Vue.config object, set individual fields instead.");
+    };
+  }
+  Object.defineProperty(Vue2, "config", configDef);
+  Vue2.util = {
+    warn,
+    extend,
+    mergeOptions,
+    defineReactive
+  };
+  Vue2.set = set;
+  Vue2.delete = del;
+  Vue2.nextTick = nextTick;
+  Vue2.observable = function(obj) {
+    observe(obj);
+    return obj;
+  };
+  Vue2.options = /* @__PURE__ */ Object.create(null);
+  ASSET_TYPES.forEach(function(type2) {
+    Vue2.options[type2 + "s"] = /* @__PURE__ */ Object.create(null);
+  });
+  Vue2.options._base = Vue2;
+  extend(Vue2.options.components, builtInComponents);
+  initUse(Vue2);
+  initMixin(Vue2);
+  initExtend(Vue2);
+  initAssetRegisters(Vue2);
+}
+initGlobalAPI(Vue);
+Object.defineProperty(Vue.prototype, "$isServer", {
+  get: isServerRendering
+});
+Object.defineProperty(Vue.prototype, "$ssrContext", {
+  get: function() {
+    return this.$vnode && this.$vnode.ssrContext;
+  }
+});
+Object.defineProperty(Vue, "FunctionalRenderContext", {
+  value: FunctionalRenderContext
+});
+Vue.version = version;
+var isReservedAttr = makeMap("style,class");
+var acceptValue = makeMap("input,textarea,option,select,progress");
+var mustUseProp = function(tag3, type2, attr) {
+  return attr === "value" && acceptValue(tag3) && type2 !== "button" || attr === "selected" && tag3 === "option" || attr === "checked" && tag3 === "input" || attr === "muted" && tag3 === "video";
+};
+var isEnumeratedAttr = makeMap("contenteditable,draggable,spellcheck");
+var isValidContentEditableValue = makeMap("events,caret,typing,plaintext-only");
+var convertEnumeratedValue = function(key, value2) {
+  return isFalsyAttrValue(value2) || value2 === "false" ? "false" : (
+    // allow arbitrary string value for contenteditable
+    key === "contenteditable" && isValidContentEditableValue(value2) ? value2 : "true"
+  );
+};
+var isBooleanAttr = makeMap("allowfullscreen,async,autofocus,autoplay,checked,compact,controls,declare,default,defaultchecked,defaultmuted,defaultselected,defer,disabled,enabled,formnovalidate,hidden,indeterminate,inert,ismap,itemscope,loop,multiple,muted,nohref,noresize,noshade,novalidate,nowrap,open,pauseonexit,readonly,required,reversed,scoped,seamless,selected,sortable,truespeed,typemustmatch,visible");
+var xlinkNS = "http://www.w3.org/1999/xlink";
+var isXlink = function(name2) {
+  return name2.charAt(5) === ":" && name2.slice(0, 5) === "xlink";
+};
+var getXlinkProp = function(name2) {
+  return isXlink(name2) ? name2.slice(6, name2.length) : "";
+};
+var isFalsyAttrValue = function(val) {
+  return val == null || val === false;
+};
+function genClassForVnode(vnode) {
+  var data48 = vnode.data;
+  var parentNode2 = vnode;
+  var childNode = vnode;
+  while (isDef(childNode.componentInstance)) {
+    childNode = childNode.componentInstance._vnode;
+    if (childNode && childNode.data) {
+      data48 = mergeClassData(childNode.data, data48);
+    }
+  }
+  while (isDef(parentNode2 = parentNode2.parent)) {
+    if (parentNode2 && parentNode2.data) {
+      data48 = mergeClassData(data48, parentNode2.data);
+    }
+  }
+  return renderClass(data48.staticClass, data48.class);
+}
+function mergeClassData(child, parent) {
+  return {
+    staticClass: concat(child.staticClass, parent.staticClass),
+    class: isDef(child.class) ? [child.class, parent.class] : parent.class
+  };
+}
+function renderClass(staticClass, dynamicClass) {
+  if (isDef(staticClass) || isDef(dynamicClass)) {
+    return concat(staticClass, stringifyClass(dynamicClass));
+  }
+  return "";
+}
+function concat(a2, b) {
+  return a2 ? b ? a2 + " " + b : a2 : b || "";
+}
+function stringifyClass(value2) {
+  if (Array.isArray(value2)) {
+    return stringifyArray(value2);
+  }
+  if (isObject(value2)) {
+    return stringifyObject(value2);
+  }
+  if (typeof value2 === "string") {
+    return value2;
+  }
+  return "";
+}
+function stringifyArray(value2) {
+  var res = "";
+  var stringified;
+  for (var i = 0, l = value2.length; i < l; i++) {
+    if (isDef(stringified = stringifyClass(value2[i])) && stringified !== "") {
+      if (res)
+        res += " ";
+      res += stringified;
+    }
+  }
+  return res;
+}
+function stringifyObject(value2) {
+  var res = "";
+  for (var key in value2) {
+    if (value2[key]) {
+      if (res)
+        res += " ";
+      res += key;
+    }
+  }
+  return res;
+}
+var namespaceMap = {
+  svg: "http://www.w3.org/2000/svg",
+  math: "http://www.w3.org/1998/Math/MathML"
+};
+var isHTMLTag = makeMap("html,body,base,head,link,meta,style,title,address,article,aside,footer,header,h1,h2,h3,h4,h5,h6,hgroup,nav,section,div,dd,dl,dt,figcaption,figure,picture,hr,img,li,main,ol,p,pre,ul,a,b,abbr,bdi,bdo,br,cite,code,data,dfn,em,i,kbd,mark,q,rp,rt,rtc,ruby,s,samp,small,span,strong,sub,sup,time,u,var,wbr,area,audio,map,track,video,embed,object,param,source,canvas,script,noscript,del,ins,caption,col,colgroup,table,thead,tbody,td,th,tr,button,datalist,fieldset,form,input,label,legend,meter,optgroup,option,output,progress,select,textarea,details,dialog,menu,menuitem,summary,content,element,shadow,template,blockquote,iframe,tfoot");
+var isSVG = makeMap("svg,animate,circle,clippath,cursor,defs,desc,ellipse,filter,font-face,foreignobject,g,glyph,image,line,marker,mask,missing-glyph,path,pattern,polygon,polyline,rect,switch,symbol,text,textpath,tspan,use,view", true);
+var isReservedTag = function(tag3) {
+  return isHTMLTag(tag3) || isSVG(tag3);
+};
+function getTagNamespace(tag3) {
+  if (isSVG(tag3)) {
+    return "svg";
+  }
+  if (tag3 === "math") {
+    return "math";
+  }
+}
+var unknownElementCache = /* @__PURE__ */ Object.create(null);
+function isUnknownElement(tag3) {
+  if (!inBrowser) {
+    return true;
+  }
+  if (isReservedTag(tag3)) {
+    return false;
+  }
+  tag3 = tag3.toLowerCase();
+  if (unknownElementCache[tag3] != null) {
+    return unknownElementCache[tag3];
+  }
+  var el = document.createElement(tag3);
+  if (tag3.indexOf("-") > -1) {
+    return unknownElementCache[tag3] = el.constructor === window.HTMLUnknownElement || el.constructor === window.HTMLElement;
+  } else {
+    return unknownElementCache[tag3] = /HTMLUnknownElement/.test(el.toString());
+  }
+}
+var isTextInputType = makeMap("text,number,password,search,email,tel,url");
+function query(el) {
+  if (typeof el === "string") {
+    var selected = document.querySelector(el);
+    if (!selected) {
+      warn("Cannot find element: " + el);
+      return document.createElement("div");
+    }
+    return selected;
+  } else {
+    return el;
+  }
+}
+function createElement(tagName2, vnode) {
+  var elm = document.createElement(tagName2);
+  if (tagName2 !== "select") {
+    return elm;
+  }
+  if (vnode.data && vnode.data.attrs && vnode.data.attrs.multiple !== void 0) {
+    elm.setAttribute("multiple", "multiple");
+  }
+  return elm;
+}
+function createElementNS(namespace, tagName2) {
+  return document.createElementNS(namespaceMap[namespace], tagName2);
+}
+function createTextNode(text) {
+  return document.createTextNode(text);
+}
+function createComment(text) {
+  return document.createComment(text);
+}
+function insertBefore(parentNode2, newNode, referenceNode) {
+  parentNode2.insertBefore(newNode, referenceNode);
+}
+function removeChild(node, child) {
+  node.removeChild(child);
+}
+function appendChild(node, child) {
+  node.appendChild(child);
+}
+function parentNode(node) {
+  return node.parentNode;
+}
+function nextSibling(node) {
+  return node.nextSibling;
+}
+function tagName(node) {
+  return node.tagName;
+}
+function setTextContent(node, text) {
+  node.textContent = text;
+}
+function setStyleScope(node, scopeId) {
+  node.setAttribute(scopeId, "");
+}
+var nodeOps = Object.freeze({
+  __proto__: null,
+  createElement,
+  createElementNS,
+  createTextNode,
+  createComment,
+  insertBefore,
+  removeChild,
+  appendChild,
+  parentNode,
+  nextSibling,
+  tagName,
+  setTextContent,
+  setStyleScope
+});
+var ref = {
+  create: function(_, vnode) {
+    registerRef(vnode);
+  },
+  update: function(oldVnode, vnode) {
+    if (oldVnode.data.ref !== vnode.data.ref) {
+      registerRef(oldVnode, true);
+      registerRef(vnode);
+    }
+  },
+  destroy: function(vnode) {
+    registerRef(vnode, true);
+  }
+};
+function registerRef(vnode, isRemoval) {
+  var ref2 = vnode.data.ref;
+  if (!isDef(ref2))
+    return;
+  var vm = vnode.context;
+  var refValue = vnode.componentInstance || vnode.elm;
+  var value2 = isRemoval ? null : refValue;
+  var $refsValue = isRemoval ? void 0 : refValue;
+  if (isFunction(ref2)) {
+    invokeWithErrorHandling(ref2, vm, [value2], vm, "template ref function");
+    return;
+  }
+  var isFor = vnode.data.refInFor;
+  var _isString = typeof ref2 === "string" || typeof ref2 === "number";
+  var _isRef = isRef(ref2);
+  var refs = vm.$refs;
+  if (_isString || _isRef) {
+    if (isFor) {
+      var existing = _isString ? refs[ref2] : ref2.value;
+      if (isRemoval) {
+        isArray(existing) && remove$2(existing, refValue);
+      } else {
+        if (!isArray(existing)) {
+          if (_isString) {
+            refs[ref2] = [refValue];
+            setSetupRef(vm, ref2, refs[ref2]);
+          } else {
+            ref2.value = [refValue];
+          }
+        } else if (!existing.includes(refValue)) {
+          existing.push(refValue);
+        }
+      }
+    } else if (_isString) {
+      if (isRemoval && refs[ref2] !== refValue) {
+        return;
+      }
+      refs[ref2] = $refsValue;
+      setSetupRef(vm, ref2, value2);
+    } else if (_isRef) {
+      if (isRemoval && ref2.value !== refValue) {
+        return;
+      }
+      ref2.value = value2;
+    } else if (true) {
+      warn("Invalid template ref type: ".concat(typeof ref2));
+    }
+  }
+}
+function setSetupRef(_a, key, val) {
+  var _setupState = _a._setupState;
+  if (_setupState && hasOwn(_setupState, key)) {
+    if (isRef(_setupState[key])) {
+      _setupState[key].value = val;
+    } else {
+      _setupState[key] = val;
+    }
+  }
+}
+var emptyNode = new VNode("", {}, []);
+var hooks = ["create", "activate", "update", "remove", "destroy"];
+function sameVnode(a2, b) {
+  return a2.key === b.key && a2.asyncFactory === b.asyncFactory && (a2.tag === b.tag && a2.isComment === b.isComment && isDef(a2.data) === isDef(b.data) && sameInputType(a2, b) || isTrue(a2.isAsyncPlaceholder) && isUndef(b.asyncFactory.error));
+}
+function sameInputType(a2, b) {
+  if (a2.tag !== "input")
+    return true;
+  var i;
+  var typeA = isDef(i = a2.data) && isDef(i = i.attrs) && i.type;
+  var typeB = isDef(i = b.data) && isDef(i = i.attrs) && i.type;
+  return typeA === typeB || isTextInputType(typeA) && isTextInputType(typeB);
+}
+function createKeyToOldIdx(children2, beginIdx, endIdx) {
+  var i, key;
+  var map = {};
+  for (i = beginIdx; i <= endIdx; ++i) {
+    key = children2[i].key;
+    if (isDef(key))
+      map[key] = i;
+  }
+  return map;
+}
+function createPatchFunction(backend) {
+  var i, j;
+  var cbs = {};
+  var modules2 = backend.modules, nodeOps2 = backend.nodeOps;
+  for (i = 0; i < hooks.length; ++i) {
+    cbs[hooks[i]] = [];
+    for (j = 0; j < modules2.length; ++j) {
+      if (isDef(modules2[j][hooks[i]])) {
+        cbs[hooks[i]].push(modules2[j][hooks[i]]);
+      }
+    }
+  }
+  function emptyNodeAt(elm) {
+    return new VNode(nodeOps2.tagName(elm).toLowerCase(), {}, [], void 0, elm);
+  }
+  function createRmCb(childElm, listeners) {
+    function remove2() {
+      if (--remove2.listeners === 0) {
+        removeNode3(childElm);
+      }
+    }
+    remove2.listeners = listeners;
+    return remove2;
+  }
+  function removeNode3(el) {
+    var parent = nodeOps2.parentNode(el);
+    if (isDef(parent)) {
+      nodeOps2.removeChild(parent, el);
+    }
+  }
+  function isUnknownElement2(vnode, inVPre) {
+    return !inVPre && !vnode.ns && !(config.ignoredElements.length && config.ignoredElements.some(function(ignore) {
+      return isRegExp(ignore) ? ignore.test(vnode.tag) : ignore === vnode.tag;
+    })) && config.isUnknownElement(vnode.tag);
+  }
+  var creatingElmInVPre = 0;
+  function createElm(vnode, insertedVnodeQueue, parentElm, refElm, nested, ownerArray, index3) {
+    if (isDef(vnode.elm) && isDef(ownerArray)) {
+      vnode = ownerArray[index3] = cloneVNode(vnode);
+    }
+    vnode.isRootInsert = !nested;
+    if (createComponent2(vnode, insertedVnodeQueue, parentElm, refElm)) {
+      return;
+    }
+    var data48 = vnode.data;
+    var children2 = vnode.children;
+    var tag3 = vnode.tag;
+    if (isDef(tag3)) {
+      if (true) {
+        if (data48 && data48.pre) {
+          creatingElmInVPre++;
+        }
+        if (isUnknownElement2(vnode, creatingElmInVPre)) {
+          warn("Unknown custom element: <" + tag3 + '> - did you register the component correctly? For recursive components, make sure to provide the "name" option.', vnode.context);
+        }
+      }
+      vnode.elm = vnode.ns ? nodeOps2.createElementNS(vnode.ns, tag3) : nodeOps2.createElement(tag3, vnode);
+      setScope(vnode);
+      createChildren(vnode, children2, insertedVnodeQueue);
+      if (isDef(data48)) {
+        invokeCreateHooks(vnode, insertedVnodeQueue);
+      }
+      insert(parentElm, vnode.elm, refElm);
+      if (data48 && data48.pre) {
+        creatingElmInVPre--;
+      }
+    } else if (isTrue(vnode.isComment)) {
+      vnode.elm = nodeOps2.createComment(vnode.text);
+      insert(parentElm, vnode.elm, refElm);
+    } else {
+      vnode.elm = nodeOps2.createTextNode(vnode.text);
+      insert(parentElm, vnode.elm, refElm);
+    }
+  }
+  function createComponent2(vnode, insertedVnodeQueue, parentElm, refElm) {
+    var i2 = vnode.data;
+    if (isDef(i2)) {
+      var isReactivated = isDef(vnode.componentInstance) && i2.keepAlive;
+      if (isDef(i2 = i2.hook) && isDef(i2 = i2.init)) {
+        i2(
+          vnode,
+          false
+          /* hydrating */
+        );
+      }
+      if (isDef(vnode.componentInstance)) {
+        initComponent(vnode, insertedVnodeQueue);
+        insert(parentElm, vnode.elm, refElm);
+        if (isTrue(isReactivated)) {
+          reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm);
+        }
+        return true;
+      }
+    }
+  }
+  function initComponent(vnode, insertedVnodeQueue) {
+    if (isDef(vnode.data.pendingInsert)) {
+      insertedVnodeQueue.push.apply(insertedVnodeQueue, vnode.data.pendingInsert);
+      vnode.data.pendingInsert = null;
+    }
+    vnode.elm = vnode.componentInstance.$el;
+    if (isPatchable(vnode)) {
+      invokeCreateHooks(vnode, insertedVnodeQueue);
+      setScope(vnode);
+    } else {
+      registerRef(vnode);
+      insertedVnodeQueue.push(vnode);
+    }
+  }
+  function reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm) {
+    var i2;
+    var innerNode = vnode;
+    while (innerNode.componentInstance) {
+      innerNode = innerNode.componentInstance._vnode;
+      if (isDef(i2 = innerNode.data) && isDef(i2 = i2.transition)) {
+        for (i2 = 0; i2 < cbs.activate.length; ++i2) {
+          cbs.activate[i2](emptyNode, innerNode);
+        }
+        insertedVnodeQueue.push(innerNode);
+        break;
+      }
+    }
+    insert(parentElm, vnode.elm, refElm);
+  }
+  function insert(parent, elm, ref2) {
+    if (isDef(parent)) {
+      if (isDef(ref2)) {
+        if (nodeOps2.parentNode(ref2) === parent) {
+          nodeOps2.insertBefore(parent, elm, ref2);
+        }
+      } else {
+        nodeOps2.appendChild(parent, elm);
+      }
+    }
+  }
+  function createChildren(vnode, children2, insertedVnodeQueue) {
+    if (isArray(children2)) {
+      if (true) {
+        checkDuplicateKeys(children2);
+      }
+      for (var i_1 = 0; i_1 < children2.length; ++i_1) {
+        createElm(children2[i_1], insertedVnodeQueue, vnode.elm, null, true, children2, i_1);
+      }
+    } else if (isPrimitive(vnode.text)) {
+      nodeOps2.appendChild(vnode.elm, nodeOps2.createTextNode(String(vnode.text)));
+    }
+  }
+  function isPatchable(vnode) {
+    while (vnode.componentInstance) {
+      vnode = vnode.componentInstance._vnode;
+    }
+    return isDef(vnode.tag);
+  }
+  function invokeCreateHooks(vnode, insertedVnodeQueue) {
+    for (var i_2 = 0; i_2 < cbs.create.length; ++i_2) {
+      cbs.create[i_2](emptyNode, vnode);
+    }
+    i = vnode.data.hook;
+    if (isDef(i)) {
+      if (isDef(i.create))
+        i.create(emptyNode, vnode);
+      if (isDef(i.insert))
+        insertedVnodeQueue.push(vnode);
+    }
+  }
+  function setScope(vnode) {
+    var i2;
+    if (isDef(i2 = vnode.fnScopeId)) {
+      nodeOps2.setStyleScope(vnode.elm, i2);
+    } else {
+      var ancestor = vnode;
+      while (ancestor) {
+        if (isDef(i2 = ancestor.context) && isDef(i2 = i2.$options._scopeId)) {
+          nodeOps2.setStyleScope(vnode.elm, i2);
+        }
+        ancestor = ancestor.parent;
+      }
+    }
+    if (isDef(i2 = activeInstance) && i2 !== vnode.context && i2 !== vnode.fnContext && isDef(i2 = i2.$options._scopeId)) {
+      nodeOps2.setStyleScope(vnode.elm, i2);
+    }
+  }
+  function addVnodes(parentElm, refElm, vnodes, startIdx, endIdx, insertedVnodeQueue) {
+    for (; startIdx <= endIdx; ++startIdx) {
+      createElm(vnodes[startIdx], insertedVnodeQueue, parentElm, refElm, false, vnodes, startIdx);
+    }
+  }
+  function invokeDestroyHook(vnode) {
+    var i2, j2;
+    var data48 = vnode.data;
+    if (isDef(data48)) {
+      if (isDef(i2 = data48.hook) && isDef(i2 = i2.destroy))
+        i2(vnode);
+      for (i2 = 0; i2 < cbs.destroy.length; ++i2)
+        cbs.destroy[i2](vnode);
+    }
+    if (isDef(i2 = vnode.children)) {
+      for (j2 = 0; j2 < vnode.children.length; ++j2) {
+        invokeDestroyHook(vnode.children[j2]);
+      }
+    }
+  }
+  function removeVnodes(vnodes, startIdx, endIdx) {
+    for (; startIdx <= endIdx; ++startIdx) {
+      var ch = vnodes[startIdx];
+      if (isDef(ch)) {
+        if (isDef(ch.tag)) {
+          removeAndInvokeRemoveHook(ch);
+          invokeDestroyHook(ch);
+        } else {
+          removeNode3(ch.elm);
+        }
+      }
+    }
+  }
+  function removeAndInvokeRemoveHook(vnode, rm) {
+    if (isDef(rm) || isDef(vnode.data)) {
+      var i_3;
+      var listeners = cbs.remove.length + 1;
+      if (isDef(rm)) {
+        rm.listeners += listeners;
+      } else {
+        rm = createRmCb(vnode.elm, listeners);
+      }
+      if (isDef(i_3 = vnode.componentInstance) && isDef(i_3 = i_3._vnode) && isDef(i_3.data)) {
+        removeAndInvokeRemoveHook(i_3, rm);
+      }
+      for (i_3 = 0; i_3 < cbs.remove.length; ++i_3) {
+        cbs.remove[i_3](vnode, rm);
+      }
+      if (isDef(i_3 = vnode.data.hook) && isDef(i_3 = i_3.remove)) {
+        i_3(vnode, rm);
+      } else {
+        rm();
+      }
+    } else {
+      removeNode3(vnode.elm);
+    }
+  }
+  function updateChildren(parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
+    var oldStartIdx = 0;
+    var newStartIdx = 0;
+    var oldEndIdx = oldCh.length - 1;
+    var oldStartVnode = oldCh[0];
+    var oldEndVnode = oldCh[oldEndIdx];
+    var newEndIdx = newCh.length - 1;
+    var newStartVnode = newCh[0];
+    var newEndVnode = newCh[newEndIdx];
+    var oldKeyToIdx, idxInOld, vnodeToMove, refElm;
+    var canMove = !removeOnly;
+    if (true) {
+      checkDuplicateKeys(newCh);
+    }
+    while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+      if (isUndef(oldStartVnode)) {
+        oldStartVnode = oldCh[++oldStartIdx];
+      } else if (isUndef(oldEndVnode)) {
+        oldEndVnode = oldCh[--oldEndIdx];
+      } else if (sameVnode(oldStartVnode, newStartVnode)) {
+        patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx);
+        oldStartVnode = oldCh[++oldStartIdx];
+        newStartVnode = newCh[++newStartIdx];
+      } else if (sameVnode(oldEndVnode, newEndVnode)) {
+        patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue, newCh, newEndIdx);
+        oldEndVnode = oldCh[--oldEndIdx];
+        newEndVnode = newCh[--newEndIdx];
+      } else if (sameVnode(oldStartVnode, newEndVnode)) {
+        patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue, newCh, newEndIdx);
+        canMove && nodeOps2.insertBefore(parentElm, oldStartVnode.elm, nodeOps2.nextSibling(oldEndVnode.elm));
+        oldStartVnode = oldCh[++oldStartIdx];
+        newEndVnode = newCh[--newEndIdx];
+      } else if (sameVnode(oldEndVnode, newStartVnode)) {
+        patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx);
+        canMove && nodeOps2.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm);
+        oldEndVnode = oldCh[--oldEndIdx];
+        newStartVnode = newCh[++newStartIdx];
+      } else {
+        if (isUndef(oldKeyToIdx))
+          oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx);
+        idxInOld = isDef(newStartVnode.key) ? oldKeyToIdx[newStartVnode.key] : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx);
+        if (isUndef(idxInOld)) {
+          createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx);
+        } else {
+          vnodeToMove = oldCh[idxInOld];
+          if (sameVnode(vnodeToMove, newStartVnode)) {
+            patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue, newCh, newStartIdx);
+            oldCh[idxInOld] = void 0;
+            canMove && nodeOps2.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm);
+          } else {
+            createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx);
+          }
+        }
+        newStartVnode = newCh[++newStartIdx];
+      }
+    }
+    if (oldStartIdx > oldEndIdx) {
+      refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm;
+      addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue);
+    } else if (newStartIdx > newEndIdx) {
+      removeVnodes(oldCh, oldStartIdx, oldEndIdx);
+    }
+  }
+  function checkDuplicateKeys(children2) {
+    var seenKeys = {};
+    for (var i_4 = 0; i_4 < children2.length; i_4++) {
+      var vnode = children2[i_4];
+      var key = vnode.key;
+      if (isDef(key)) {
+        if (seenKeys[key]) {
+          warn("Duplicate keys detected: '".concat(key, "'. This may cause an update error."), vnode.context);
+        } else {
+          seenKeys[key] = true;
+        }
+      }
+    }
+  }
+  function findIdxInOld(node, oldCh, start2, end) {
+    for (var i_5 = start2; i_5 < end; i_5++) {
+      var c = oldCh[i_5];
+      if (isDef(c) && sameVnode(node, c))
+        return i_5;
+    }
+  }
+  function patchVnode(oldVnode, vnode, insertedVnodeQueue, ownerArray, index3, removeOnly) {
+    if (oldVnode === vnode) {
+      return;
+    }
+    if (isDef(vnode.elm) && isDef(ownerArray)) {
+      vnode = ownerArray[index3] = cloneVNode(vnode);
+    }
+    var elm = vnode.elm = oldVnode.elm;
+    if (isTrue(oldVnode.isAsyncPlaceholder)) {
+      if (isDef(vnode.asyncFactory.resolved)) {
+        hydrate(oldVnode.elm, vnode, insertedVnodeQueue);
+      } else {
+        vnode.isAsyncPlaceholder = true;
+      }
+      return;
+    }
+    if (isTrue(vnode.isStatic) && isTrue(oldVnode.isStatic) && vnode.key === oldVnode.key && (isTrue(vnode.isCloned) || isTrue(vnode.isOnce))) {
+      vnode.componentInstance = oldVnode.componentInstance;
+      return;
+    }
+    var i2;
+    var data48 = vnode.data;
+    if (isDef(data48) && isDef(i2 = data48.hook) && isDef(i2 = i2.prepatch)) {
+      i2(oldVnode, vnode);
+    }
+    var oldCh = oldVnode.children;
+    var ch = vnode.children;
+    if (isDef(data48) && isPatchable(vnode)) {
+      for (i2 = 0; i2 < cbs.update.length; ++i2)
+        cbs.update[i2](oldVnode, vnode);
+      if (isDef(i2 = data48.hook) && isDef(i2 = i2.update))
+        i2(oldVnode, vnode);
+    }
+    if (isUndef(vnode.text)) {
+      if (isDef(oldCh) && isDef(ch)) {
+        if (oldCh !== ch)
+          updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly);
+      } else if (isDef(ch)) {
+        if (true) {
+          checkDuplicateKeys(ch);
+        }
+        if (isDef(oldVnode.text))
+          nodeOps2.setTextContent(elm, "");
+        addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue);
+      } else if (isDef(oldCh)) {
+        removeVnodes(oldCh, 0, oldCh.length - 1);
+      } else if (isDef(oldVnode.text)) {
+        nodeOps2.setTextContent(elm, "");
+      }
+    } else if (oldVnode.text !== vnode.text) {
+      nodeOps2.setTextContent(elm, vnode.text);
+    }
+    if (isDef(data48)) {
+      if (isDef(i2 = data48.hook) && isDef(i2 = i2.postpatch))
+        i2(oldVnode, vnode);
+    }
+  }
+  function invokeInsertHook(vnode, queue2, initial) {
+    if (isTrue(initial) && isDef(vnode.parent)) {
+      vnode.parent.data.pendingInsert = queue2;
+    } else {
+      for (var i_6 = 0; i_6 < queue2.length; ++i_6) {
+        queue2[i_6].data.hook.insert(queue2[i_6]);
+      }
+    }
+  }
+  var hydrationBailed = false;
+  var isRenderedModule = makeMap("attrs,class,staticClass,staticStyle,key");
+  function hydrate(elm, vnode, insertedVnodeQueue, inVPre) {
+    var i2;
+    var tag3 = vnode.tag, data48 = vnode.data, children2 = vnode.children;
+    inVPre = inVPre || data48 && data48.pre;
+    vnode.elm = elm;
+    if (isTrue(vnode.isComment) && isDef(vnode.asyncFactory)) {
+      vnode.isAsyncPlaceholder = true;
+      return true;
+    }
+    if (true) {
+      if (!assertNodeMatch(elm, vnode, inVPre)) {
+        return false;
+      }
+    }
+    if (isDef(data48)) {
+      if (isDef(i2 = data48.hook) && isDef(i2 = i2.init))
+        i2(
+          vnode,
+          true
+          /* hydrating */
+        );
+      if (isDef(i2 = vnode.componentInstance)) {
+        initComponent(vnode, insertedVnodeQueue);
+        return true;
+      }
+    }
+    if (isDef(tag3)) {
+      if (isDef(children2)) {
+        if (!elm.hasChildNodes()) {
+          createChildren(vnode, children2, insertedVnodeQueue);
+        } else {
+          if (isDef(i2 = data48) && isDef(i2 = i2.domProps) && isDef(i2 = i2.innerHTML)) {
+            if (i2 !== elm.innerHTML) {
+              if (typeof console !== "undefined" && !hydrationBailed) {
+                hydrationBailed = true;
+                console.warn("Parent: ", elm);
+                console.warn("server innerHTML: ", i2);
+                console.warn("client innerHTML: ", elm.innerHTML);
+              }
+              return false;
+            }
+          } else {
+            var childrenMatch = true;
+            var childNode = elm.firstChild;
+            for (var i_7 = 0; i_7 < children2.length; i_7++) {
+              if (!childNode || !hydrate(childNode, children2[i_7], insertedVnodeQueue, inVPre)) {
+                childrenMatch = false;
+                break;
+              }
+              childNode = childNode.nextSibling;
+            }
+            if (!childrenMatch || childNode) {
+              if (typeof console !== "undefined" && !hydrationBailed) {
+                hydrationBailed = true;
+                console.warn("Parent: ", elm);
+                console.warn("Mismatching childNodes vs. VNodes: ", elm.childNodes, children2);
+              }
+              return false;
+            }
+          }
+        }
+      }
+      if (isDef(data48)) {
+        var fullInvoke = false;
+        for (var key in data48) {
+          if (!isRenderedModule(key)) {
+            fullInvoke = true;
+            invokeCreateHooks(vnode, insertedVnodeQueue);
+            break;
+          }
+        }
+        if (!fullInvoke && data48["class"]) {
+          traverse(data48["class"]);
+        }
+      }
+    } else if (elm.data !== vnode.text) {
+      elm.data = vnode.text;
+    }
+    return true;
+  }
+  function assertNodeMatch(node, vnode, inVPre) {
+    if (isDef(vnode.tag)) {
+      return vnode.tag.indexOf("vue-component") === 0 || !isUnknownElement2(vnode, inVPre) && vnode.tag.toLowerCase() === (node.tagName && node.tagName.toLowerCase());
+    } else {
+      return node.nodeType === (vnode.isComment ? 8 : 3);
+    }
+  }
+  return function patch2(oldVnode, vnode, hydrating, removeOnly) {
+    if (isUndef(vnode)) {
+      if (isDef(oldVnode))
+        invokeDestroyHook(oldVnode);
+      return;
+    }
+    var isInitialPatch = false;
+    var insertedVnodeQueue = [];
+    if (isUndef(oldVnode)) {
+      isInitialPatch = true;
+      createElm(vnode, insertedVnodeQueue);
+    } else {
+      var isRealElement = isDef(oldVnode.nodeType);
+      if (!isRealElement && sameVnode(oldVnode, vnode)) {
+        patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly);
+      } else {
+        if (isRealElement) {
+          if (oldVnode.nodeType === 1 && oldVnode.hasAttribute(SSR_ATTR)) {
+            oldVnode.removeAttribute(SSR_ATTR);
+            hydrating = true;
+          }
+          if (isTrue(hydrating)) {
+            if (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
+              invokeInsertHook(vnode, insertedVnodeQueue, true);
+              return oldVnode;
+            } else if (true) {
+              warn("The client-side rendered virtual DOM tree is not matching server-rendered content. This is likely caused by incorrect HTML markup, for example nesting block-level elements inside <p>, or missing <tbody>. Bailing hydration and performing full client-side render.");
+            }
+          }
+          oldVnode = emptyNodeAt(oldVnode);
+        }
+        var oldElm = oldVnode.elm;
+        var parentElm = nodeOps2.parentNode(oldElm);
+        createElm(
+          vnode,
+          insertedVnodeQueue,
+          // extremely rare edge case: do not insert if old element is in a
+          // leaving transition. Only happens when combining transition +
+          // keep-alive + HOCs. (#4590)
+          oldElm._leaveCb ? null : parentElm,
+          nodeOps2.nextSibling(oldElm)
+        );
+        if (isDef(vnode.parent)) {
+          var ancestor = vnode.parent;
+          var patchable = isPatchable(vnode);
+          while (ancestor) {
+            for (var i_8 = 0; i_8 < cbs.destroy.length; ++i_8) {
+              cbs.destroy[i_8](ancestor);
+            }
+            ancestor.elm = vnode.elm;
+            if (patchable) {
+              for (var i_9 = 0; i_9 < cbs.create.length; ++i_9) {
+                cbs.create[i_9](emptyNode, ancestor);
+              }
+              var insert_1 = ancestor.data.hook.insert;
+              if (insert_1.merged) {
+                for (var i_10 = 1; i_10 < insert_1.fns.length; i_10++) {
+                  insert_1.fns[i_10]();
+                }
+              }
+            } else {
+              registerRef(ancestor);
+            }
+            ancestor = ancestor.parent;
+          }
+        }
+        if (isDef(parentElm)) {
+          removeVnodes([oldVnode], 0, 0);
+        } else if (isDef(oldVnode.tag)) {
+          invokeDestroyHook(oldVnode);
+        }
+      }
+    }
+    invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);
+    return vnode.elm;
+  };
+}
+var directives = {
+  create: updateDirectives,
+  update: updateDirectives,
+  destroy: function unbindDirectives(vnode) {
+    updateDirectives(vnode, emptyNode);
+  }
+};
+function updateDirectives(oldVnode, vnode) {
+  if (oldVnode.data.directives || vnode.data.directives) {
+    _update(oldVnode, vnode);
+  }
+}
+function _update(oldVnode, vnode) {
+  var isCreate = oldVnode === emptyNode;
+  var isDestroy = vnode === emptyNode;
+  var oldDirs = normalizeDirectives(oldVnode.data.directives, oldVnode.context);
+  var newDirs = normalizeDirectives(vnode.data.directives, vnode.context);
+  var dirsWithInsert = [];
+  var dirsWithPostpatch = [];
+  var key, oldDir, dir;
+  for (key in newDirs) {
+    oldDir = oldDirs[key];
+    dir = newDirs[key];
+    if (!oldDir) {
+      callHook(dir, "bind", vnode, oldVnode);
+      if (dir.def && dir.def.inserted) {
+        dirsWithInsert.push(dir);
+      }
+    } else {
+      dir.oldValue = oldDir.value;
+      dir.oldArg = oldDir.arg;
+      callHook(dir, "update", vnode, oldVnode);
+      if (dir.def && dir.def.componentUpdated) {
+        dirsWithPostpatch.push(dir);
+      }
+    }
+  }
+  if (dirsWithInsert.length) {
+    var callInsert = function() {
+      for (var i = 0; i < dirsWithInsert.length; i++) {
+        callHook(dirsWithInsert[i], "inserted", vnode, oldVnode);
+      }
+    };
+    if (isCreate) {
+      mergeVNodeHook(vnode, "insert", callInsert);
+    } else {
+      callInsert();
+    }
+  }
+  if (dirsWithPostpatch.length) {
+    mergeVNodeHook(vnode, "postpatch", function() {
+      for (var i = 0; i < dirsWithPostpatch.length; i++) {
+        callHook(dirsWithPostpatch[i], "componentUpdated", vnode, oldVnode);
+      }
+    });
+  }
+  if (!isCreate) {
+    for (key in oldDirs) {
+      if (!newDirs[key]) {
+        callHook(oldDirs[key], "unbind", oldVnode, oldVnode, isDestroy);
+      }
+    }
+  }
+}
+var emptyModifiers = /* @__PURE__ */ Object.create(null);
+function normalizeDirectives(dirs, vm) {
+  var res = /* @__PURE__ */ Object.create(null);
+  if (!dirs) {
+    return res;
+  }
+  var i, dir;
+  for (i = 0; i < dirs.length; i++) {
+    dir = dirs[i];
+    if (!dir.modifiers) {
+      dir.modifiers = emptyModifiers;
+    }
+    res[getRawDirName(dir)] = dir;
+    if (vm._setupState && vm._setupState.__sfc) {
+      var setupDef = dir.def || resolveAsset(vm, "_setupState", "v-" + dir.name);
+      if (typeof setupDef === "function") {
+        dir.def = {
+          bind: setupDef,
+          update: setupDef
+        };
+      } else {
+        dir.def = setupDef;
+      }
+    }
+    dir.def = dir.def || resolveAsset(vm.$options, "directives", dir.name, true);
+  }
+  return res;
+}
+function getRawDirName(dir) {
+  return dir.rawName || "".concat(dir.name, ".").concat(Object.keys(dir.modifiers || {}).join("."));
+}
+function callHook(dir, hook, vnode, oldVnode, isDestroy) {
+  var fn = dir.def && dir.def[hook];
+  if (fn) {
+    try {
+      fn(vnode.elm, dir, vnode, oldVnode, isDestroy);
+    } catch (e2) {
+      handleError(e2, vnode.context, "directive ".concat(dir.name, " ").concat(hook, " hook"));
+    }
+  }
+}
+var baseModules = [ref, directives];
+function updateAttrs(oldVnode, vnode) {
+  var opts = vnode.componentOptions;
+  if (isDef(opts) && opts.Ctor.options.inheritAttrs === false) {
+    return;
+  }
+  if (isUndef(oldVnode.data.attrs) && isUndef(vnode.data.attrs)) {
+    return;
+  }
+  var key, cur, old;
+  var elm = vnode.elm;
+  var oldAttrs = oldVnode.data.attrs || {};
+  var attrs2 = vnode.data.attrs || {};
+  if (isDef(attrs2.__ob__) || isTrue(attrs2._v_attr_proxy)) {
+    attrs2 = vnode.data.attrs = extend({}, attrs2);
+  }
+  for (key in attrs2) {
+    cur = attrs2[key];
+    old = oldAttrs[key];
+    if (old !== cur) {
+      setAttr(elm, key, cur, vnode.data.pre);
+    }
+  }
+  if ((isIE || isEdge) && attrs2.value !== oldAttrs.value) {
+    setAttr(elm, "value", attrs2.value);
+  }
+  for (key in oldAttrs) {
+    if (isUndef(attrs2[key])) {
+      if (isXlink(key)) {
+        elm.removeAttributeNS(xlinkNS, getXlinkProp(key));
+      } else if (!isEnumeratedAttr(key)) {
+        elm.removeAttribute(key);
+      }
+    }
+  }
+}
+function setAttr(el, key, value2, isInPre) {
+  if (isInPre || el.tagName.indexOf("-") > -1) {
+    baseSetAttr(el, key, value2);
+  } else if (isBooleanAttr(key)) {
+    if (isFalsyAttrValue(value2)) {
+      el.removeAttribute(key);
+    } else {
+      value2 = key === "allowfullscreen" && el.tagName === "EMBED" ? "true" : key;
+      el.setAttribute(key, value2);
+    }
+  } else if (isEnumeratedAttr(key)) {
+    el.setAttribute(key, convertEnumeratedValue(key, value2));
+  } else if (isXlink(key)) {
+    if (isFalsyAttrValue(value2)) {
+      el.removeAttributeNS(xlinkNS, getXlinkProp(key));
+    } else {
+      el.setAttributeNS(xlinkNS, key, value2);
+    }
+  } else {
+    baseSetAttr(el, key, value2);
+  }
+}
+function baseSetAttr(el, key, value2) {
+  if (isFalsyAttrValue(value2)) {
+    el.removeAttribute(key);
+  } else {
+    if (isIE && !isIE9 && el.tagName === "TEXTAREA" && key === "placeholder" && value2 !== "" && !el.__ieph) {
+      var blocker_1 = function(e2) {
+        e2.stopImmediatePropagation();
+        el.removeEventListener("input", blocker_1);
+      };
+      el.addEventListener("input", blocker_1);
+      el.__ieph = true;
+    }
+    el.setAttribute(key, value2);
+  }
+}
+var attrs = {
+  create: updateAttrs,
+  update: updateAttrs
+};
+function updateClass(oldVnode, vnode) {
+  var el = vnode.elm;
+  var data48 = vnode.data;
+  var oldData = oldVnode.data;
+  if (isUndef(data48.staticClass) && isUndef(data48.class) && (isUndef(oldData) || isUndef(oldData.staticClass) && isUndef(oldData.class))) {
+    return;
+  }
+  var cls = genClassForVnode(vnode);
+  var transitionClass = el._transitionClasses;
+  if (isDef(transitionClass)) {
+    cls = concat(cls, stringifyClass(transitionClass));
+  }
+  if (cls !== el._prevClass) {
+    el.setAttribute("class", cls);
+    el._prevClass = cls;
+  }
+}
+var klass = {
+  create: updateClass,
+  update: updateClass
+};
+var RANGE_TOKEN = "__r";
+var CHECKBOX_RADIO_TOKEN = "__c";
+function normalizeEvents(on) {
+  if (isDef(on[RANGE_TOKEN])) {
+    var event_1 = isIE ? "change" : "input";
+    on[event_1] = [].concat(on[RANGE_TOKEN], on[event_1] || []);
+    delete on[RANGE_TOKEN];
+  }
+  if (isDef(on[CHECKBOX_RADIO_TOKEN])) {
+    on.change = [].concat(on[CHECKBOX_RADIO_TOKEN], on.change || []);
+    delete on[CHECKBOX_RADIO_TOKEN];
+  }
+}
+var target;
+function createOnceHandler(event2, handler3, capture) {
+  var _target = target;
+  return function onceHandler() {
+    var res = handler3.apply(null, arguments);
+    if (res !== null) {
+      remove(event2, onceHandler, capture, _target);
+    }
+  };
+}
+var useMicrotaskFix = isUsingMicroTask && !(isFF && Number(isFF[1]) <= 53);
+function add(name2, handler3, capture, passive) {
+  if (useMicrotaskFix) {
+    var attachedTimestamp_1 = currentFlushTimestamp;
+    var original_1 = handler3;
+    handler3 = original_1._wrapper = function(e2) {
+      if (
+        // no bubbling, should always fire.
+        // this is just a safety net in case event.timeStamp is unreliable in
+        // certain weird environments...
+        e2.target === e2.currentTarget || // event is fired after handler attachment
+        e2.timeStamp >= attachedTimestamp_1 || // bail for environments that have buggy event.timeStamp implementations
+        // #9462 iOS 9 bug: event.timeStamp is 0 after history.pushState
+        // #9681 QtWebEngine event.timeStamp is negative value
+        e2.timeStamp <= 0 || // #9448 bail if event is fired in another document in a multi-page
+        // electron/nw.js app, since event.timeStamp will be using a different
+        // starting reference
+        e2.target.ownerDocument !== document
+      ) {
+        return original_1.apply(this, arguments);
+      }
+    };
+  }
+  target.addEventListener(name2, handler3, supportsPassive ? { capture, passive } : capture);
+}
+function remove(name2, handler3, capture, _target) {
+  (_target || target).removeEventListener(
+    name2,
+    //@ts-expect-error
+    handler3._wrapper || handler3,
+    capture
+  );
+}
+function updateDOMListeners(oldVnode, vnode) {
+  if (isUndef(oldVnode.data.on) && isUndef(vnode.data.on)) {
+    return;
+  }
+  var on = vnode.data.on || {};
+  var oldOn = oldVnode.data.on || {};
+  target = vnode.elm || oldVnode.elm;
+  normalizeEvents(on);
+  updateListeners(on, oldOn, add, remove, createOnceHandler, vnode.context);
+  target = void 0;
+}
+var events = {
+  create: updateDOMListeners,
+  update: updateDOMListeners,
+  // @ts-expect-error emptyNode has actually data
+  destroy: function(vnode) {
+    return updateDOMListeners(vnode, emptyNode);
+  }
+};
+var svgContainer;
+function updateDOMProps(oldVnode, vnode) {
+  if (isUndef(oldVnode.data.domProps) && isUndef(vnode.data.domProps)) {
+    return;
+  }
+  var key, cur;
+  var elm = vnode.elm;
+  var oldProps = oldVnode.data.domProps || {};
+  var props153 = vnode.data.domProps || {};
+  if (isDef(props153.__ob__) || isTrue(props153._v_attr_proxy)) {
+    props153 = vnode.data.domProps = extend({}, props153);
+  }
+  for (key in oldProps) {
+    if (!(key in props153)) {
+      elm[key] = "";
+    }
+  }
+  for (key in props153) {
+    cur = props153[key];
+    if (key === "textContent" || key === "innerHTML") {
+      if (vnode.children)
+        vnode.children.length = 0;
+      if (cur === oldProps[key])
+        continue;
+      if (elm.childNodes.length === 1) {
+        elm.removeChild(elm.childNodes[0]);
+      }
+    }
+    if (key === "value" && elm.tagName !== "PROGRESS") {
+      elm._value = cur;
+      var strCur = isUndef(cur) ? "" : String(cur);
+      if (shouldUpdateValue(elm, strCur)) {
+        elm.value = strCur;
+      }
+    } else if (key === "innerHTML" && isSVG(elm.tagName) && isUndef(elm.innerHTML)) {
+      svgContainer = svgContainer || document.createElement("div");
+      svgContainer.innerHTML = "<svg>".concat(cur, "</svg>");
+      var svg = svgContainer.firstChild;
+      while (elm.firstChild) {
+        elm.removeChild(elm.firstChild);
+      }
+      while (svg.firstChild) {
+        elm.appendChild(svg.firstChild);
+      }
+    } else if (
+      // skip the update if old and new VDOM state is the same.
+      // `value` is handled separately because the DOM value may be temporarily
+      // out of sync with VDOM state due to focus, composition and modifiers.
+      // This  #4521 by skipping the unnecessary `checked` update.
+      cur !== oldProps[key]
+    ) {
+      try {
+        elm[key] = cur;
+      } catch (e2) {
+      }
+    }
+  }
+}
+function shouldUpdateValue(elm, checkVal) {
+  return (
+    //@ts-expect-error
+    !elm.composing && (elm.tagName === "OPTION" || isNotInFocusAndDirty(elm, checkVal) || isDirtyWithModifiers(elm, checkVal))
+  );
+}
+function isNotInFocusAndDirty(elm, checkVal) {
+  var notInFocus = true;
+  try {
+    notInFocus = document.activeElement !== elm;
+  } catch (e2) {
+  }
+  return notInFocus && elm.value !== checkVal;
+}
+function isDirtyWithModifiers(elm, newVal) {
+  var value2 = elm.value;
+  var modifiers2 = elm._vModifiers;
+  if (isDef(modifiers2)) {
+    if (modifiers2.number) {
+      return toNumber(value2) !== toNumber(newVal);
+    }
+    if (modifiers2.trim) {
+      return value2.trim() !== newVal.trim();
+    }
+  }
+  return value2 !== newVal;
+}
+var domProps = {
+  create: updateDOMProps,
+  update: updateDOMProps
+};
+var parseStyleText = cached(function(cssText) {
+  var res = {};
+  var listDelimiter = /;(?![^(]*\))/g;
+  var propertyDelimiter = /:(.+)/;
+  cssText.split(listDelimiter).forEach(function(item) {
+    if (item) {
+      var tmp = item.split(propertyDelimiter);
+      tmp.length > 1 && (res[tmp[0].trim()] = tmp[1].trim());
+    }
+  });
+  return res;
+});
+function normalizeStyleData(data48) {
+  var style2 = normalizeStyleBinding(data48.style);
+  return data48.staticStyle ? extend(data48.staticStyle, style2) : style2;
+}
+function normalizeStyleBinding(bindingStyle) {
+  if (Array.isArray(bindingStyle)) {
+    return toObject(bindingStyle);
+  }
+  if (typeof bindingStyle === "string") {
+    return parseStyleText(bindingStyle);
+  }
+  return bindingStyle;
+}
+function getStyle(vnode, checkChild) {
+  var res = {};
+  var styleData;
+  if (checkChild) {
+    var childNode = vnode;
+    while (childNode.componentInstance) {
+      childNode = childNode.componentInstance._vnode;
+      if (childNode && childNode.data && (styleData = normalizeStyleData(childNode.data))) {
+        extend(res, styleData);
+      }
+    }
+  }
+  if (styleData = normalizeStyleData(vnode.data)) {
+    extend(res, styleData);
+  }
+  var parentNode2 = vnode;
+  while (parentNode2 = parentNode2.parent) {
+    if (parentNode2.data && (styleData = normalizeStyleData(parentNode2.data))) {
+      extend(res, styleData);
+    }
+  }
+  return res;
+}
+var cssVarRE = /^--/;
+var importantRE = /\s*!important$/;
+var setProp = function(el, name2, val) {
+  if (cssVarRE.test(name2)) {
+    el.style.setProperty(name2, val);
+  } else if (importantRE.test(val)) {
+    el.style.setProperty(hyphenate(name2), val.replace(importantRE, ""), "important");
+  } else {
+    var normalizedName = normalize(name2);
+    if (Array.isArray(val)) {
+      for (var i = 0, len = val.length; i < len; i++) {
+        el.style[normalizedName] = val[i];
+      }
+    } else {
+      el.style[normalizedName] = val;
+    }
+  }
+};
+var vendorNames = ["Webkit", "Moz", "ms"];
+var emptyStyle;
+var normalize = cached(function(prop2) {
+  emptyStyle = emptyStyle || document.createElement("div").style;
+  prop2 = camelize(prop2);
+  if (prop2 !== "filter" && prop2 in emptyStyle) {
+    return prop2;
+  }
+  var capName = prop2.charAt(0).toUpperCase() + prop2.slice(1);
+  for (var i = 0; i < vendorNames.length; i++) {
+    var name_1 = vendorNames[i] + capName;
+    if (name_1 in emptyStyle) {
+      return name_1;
+    }
+  }
+});
+function updateStyle(oldVnode, vnode) {
+  var data48 = vnode.data;
+  var oldData = oldVnode.data;
+  if (isUndef(data48.staticStyle) && isUndef(data48.style) && isUndef(oldData.staticStyle) && isUndef(oldData.style)) {
+    return;
+  }
+  var cur, name2;
+  var el = vnode.elm;
+  var oldStaticStyle = oldData.staticStyle;
+  var oldStyleBinding = oldData.normalizedStyle || oldData.style || {};
+  var oldStyle = oldStaticStyle || oldStyleBinding;
+  var style2 = normalizeStyleBinding(vnode.data.style) || {};
+  vnode.data.normalizedStyle = isDef(style2.__ob__) ? extend({}, style2) : style2;
+  var newStyle = getStyle(vnode, true);
+  for (name2 in oldStyle) {
+    if (isUndef(newStyle[name2])) {
+      setProp(el, name2, "");
+    }
+  }
+  for (name2 in newStyle) {
+    cur = newStyle[name2];
+    if (cur !== oldStyle[name2]) {
+      setProp(el, name2, cur == null ? "" : cur);
+    }
+  }
+}
+var style = {
+  create: updateStyle,
+  update: updateStyle
+};
+var whitespaceRE = /\s+/;
+function addClass(el, cls) {
+  if (!cls || !(cls = cls.trim())) {
+    return;
+  }
+  if (el.classList) {
+    if (cls.indexOf(" ") > -1) {
+      cls.split(whitespaceRE).forEach(function(c) {
+        return el.classList.add(c);
+      });
+    } else {
+      el.classList.add(cls);
+    }
+  } else {
+    var cur = " ".concat(el.getAttribute("class") || "", " ");
+    if (cur.indexOf(" " + cls + " ") < 0) {
+      el.setAttribute("class", (cur + cls).trim());
+    }
+  }
+}
+function removeClass(el, cls) {
+  if (!cls || !(cls = cls.trim())) {
+    return;
+  }
+  if (el.classList) {
+    if (cls.indexOf(" ") > -1) {
+      cls.split(whitespaceRE).forEach(function(c) {
+        return el.classList.remove(c);
+      });
+    } else {
+      el.classList.remove(cls);
+    }
+    if (!el.classList.length) {
+      el.removeAttribute("class");
+    }
+  } else {
+    var cur = " ".concat(el.getAttribute("class") || "", " ");
+    var tar = " " + cls + " ";
+    while (cur.indexOf(tar) >= 0) {
+      cur = cur.replace(tar, " ");
+    }
+    cur = cur.trim();
+    if (cur) {
+      el.setAttribute("class", cur);
+    } else {
+      el.removeAttribute("class");
+    }
+  }
+}
+function resolveTransition(def2) {
+  if (!def2) {
+    return;
+  }
+  if (typeof def2 === "object") {
+    var res = {};
+    if (def2.css !== false) {
+      extend(res, autoCssTransition(def2.name || "v"));
+    }
+    extend(res, def2);
+    return res;
+  } else if (typeof def2 === "string") {
+    return autoCssTransition(def2);
+  }
+}
+var autoCssTransition = cached(function(name2) {
+  return {
+    enterClass: "".concat(name2, "-enter"),
+    enterToClass: "".concat(name2, "-enter-to"),
+    enterActiveClass: "".concat(name2, "-enter-active"),
+    leaveClass: "".concat(name2, "-leave"),
+    leaveToClass: "".concat(name2, "-leave-to"),
+    leaveActiveClass: "".concat(name2, "-leave-active")
+  };
+});
+var hasTransition = inBrowser && !isIE9;
+var TRANSITION = "transition";
+var ANIMATION = "animation";
+var transitionProp = "transition";
+var transitionEndEvent = "transitionend";
+var animationProp = "animation";
+var animationEndEvent = "animationend";
+if (hasTransition) {
+  if (window.ontransitionend === void 0 && window.onwebkittransitionend !== void 0) {
+    transitionProp = "WebkitTransition";
+    transitionEndEvent = "webkitTransitionEnd";
+  }
+  if (window.onanimationend === void 0 && window.onwebkitanimationend !== void 0) {
+    animationProp = "WebkitAnimation";
+    animationEndEvent = "webkitAnimationEnd";
+  }
+}
+var raf = inBrowser ? window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : setTimeout : (
+  /* istanbul ignore next */
+  function(fn) {
+    return fn();
+  }
+);
+function nextFrame(fn) {
+  raf(function() {
+    raf(fn);
+  });
+}
+function addTransitionClass(el, cls) {
+  var transitionClasses = el._transitionClasses || (el._transitionClasses = []);
+  if (transitionClasses.indexOf(cls) < 0) {
+    transitionClasses.push(cls);
+    addClass(el, cls);
+  }
+}
+function removeTransitionClass(el, cls) {
+  if (el._transitionClasses) {
+    remove$2(el._transitionClasses, cls);
+  }
+  removeClass(el, cls);
+}
+function whenTransitionEnds(el, expectedType, cb) {
+  var _a = getTransitionInfo(el, expectedType), type2 = _a.type, timeout = _a.timeout, propCount = _a.propCount;
+  if (!type2)
+    return cb();
+  var event2 = type2 === TRANSITION ? transitionEndEvent : animationEndEvent;
+  var ended = 0;
+  var end = function() {
+    el.removeEventListener(event2, onEnd);
+    cb();
+  };
+  var onEnd = function(e2) {
+    if (e2.target === el) {
+      if (++ended >= propCount) {
+        end();
+      }
+    }
+  };
+  setTimeout(function() {
+    if (ended < propCount) {
+      end();
+    }
+  }, timeout + 1);
+  el.addEventListener(event2, onEnd);
+}
+var transformRE = /\b(transform|all)(,|$)/;
+function getTransitionInfo(el, expectedType) {
+  var styles = window.getComputedStyle(el);
+  var transitionDelays = (styles[transitionProp + "Delay"] || "").split(", ");
+  var transitionDurations = (styles[transitionProp + "Duration"] || "").split(", ");
+  var transitionTimeout = getTimeout(transitionDelays, transitionDurations);
+  var animationDelays = (styles[animationProp + "Delay"] || "").split(", ");
+  var animationDurations = (styles[animationProp + "Duration"] || "").split(", ");
+  var animationTimeout = getTimeout(animationDelays, animationDurations);
+  var type2;
+  var timeout = 0;
+  var propCount = 0;
+  if (expectedType === TRANSITION) {
+    if (transitionTimeout > 0) {
+      type2 = TRANSITION;
+      timeout = transitionTimeout;
+      propCount = transitionDurations.length;
+    }
+  } else if (expectedType === ANIMATION) {
+    if (animationTimeout > 0) {
+      type2 = ANIMATION;
+      timeout = animationTimeout;
+      propCount = animationDurations.length;
+    }
+  } else {
+    timeout = Math.max(transitionTimeout, animationTimeout);
+    type2 = timeout > 0 ? transitionTimeout > animationTimeout ? TRANSITION : ANIMATION : null;
+    propCount = type2 ? type2 === TRANSITION ? transitionDurations.length : animationDurations.length : 0;
+  }
+  var hasTransform = type2 === TRANSITION && transformRE.test(styles[transitionProp + "Property"]);
+  return {
+    type: type2,
+    timeout,
+    propCount,
+    hasTransform
+  };
+}
+function getTimeout(delays, durations) {
+  while (delays.length < durations.length) {
+    delays = delays.concat(delays);
+  }
+  return Math.max.apply(null, durations.map(function(d, i) {
+    return toMs(d) + toMs(delays[i]);
+  }));
+}
+function toMs(s2) {
+  return Number(s2.slice(0, -1).replace(",", ".")) * 1e3;
+}
+function enter(vnode, toggleDisplay) {
+  var el = vnode.elm;
+  if (isDef(el._leaveCb)) {
+    el._leaveCb.cancelled = true;
+    el._leaveCb();
+  }
+  var data48 = resolveTransition(vnode.data.transition);
+  if (isUndef(data48)) {
+    return;
+  }
+  if (isDef(el._enterCb) || el.nodeType !== 1) {
+    return;
+  }
+  var css = data48.css, type2 = data48.type, enterClass = data48.enterClass, enterToClass = data48.enterToClass, enterActiveClass = data48.enterActiveClass, appearClass = data48.appearClass, appearToClass = data48.appearToClass, appearActiveClass = data48.appearActiveClass, beforeEnter = data48.beforeEnter, enter3 = data48.enter, afterEnter = data48.afterEnter, enterCancelled = data48.enterCancelled, beforeAppear = data48.beforeAppear, appear = data48.appear, afterAppear = data48.afterAppear, appearCancelled = data48.appearCancelled, duration = data48.duration;
+  var context7 = activeInstance;
+  var transitionNode = activeInstance.$vnode;
+  while (transitionNode && transitionNode.parent) {
+    context7 = transitionNode.context;
+    transitionNode = transitionNode.parent;
+  }
+  var isAppear = !context7._isMounted || !vnode.isRootInsert;
+  if (isAppear && !appear && appear !== "") {
+    return;
+  }
+  var startClass = isAppear && appearClass ? appearClass : enterClass;
+  var activeClass = isAppear && appearActiveClass ? appearActiveClass : enterActiveClass;
+  var toClass = isAppear && appearToClass ? appearToClass : enterToClass;
+  var beforeEnterHook = isAppear ? beforeAppear || beforeEnter : beforeEnter;
+  var enterHook = isAppear ? isFunction(appear) ? appear : enter3 : enter3;
+  var afterEnterHook = isAppear ? afterAppear || afterEnter : afterEnter;
+  var enterCancelledHook = isAppear ? appearCancelled || enterCancelled : enterCancelled;
+  var explicitEnterDuration = toNumber(isObject(duration) ? duration.enter : duration);
+  if (explicitEnterDuration != null) {
+    checkDuration(explicitEnterDuration, "enter", vnode);
+  }
+  var expectsCSS = css !== false && !isIE9;
+  var userWantsControl = getHookArgumentsLength(enterHook);
+  var cb = el._enterCb = once(function() {
+    if (expectsCSS) {
+      removeTransitionClass(el, toClass);
+      removeTransitionClass(el, activeClass);
+    }
+    if (cb.cancelled) {
+      if (expectsCSS) {
+        removeTransitionClass(el, startClass);
+      }
+      enterCancelledHook && enterCancelledHook(el);
+    } else {
+      afterEnterHook && afterEnterHook(el);
+    }
+    el._enterCb = null;
+  });
+  if (!vnode.data.show) {
+    mergeVNodeHook(vnode, "insert", function() {
+      var parent = el.parentNode;
+      var pendingNode = parent && parent._pending && parent._pending[vnode.key];
+      if (pendingNode && pendingNode.tag === vnode.tag && pendingNode.elm._leaveCb) {
+        pendingNode.elm._leaveCb();
+      }
+      enterHook && enterHook(el, cb);
+    });
+  }
+  beforeEnterHook && beforeEnterHook(el);
+  if (expectsCSS) {
+    addTransitionClass(el, startClass);
+    addTransitionClass(el, activeClass);
+    nextFrame(function() {
+      removeTransitionClass(el, startClass);
+      if (!cb.cancelled) {
+        addTransitionClass(el, toClass);
+        if (!userWantsControl) {
+          if (isValidDuration(explicitEnterDuration)) {
+            setTimeout(cb, explicitEnterDuration);
+          } else {
+            whenTransitionEnds(el, type2, cb);
+          }
+        }
+      }
+    });
+  }
+  if (vnode.data.show) {
+    toggleDisplay && toggleDisplay();
+    enterHook && enterHook(el, cb);
+  }
+  if (!expectsCSS && !userWantsControl) {
+    cb();
+  }
+}
+function leave(vnode, rm) {
+  var el = vnode.elm;
+  if (isDef(el._enterCb)) {
+    el._enterCb.cancelled = true;
+    el._enterCb();
+  }
+  var data48 = resolveTransition(vnode.data.transition);
+  if (isUndef(data48) || el.nodeType !== 1) {
+    return rm();
+  }
+  if (isDef(el._leaveCb)) {
+    return;
+  }
+  var css = data48.css, type2 = data48.type, leaveClass = data48.leaveClass, leaveToClass = data48.leaveToClass, leaveActiveClass = data48.leaveActiveClass, beforeLeave = data48.beforeLeave, leave3 = data48.leave, afterLeave = data48.afterLeave, leaveCancelled = data48.leaveCancelled, delayLeave = data48.delayLeave, duration = data48.duration;
+  var expectsCSS = css !== false && !isIE9;
+  var userWantsControl = getHookArgumentsLength(leave3);
+  var explicitLeaveDuration = toNumber(isObject(duration) ? duration.leave : duration);
+  if (isDef(explicitLeaveDuration)) {
+    checkDuration(explicitLeaveDuration, "leave", vnode);
+  }
+  var cb = el._leaveCb = once(function() {
+    if (el.parentNode && el.parentNode._pending) {
+      el.parentNode._pending[vnode.key] = null;
+    }
+    if (expectsCSS) {
+      removeTransitionClass(el, leaveToClass);
+      removeTransitionClass(el, leaveActiveClass);
+    }
+    if (cb.cancelled) {
+      if (expectsCSS) {
+        removeTransitionClass(el, leaveClass);
+      }
+      leaveCancelled && leaveCancelled(el);
+    } else {
+      rm();
+      afterLeave && afterLeave(el);
+    }
+    el._leaveCb = null;
+  });
+  if (delayLeave) {
+    delayLeave(performLeave);
+  } else {
+    performLeave();
+  }
+  function performLeave() {
+    if (cb.cancelled) {
+      return;
+    }
+    if (!vnode.data.show && el.parentNode) {
+      (el.parentNode._pending || (el.parentNode._pending = {}))[vnode.key] = vnode;
+    }
+    beforeLeave && beforeLeave(el);
+    if (expectsCSS) {
+      addTransitionClass(el, leaveClass);
+      addTransitionClass(el, leaveActiveClass);
+      nextFrame(function() {
+        removeTransitionClass(el, leaveClass);
+        if (!cb.cancelled) {
+          addTransitionClass(el, leaveToClass);
+          if (!userWantsControl) {
+            if (isValidDuration(explicitLeaveDuration)) {
+              setTimeout(cb, explicitLeaveDuration);
+            } else {
+              whenTransitionEnds(el, type2, cb);
+            }
+          }
+        }
+      });
+    }
+    leave3 && leave3(el, cb);
+    if (!expectsCSS && !userWantsControl) {
+      cb();
+    }
+  }
+}
+function checkDuration(val, name2, vnode) {
+  if (typeof val !== "number") {
+    warn("<transition> explicit ".concat(name2, " duration is not a valid number - ") + "got ".concat(JSON.stringify(val), "."), vnode.context);
+  } else if (isNaN(val)) {
+    warn("<transition> explicit ".concat(name2, " duration is NaN - ") + "the duration expression might be incorrect.", vnode.context);
+  }
+}
+function isValidDuration(val) {
+  return typeof val === "number" && !isNaN(val);
+}
+function getHookArgumentsLength(fn) {
+  if (isUndef(fn)) {
+    return false;
+  }
+  var invokerFns = fn.fns;
+  if (isDef(invokerFns)) {
+    return getHookArgumentsLength(Array.isArray(invokerFns) ? invokerFns[0] : invokerFns);
+  } else {
+    return (fn._length || fn.length) > 1;
+  }
+}
+function _enter(_, vnode) {
+  if (vnode.data.show !== true) {
+    enter(vnode);
+  }
+}
+var transition = inBrowser ? {
+  create: _enter,
+  activate: _enter,
+  remove: function(vnode, rm) {
+    if (vnode.data.show !== true) {
+      leave(vnode, rm);
+    } else {
+      rm();
+    }
+  }
+} : {};
+var platformModules = [attrs, klass, events, domProps, style, transition];
+var modules = platformModules.concat(baseModules);
+var patch = createPatchFunction({ nodeOps, modules });
+if (isIE9) {
+  document.addEventListener("selectionchange", function() {
+    var el = document.activeElement;
+    if (el && el.vmodel) {
+      trigger(el, "input");
+    }
+  });
+}
+var directive = {
+  inserted: function(el, binding, vnode, oldVnode) {
+    if (vnode.tag === "select") {
+      if (oldVnode.elm && !oldVnode.elm._vOptions) {
+        mergeVNodeHook(vnode, "postpatch", function() {
+          directive.componentUpdated(el, binding, vnode);
+        });
+      } else {
+        setSelected(el, binding, vnode.context);
+      }
+      el._vOptions = [].map.call(el.options, getValue);
+    } else if (vnode.tag === "textarea" || isTextInputType(el.type)) {
+      el._vModifiers = binding.modifiers;
+      if (!binding.modifiers.lazy) {
+        el.addEventListener("compositionstart", onCompositionStart);
+        el.addEventListener("compositionend", onCompositionEnd);
+        el.addEventListener("change", onCompositionEnd);
+        if (isIE9) {
+          el.vmodel = true;
+        }
+      }
+    }
+  },
+  componentUpdated: function(el, binding, vnode) {
+    if (vnode.tag === "select") {
+      setSelected(el, binding, vnode.context);
+      var prevOptions_1 = el._vOptions;
+      var curOptions_1 = el._vOptions = [].map.call(el.options, getValue);
+      if (curOptions_1.some(function(o, i) {
+        return !looseEqual(o, prevOptions_1[i]);
+      })) {
+        var needReset = el.multiple ? binding.value.some(function(v) {
+          return hasNoMatchingOption(v, curOptions_1);
+        }) : binding.value !== binding.oldValue && hasNoMatchingOption(binding.value, curOptions_1);
+        if (needReset) {
+          trigger(el, "change");
+        }
+      }
+    }
+  }
+};
+function setSelected(el, binding, vm) {
+  actuallySetSelected(el, binding, vm);
+  if (isIE || isEdge) {
+    setTimeout(function() {
+      actuallySetSelected(el, binding, vm);
+    }, 0);
+  }
+}
+function actuallySetSelected(el, binding, vm) {
+  var value2 = binding.value;
+  var isMultiple = el.multiple;
+  if (isMultiple && !Array.isArray(value2)) {
+    warn('<select multiple v-model="'.concat(binding.expression, '"> ') + "expects an Array value for its binding, but got ".concat(Object.prototype.toString.call(value2).slice(8, -1)), vm);
+    return;
+  }
+  var selected, option;
+  for (var i = 0, l = el.options.length; i < l; i++) {
+    option = el.options[i];
+    if (isMultiple) {
+      selected = looseIndexOf(value2, getValue(option)) > -1;
+      if (option.selected !== selected) {
+        option.selected = selected;
+      }
+    } else {
+      if (looseEqual(getValue(option), value2)) {
+        if (el.selectedIndex !== i) {
+          el.selectedIndex = i;
+        }
+        return;
+      }
+    }
+  }
+  if (!isMultiple) {
+    el.selectedIndex = -1;
+  }
+}
+function hasNoMatchingOption(value2, options) {
+  return options.every(function(o) {
+    return !looseEqual(o, value2);
+  });
+}
+function getValue(option) {
+  return "_value" in option ? option._value : option.value;
+}
+function onCompositionStart(e2) {
+  e2.target.composing = true;
+}
+function onCompositionEnd(e2) {
+  if (!e2.target.composing)
+    return;
+  e2.target.composing = false;
+  trigger(e2.target, "input");
+}
+function trigger(el, type2) {
+  var e2 = document.createEvent("HTMLEvents");
+  e2.initEvent(type2, true, true);
+  el.dispatchEvent(e2);
+}
+function locateNode(vnode) {
+  return vnode.componentInstance && (!vnode.data || !vnode.data.transition) ? locateNode(vnode.componentInstance._vnode) : vnode;
+}
+var show = {
+  bind: function(el, _a, vnode) {
+    var value2 = _a.value;
+    vnode = locateNode(vnode);
+    var transition2 = vnode.data && vnode.data.transition;
+    var originalDisplay = el.__vOriginalDisplay = el.style.display === "none" ? "" : el.style.display;
+    if (value2 && transition2) {
+      vnode.data.show = true;
+      enter(vnode, function() {
+        el.style.display = originalDisplay;
+      });
+    } else {
+      el.style.display = value2 ? originalDisplay : "none";
+    }
+  },
+  update: function(el, _a, vnode) {
+    var value2 = _a.value, oldValue = _a.oldValue;
+    if (!value2 === !oldValue)
+      return;
+    vnode = locateNode(vnode);
+    var transition2 = vnode.data && vnode.data.transition;
+    if (transition2) {
+      vnode.data.show = true;
+      if (value2) {
+        enter(vnode, function() {
+          el.style.display = el.__vOriginalDisplay;
+        });
+      } else {
+        leave(vnode, function() {
+          el.style.display = "none";
+        });
+      }
+    } else {
+      el.style.display = value2 ? el.__vOriginalDisplay : "none";
+    }
+  },
+  unbind: function(el, binding, vnode, oldVnode, isDestroy) {
+    if (!isDestroy) {
+      el.style.display = el.__vOriginalDisplay;
+    }
+  }
+};
+var platformDirectives = {
+  model: directive,
+  show
+};
+var transitionProps = {
+  name: String,
+  appear: Boolean,
+  css: Boolean,
+  mode: String,
+  type: String,
+  enterClass: String,
+  leaveClass: String,
+  enterToClass: String,
+  leaveToClass: String,
+  enterActiveClass: String,
+  leaveActiveClass: String,
+  appearClass: String,
+  appearActiveClass: String,
+  appearToClass: String,
+  duration: [Number, String, Object]
+};
+function getRealChild(vnode) {
+  var compOptions = vnode && vnode.componentOptions;
+  if (compOptions && compOptions.Ctor.options.abstract) {
+    return getRealChild(getFirstComponentChild(compOptions.children));
+  } else {
+    return vnode;
+  }
+}
+function extractTransitionData(comp) {
+  var data48 = {};
+  var options = comp.$options;
+  for (var key in options.propsData) {
+    data48[key] = comp[key];
+  }
+  var listeners = options._parentListeners;
+  for (var key in listeners) {
+    data48[camelize(key)] = listeners[key];
+  }
+  return data48;
+}
+function placeholder(h, rawChild) {
+  if (/\d-keep-alive$/.test(rawChild.tag)) {
+    return h("keep-alive", {
+      props: rawChild.componentOptions.propsData
+    });
+  }
+}
+function hasParentTransition(vnode) {
+  while (vnode = vnode.parent) {
+    if (vnode.data.transition) {
+      return true;
+    }
+  }
+}
+function isSameChild(child, oldChild) {
+  return oldChild.key === child.key && oldChild.tag === child.tag;
+}
+var isNotTextNode = function(c) {
+  return c.tag || isAsyncPlaceholder(c);
+};
+var isVShowDirective = function(d) {
+  return d.name === "show";
+};
+var Transition = {
+  name: "transition",
+  props: transitionProps,
+  abstract: true,
+  render: function(h) {
+    var _this = this;
+    var children2 = this.$slots.default;
+    if (!children2) {
+      return;
+    }
+    children2 = children2.filter(isNotTextNode);
+    if (!children2.length) {
+      return;
+    }
+    if (children2.length > 1) {
+      warn("<transition> can only be used on a single element. Use <transition-group> for lists.", this.$parent);
+    }
+    var mode = this.mode;
+    if (mode && mode !== "in-out" && mode !== "out-in") {
+      warn("invalid <transition> mode: " + mode, this.$parent);
+    }
+    var rawChild = children2[0];
+    if (hasParentTransition(this.$vnode)) {
+      return rawChild;
+    }
+    var child = getRealChild(rawChild);
+    if (!child) {
+      return rawChild;
+    }
+    if (this._leaving) {
+      return placeholder(h, rawChild);
+    }
+    var id = "__transition-".concat(this._uid, "-");
+    child.key = child.key == null ? child.isComment ? id + "comment" : id + child.tag : isPrimitive(child.key) ? String(child.key).indexOf(id) === 0 ? child.key : id + child.key : child.key;
+    var data48 = (child.data || (child.data = {})).transition = extractTransitionData(this);
+    var oldRawChild = this._vnode;
+    var oldChild = getRealChild(oldRawChild);
+    if (child.data.directives && child.data.directives.some(isVShowDirective)) {
+      child.data.show = true;
+    }
+    if (oldChild && oldChild.data && !isSameChild(child, oldChild) && !isAsyncPlaceholder(oldChild) && // #6687 component root is a comment node
+    !(oldChild.componentInstance && oldChild.componentInstance._vnode.isComment)) {
+      var oldData = oldChild.data.transition = extend({}, data48);
+      if (mode === "out-in") {
+        this._leaving = true;
+        mergeVNodeHook(oldData, "afterLeave", function() {
+          _this._leaving = false;
+          _this.$forceUpdate();
+        });
+        return placeholder(h, rawChild);
+      } else if (mode === "in-out") {
+        if (isAsyncPlaceholder(child)) {
+          return oldRawChild;
+        }
+        var delayedLeave_1;
+        var performLeave = function() {
+          delayedLeave_1();
+        };
+        mergeVNodeHook(data48, "afterEnter", performLeave);
+        mergeVNodeHook(data48, "enterCancelled", performLeave);
+        mergeVNodeHook(oldData, "delayLeave", function(leave3) {
+          delayedLeave_1 = leave3;
+        });
+      }
+    }
+    return rawChild;
+  }
+};
+var props = extend({
+  tag: String,
+  moveClass: String
+}, transitionProps);
+delete props.mode;
+var TransitionGroup = {
+  props,
+  beforeMount: function() {
+    var _this = this;
+    var update3 = this._update;
+    this._update = function(vnode, hydrating) {
+      var restoreActiveInstance = setActiveInstance(_this);
+      _this.__patch__(
+        _this._vnode,
+        _this.kept,
+        false,
+        // hydrating
+        true
+        // removeOnly (!important, avoids unnecessary moves)
+      );
+      _this._vnode = _this.kept;
+      restoreActiveInstance();
+      update3.call(_this, vnode, hydrating);
+    };
+  },
+  render: function(h) {
+    var tag3 = this.tag || this.$vnode.data.tag || "span";
+    var map = /* @__PURE__ */ Object.create(null);
+    var prevChildren = this.prevChildren = this.children;
+    var rawChildren = this.$slots.default || [];
+    var children2 = this.children = [];
+    var transitionData = extractTransitionData(this);
+    for (var i = 0; i < rawChildren.length; i++) {
+      var c = rawChildren[i];
+      if (c.tag) {
+        if (c.key != null && String(c.key).indexOf("__vlist") !== 0) {
+          children2.push(c);
+          map[c.key] = c;
+          (c.data || (c.data = {})).transition = transitionData;
+        } else if (true) {
+          var opts = c.componentOptions;
+          var name_1 = opts ? getComponentName(opts.Ctor.options) || opts.tag || "" : c.tag;
+          warn("<transition-group> children must be keyed: <".concat(name_1, ">"));
+        }
+      }
+    }
+    if (prevChildren) {
+      var kept = [];
+      var removed = [];
+      for (var i = 0; i < prevChildren.length; i++) {
+        var c = prevChildren[i];
+        c.data.transition = transitionData;
+        c.data.pos = c.elm.getBoundingClientRect();
+        if (map[c.key]) {
+          kept.push(c);
+        } else {
+          removed.push(c);
+        }
+      }
+      this.kept = h(tag3, null, kept);
+      this.removed = removed;
+    }
+    return h(tag3, null, children2);
+  },
+  updated: function() {
+    var children2 = this.prevChildren;
+    var moveClass = this.moveClass || (this.name || "v") + "-move";
+    if (!children2.length || !this.hasMove(children2[0].elm, moveClass)) {
+      return;
+    }
+    children2.forEach(callPendingCbs);
+    children2.forEach(recordPosition);
+    children2.forEach(applyTranslation);
+    this._reflow = document.body.offsetHeight;
+    children2.forEach(function(c) {
+      if (c.data.moved) {
+        var el_1 = c.elm;
+        var s2 = el_1.style;
+        addTransitionClass(el_1, moveClass);
+        s2.transform = s2.WebkitTransform = s2.transitionDuration = "";
+        el_1.addEventListener(transitionEndEvent, el_1._moveCb = function cb(e2) {
+          if (e2 && e2.target !== el_1) {
+            return;
+          }
+          if (!e2 || /transform$/.test(e2.propertyName)) {
+            el_1.removeEventListener(transitionEndEvent, cb);
+            el_1._moveCb = null;
+            removeTransitionClass(el_1, moveClass);
+          }
+        });
+      }
+    });
+  },
+  methods: {
+    hasMove: function(el, moveClass) {
+      if (!hasTransition) {
+        return false;
+      }
+      if (this._hasMove) {
+        return this._hasMove;
+      }
+      var clone3 = el.cloneNode();
+      if (el._transitionClasses) {
+        el._transitionClasses.forEach(function(cls) {
+          removeClass(clone3, cls);
+        });
+      }
+      addClass(clone3, moveClass);
+      clone3.style.display = "none";
+      this.$el.appendChild(clone3);
+      var info = getTransitionInfo(clone3);
+      this.$el.removeChild(clone3);
+      return this._hasMove = info.hasTransform;
+    }
+  }
+};
+function callPendingCbs(c) {
+  if (c.elm._moveCb) {
+    c.elm._moveCb();
+  }
+  if (c.elm._enterCb) {
+    c.elm._enterCb();
+  }
+}
+function recordPosition(c) {
+  c.data.newPos = c.elm.getBoundingClientRect();
+}
+function applyTranslation(c) {
+  var oldPos = c.data.pos;
+  var newPos = c.data.newPos;
+  var dx = oldPos.left - newPos.left;
+  var dy = oldPos.top - newPos.top;
+  if (dx || dy) {
+    c.data.moved = true;
+    var s2 = c.elm.style;
+    s2.transform = s2.WebkitTransform = "translate(".concat(dx, "px,").concat(dy, "px)");
+    s2.transitionDuration = "0s";
+  }
+}
+var platformComponents = {
+  Transition,
+  TransitionGroup
+};
+Vue.config.mustUseProp = mustUseProp;
+Vue.config.isReservedTag = isReservedTag;
+Vue.config.isReservedAttr = isReservedAttr;
+Vue.config.getTagNamespace = getTagNamespace;
+Vue.config.isUnknownElement = isUnknownElement;
+extend(Vue.options.directives, platformDirectives);
+extend(Vue.options.components, platformComponents);
+Vue.prototype.__patch__ = inBrowser ? patch : noop;
+Vue.prototype.$mount = function(el, hydrating) {
+  el = el && inBrowser ? query(el) : void 0;
+  return mountComponent(this, el, hydrating);
+};
+if (inBrowser) {
+  setTimeout(function() {
+    if (config.devtools) {
+      if (devtools) {
+        devtools.emit("init", Vue);
+      } else if (true) {
+        console[console.info ? "info" : "log"]("Download the Vue Devtools extension for a better development experience:\nhttps://github.com/vuejs/vue-devtools");
+      }
+    }
+    if (config.productionTip !== false && typeof console !== "undefined") {
+      console[console.info ? "info" : "log"]("You are running Vue in development mode.\nMake sure to turn on production mode when deploying for production.\nSee more tips at https://vuejs.org/guide/deployment.html");
+    }
+  }, 0);
+}
 
 // node_modules/vue-functional-data-merge/dist/lib.esm.js
 var e = function() {
@@ -83,16 +6507,16 @@ function ownKeys(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread(target) {
+function _objectSpread(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys(Object(source), true).forEach(function(key) {
-      _defineProperty(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty(obj, key, value2) {
   if (key in obj) {
@@ -105,7 +6529,7 @@ function _defineProperty(obj, key, value2) {
 function _objectWithoutProperties(source, excluded) {
   if (source == null)
     return {};
-  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var target2 = _objectWithoutPropertiesLoose(source, excluded);
   var key, i;
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -115,24 +6539,24 @@ function _objectWithoutProperties(source, excluded) {
         continue;
       if (!Object.prototype.propertyIsEnumerable.call(source, key))
         continue;
-      target[key] = source[key];
+      target2[key] = source[key];
     }
   }
-  return target;
+  return target2;
 }
 function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null)
     return {};
-  var target = {};
+  var target2 = {};
   var sourceKeys = Object.keys(source);
   var key, i;
   for (i = 0; i < sourceKeys.length; i++) {
     key = sourceKeys[i];
     if (excluded.indexOf(key) >= 0)
       continue;
-    target[key] = source[key];
+    target2[key] = source[key];
   }
-  return target;
+  return target2;
 }
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -143,30 +6567,30 @@ function _typeof(obj) {
   }, _typeof(obj);
 }
 var COMPONENT_UID_KEY = "_uid";
-var isVue3 = Vue$1.version.startsWith("3");
+var isVue3 = Vue.version.startsWith("3");
 var REF_FOR_KEY = isVue3 ? "ref_for" : "refInFor";
 var ALLOWED_FIELDS_IN_DATA = ["class", "staticClass", "style", "attrs", "props", "domProps", "on", "nativeOn", "directives", "scopedSlots", "slot", "key", "ref", "refInFor"];
-var extend = Vue$1.extend.bind(Vue$1);
+var extend2 = Vue.extend.bind(Vue);
 if (isVue3) {
-  originalExtend = Vue$1.extend;
+  originalExtend = Vue.extend;
   KNOWN_COMPONENTS = ["router-link", "transition", "transition-group"];
-  originalVModelDynamicCreated = Vue$1.vModelDynamic.created;
-  originalVModelDynamicBeforeUpdate = Vue$1.vModelDynamic.beforeUpdate;
-  Vue$1.vModelDynamic.created = function(el, binding, vnode) {
+  originalVModelDynamicCreated = Vue.vModelDynamic.created;
+  originalVModelDynamicBeforeUpdate = Vue.vModelDynamic.beforeUpdate;
+  Vue.vModelDynamic.created = function(el, binding, vnode) {
     originalVModelDynamicCreated.call(this, el, binding, vnode);
     if (!el._assign) {
       el._assign = function() {
       };
     }
   };
-  Vue$1.vModelDynamic.beforeUpdate = function(el, binding, vnode) {
+  Vue.vModelDynamic.beforeUpdate = function(el, binding, vnode) {
     originalVModelDynamicBeforeUpdate.call(this, el, binding, vnode);
     if (!el._assign) {
       el._assign = function() {
       };
     }
   };
-  extend = (function patchedBootstrapVueExtend(definition) {
+  extend2 = (function patchedBootstrapVueExtend(definition) {
     if (_typeof(definition) === "object" && definition.render && !definition.__alreadyPatched) {
       var originalRender = definition.render;
       definition.__alreadyPatched = true;
@@ -178,10 +6602,10 @@ if (isVue3) {
           if (!isSecondArgumentDataObject) {
             return h.apply(void 0, [tag3, dataObjOrChildren].concat(slots));
           }
-          var attrs = dataObjOrChildren.attrs, props152 = dataObjOrChildren.props, restData = _objectWithoutProperties(dataObjOrChildren, ["attrs", "props"]);
+          var attrs2 = dataObjOrChildren.attrs, props153 = dataObjOrChildren.props, restData = _objectWithoutProperties(dataObjOrChildren, ["attrs", "props"]);
           var normalizedData = _objectSpread(_objectSpread({}, restData), {}, {
-            attrs,
-            props: isTag3 ? {} : props152
+            attrs: attrs2,
+            props: isTag3 ? {} : props153
           });
           if (tag3 === "router-link" && !normalizedData.slots && !normalizedData.scopedSlots) {
             normalizedData.scopedSlots = {
@@ -224,13 +6648,13 @@ if (isVue3) {
       };
     }
     return originalExtend.call(this, definition);
-  }).bind(Vue$1);
+  }).bind(Vue);
 }
 var originalExtend;
 var KNOWN_COMPONENTS;
 var originalVModelDynamicCreated;
 var originalVModelDynamicBeforeUpdate;
-var nextTick = Vue$1.nextTick;
+var nextTick2 = Vue.nextTick;
 
 // node_modules/bootstrap-vue/esm/constants/env.js
 var HAS_WINDOW_SUPPORT = typeof window !== "undefined";
@@ -475,7 +6899,7 @@ function _typeof3(obj) {
 var toType = function toType2(value2) {
   return _typeof3(value2);
 };
-var toRawType = function toRawType2(value2) {
+var toRawType2 = function toRawType3(value2) {
   return Object.prototype.toString.call(value2).slice(8, -1);
 };
 var isUndefined = function isUndefined2(value2) {
@@ -487,10 +6911,10 @@ var isNull = function isNull2(value2) {
 var isUndefinedOrNull = function isUndefinedOrNull2(value2) {
   return isUndefined(value2) || isNull(value2);
 };
-var isFunction = function isFunction2(value2) {
+var isFunction2 = function isFunction3(value2) {
   return toType(value2) === "function";
 };
-var isBoolean = function isBoolean2(value2) {
+var isBoolean2 = function isBoolean3(value2) {
   return toType(value2) === "boolean";
 };
 var isString = function isString2(value2) {
@@ -502,13 +6926,13 @@ var isNumber = function isNumber2(value2) {
 var isNumeric = function isNumeric2(value2) {
   return RX_NUMBER.test(String(value2));
 };
-var isArray = function isArray2(value2) {
+var isArray2 = function isArray3(value2) {
   return Array.isArray(value2);
 };
-var isObject = function isObject2(obj) {
+var isObject2 = function isObject3(obj) {
   return obj !== null && _typeof3(obj) === "object";
 };
-var isPlainObject = function isPlainObject2(obj) {
+var isPlainObject2 = function isPlainObject3(obj) {
   return Object.prototype.toString.call(obj) === "[object Object]";
 };
 var isDate = function isDate2(value2) {
@@ -520,11 +6944,11 @@ var isEvent = function isEvent2(value2) {
 var isFile = function isFile2(value2) {
   return value2 instanceof File;
 };
-var isRegExp = function isRegExp2(value2) {
-  return toRawType(value2) === "RegExp";
+var isRegExp2 = function isRegExp3(value2) {
+  return toRawType2(value2) === "RegExp";
 };
-var isPromise = function isPromise2(value2) {
-  return !isUndefinedOrNull(value2) && isFunction(value2.then) && isFunction(value2.catch);
+var isPromise2 = function isPromise3(value2) {
+  return !isUndefinedOrNull(value2) && isFunction2(value2.then) && isFunction2(value2.catch);
 };
 
 // node_modules/bootstrap-vue/esm/utils/object.js
@@ -538,16 +6962,16 @@ function ownKeys2(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread2(target) {
+function _objectSpread2(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys2(Object(source), true).forEach(function(key) {
-      _defineProperty2(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys2(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty2(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys2(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty2(obj, key, value2) {
   if (key in obj) {
@@ -563,8 +6987,8 @@ var assign = function assign2() {
 var create = function create2(proto, optionalProps) {
   return Object.create(proto, optionalProps);
 };
-var defineProperties = function defineProperties2(obj, props152) {
-  return Object.defineProperties(obj, props152);
+var defineProperties = function defineProperties2(obj, props153) {
+  return Object.defineProperties(obj, props153);
 };
 var defineProperty = function defineProperty2(obj, prop2, descriptor) {
   return Object.defineProperty(obj, prop2, descriptor);
@@ -575,43 +6999,43 @@ var getOwnPropertyNames = function getOwnPropertyNames2(obj) {
 var keys = function keys2(obj) {
   return Object.keys(obj);
 };
-var hasOwnProperty = function hasOwnProperty2(obj, prop2) {
+var hasOwnProperty2 = function hasOwnProperty3(obj, prop2) {
   return Object.prototype.hasOwnProperty.call(obj, prop2);
 };
-var toString = function toString2(obj) {
+var toString2 = function toString3(obj) {
   return Object.prototype.toString.call(obj);
 };
 var clone = function clone2(obj) {
   return _objectSpread2({}, obj);
 };
-var pick = function pick2(obj, props152) {
+var pick = function pick2(obj, props153) {
   return keys(obj).filter(function(key) {
-    return props152.indexOf(key) !== -1;
+    return props153.indexOf(key) !== -1;
   }).reduce(function(result, key) {
     return _objectSpread2(_objectSpread2({}, result), {}, _defineProperty2({}, key, obj[key]));
   }, {});
 };
-var omit = function omit2(obj, props152) {
+var omit = function omit2(obj, props153) {
   return keys(obj).filter(function(key) {
-    return props152.indexOf(key) === -1;
+    return props153.indexOf(key) === -1;
   }).reduce(function(result, key) {
     return _objectSpread2(_objectSpread2({}, result), {}, _defineProperty2({}, key, obj[key]));
   }, {});
 };
-var mergeDeep = function mergeDeep2(target, source) {
-  if (isObject(target) && isObject(source)) {
+var mergeDeep = function mergeDeep2(target2, source) {
+  if (isObject2(target2) && isObject2(source)) {
     keys(source).forEach(function(key) {
-      if (isObject(source[key])) {
-        if (!target[key] || !isObject(target[key])) {
-          target[key] = source[key];
+      if (isObject2(source[key])) {
+        if (!target2[key] || !isObject2(target2[key])) {
+          target2[key] = source[key];
         }
-        mergeDeep2(target[key], source[key]);
+        mergeDeep2(target2[key], source[key]);
       } else {
-        assign(target, _defineProperty2({}, key, source[key]));
+        assign(target2, _defineProperty2({}, key, source[key]));
       }
     });
   }
-  return target;
+  return target2;
 };
 var sortKeys = function sortKeys2(obj) {
   return keys(obj).sort().reduce(function(result, key) {
@@ -637,16 +7061,16 @@ function ownKeys3(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread3(target) {
+function _objectSpread3(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys3(Object(source), true).forEach(function(key) {
-      _defineProperty3(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys3(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty3(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys3(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty3(obj, key, value2) {
   if (key in obj) {
@@ -693,12 +7117,12 @@ function _arrayLikeToArray(arr, len) {
 }
 var cloneDeep = function cloneDeep2(obj) {
   var defaultValue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : obj;
-  if (isArray(obj)) {
+  if (isArray2(obj)) {
     return obj.reduce(function(result, val) {
       return [].concat(_toConsumableArray(result), [cloneDeep2(val, val)]);
     }, []);
   }
-  if (isPlainObject(obj)) {
+  if (isPlainObject2(obj)) {
     return keys(obj).reduce(function(result, key) {
       return _objectSpread3(_objectSpread3({}, result), {}, _defineProperty3({}, key, cloneDeep2(obj[key], obj[key])));
     }, {});
@@ -707,27 +7131,27 @@ var cloneDeep = function cloneDeep2(obj) {
 };
 
 // node_modules/bootstrap-vue/esm/utils/identity.js
-var identity = function identity2(x) {
+var identity2 = function identity3(x) {
   return x;
 };
 
 // node_modules/bootstrap-vue/esm/utils/get.js
 var getRaw = function getRaw2(obj, path) {
   var defaultValue = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : void 0;
-  path = isArray(path) ? path.join(".") : path;
-  if (!path || !isObject(obj)) {
+  path = isArray2(path) ? path.join(".") : path;
+  if (!path || !isObject2(obj)) {
     return defaultValue;
   }
   if (path in obj) {
     return obj[path];
   }
   path = String(path).replace(RX_ARRAY_NOTATION, ".$1");
-  var steps = path.split(".").filter(identity);
+  var steps = path.split(".").filter(identity2);
   if (steps.length === 0) {
     return defaultValue;
   }
   return steps.every(function(step) {
-    return isObject(obj) && step in obj && !isUndefinedOrNull(obj = obj[step]);
+    return isObject2(obj) && step in obj && !isUndefinedOrNull(obj = obj[step]);
   }) ? obj : isNull(obj) ? null : defaultValue;
 };
 var get = function get2(obj, path) {
@@ -750,7 +7174,7 @@ var getNoWarn = function getNoWarn2() {
 };
 
 // node_modules/bootstrap-vue/esm/utils/warn.js
-var warn = function warn2(message) {
+var warn2 = function warn3(message) {
   var source = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
   if (!getNoWarn()) {
     console.warn("[BootstrapVue warn]: ".concat(source ? "".concat(source, " - ") : "").concat(message));
@@ -760,7 +7184,7 @@ var warnNotClient = function warnNotClient2(source) {
   if (IS_BROWSER) {
     return false;
   } else {
-    warn("".concat(source, ": Can not be called during SSR."));
+    warn2("".concat(source, ": Can not be called during SSR."));
     return true;
   }
 };
@@ -768,7 +7192,7 @@ var warnNoPromiseSupport = function warnNoPromiseSupport2(source) {
   if (HAS_PROMISE_SUPPORT) {
     return false;
   } else {
-    warn("".concat(source, ": Requires Promise support."));
+    warn2("".concat(source, ": Requires Promise support."));
     return true;
   }
 };
@@ -776,7 +7200,7 @@ var warnNoMutationObserverSupport = function warnNoMutationObserverSupport2(sour
   if (HAS_MUTATION_OBSERVER_SUPPORT) {
     return false;
   } else {
-    warn("".concat(source, ": Requires MutationObserver support."));
+    warn2("".concat(source, ": Requires MutationObserver support."));
     return true;
   }
 };
@@ -787,14 +7211,14 @@ function _classCallCheck2(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-function _defineProperties(target, props152) {
-  for (var i = 0; i < props152.length; i++) {
-    var descriptor = props152[i];
+function _defineProperties(target2, props153) {
+  for (var i = 0; i < props153.length; i++) {
+    var descriptor = props153[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
       descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target2, descriptor.key, descriptor);
   }
 }
 function _createClass(Constructor, protoProps, staticProps) {
@@ -814,27 +7238,27 @@ var BvConfig = function() {
     key: "setConfig",
     value: function setConfig3() {
       var _this = this;
-      var config = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-      if (!isPlainObject(config)) {
+      var config2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+      if (!isPlainObject2(config2)) {
         return;
       }
-      var configKeys = getOwnPropertyNames(config);
+      var configKeys = getOwnPropertyNames(config2);
       configKeys.forEach(function(key) {
-        var subConfig = config[key];
+        var subConfig = config2[key];
         if (key === "breakpoints") {
-          if (!isArray(subConfig) || subConfig.length < 2 || subConfig.some(function(b) {
+          if (!isArray2(subConfig) || subConfig.length < 2 || subConfig.some(function(b) {
             return !isString(b) || b.length === 0;
           })) {
-            warn('"breakpoints" must be an array of at least 2 breakpoint names', NAME);
+            warn2('"breakpoints" must be an array of at least 2 breakpoint names', NAME);
           } else {
             _this.$_config[key] = cloneDeep(subConfig);
           }
-        } else if (isPlainObject(subConfig)) {
-          _this.$_config[key] = getOwnPropertyNames(subConfig).reduce(function(config2, prop2) {
+        } else if (isPlainObject2(subConfig)) {
+          _this.$_config[key] = getOwnPropertyNames(subConfig).reduce(function(config3, prop2) {
             if (!isUndefined(subConfig[prop2])) {
-              config2[prop2] = cloneDeep(subConfig[prop2]);
+              config3[prop2] = cloneDeep(subConfig[prop2]);
             }
-            return config2;
+            return config3;
           }, _this.$_config[key] || {});
         }
       });
@@ -862,10 +7286,10 @@ var BvConfig = function() {
   return BvConfig2;
 }();
 var setConfig = function setConfig2() {
-  var config = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-  var Vue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : Vue$1;
-  Vue.prototype[PROP_NAME] = Vue$1.prototype[PROP_NAME] = Vue.prototype[PROP_NAME] || Vue$1.prototype[PROP_NAME] || new BvConfig();
-  Vue.prototype[PROP_NAME].setConfig(config);
+  var config2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+  var Vue2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : Vue;
+  Vue2.prototype[PROP_NAME] = Vue.prototype[PROP_NAME] = Vue2.prototype[PROP_NAME] || Vue.prototype[PROP_NAME] || new BvConfig();
+  Vue2.prototype[PROP_NAME].setConfig(config2);
 };
 
 // node_modules/bootstrap-vue/esm/utils/plugins.js
@@ -879,16 +7303,16 @@ function ownKeys4(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread4(target) {
+function _objectSpread4(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys4(Object(source), true).forEach(function(key) {
-      _defineProperty4(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys4(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty4(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys4(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty4(obj, key, value2) {
   if (key in obj) {
@@ -901,87 +7325,87 @@ function _defineProperty4(obj, key, value2) {
 var checkMultipleVue = function() {
   var checkMultipleVueWarned = false;
   var MULTIPLE_VUE_WARNING = ["Multiple instances of Vue detected!", "You may need to set up an alias for Vue in your bundler config.", "See: https://bootstrap-vue.org/docs#using-module-bundlers"].join("\n");
-  return function(Vue) {
-    if (!checkMultipleVueWarned && Vue$1 !== Vue && !IS_JSDOM) {
-      warn(MULTIPLE_VUE_WARNING);
+  return function(Vue2) {
+    if (!checkMultipleVueWarned && Vue !== Vue2 && !IS_JSDOM) {
+      warn2(MULTIPLE_VUE_WARNING);
     }
     checkMultipleVueWarned = true;
   };
 }();
 var installFactory = function installFactory2() {
-  var _ref = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, components = _ref.components, directives = _ref.directives, plugins = _ref.plugins;
-  var install2 = function install3(Vue) {
-    var config = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+  var _ref = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, components = _ref.components, directives2 = _ref.directives, plugins = _ref.plugins;
+  var install2 = function install3(Vue2) {
+    var config2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
     if (install3.installed) {
       return;
     }
     install3.installed = true;
-    checkMultipleVue(Vue);
-    setConfig(config, Vue);
-    registerComponents(Vue, components);
-    registerDirectives(Vue, directives);
-    registerPlugins(Vue, plugins);
+    checkMultipleVue(Vue2);
+    setConfig(config2, Vue2);
+    registerComponents(Vue2, components);
+    registerDirectives(Vue2, directives2);
+    registerPlugins(Vue2, plugins);
   };
   install2.installed = false;
   return install2;
 };
 var installFactoryNoConfig = function installFactoryNoConfig2() {
-  var _ref2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, components = _ref2.components, directives = _ref2.directives, plugins = _ref2.plugins;
-  var install2 = function install3(Vue) {
+  var _ref2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, components = _ref2.components, directives2 = _ref2.directives, plugins = _ref2.plugins;
+  var install2 = function install3(Vue2) {
     if (install3.installed) {
       return;
     }
     install3.installed = true;
-    checkMultipleVue(Vue);
-    registerComponents(Vue, components);
-    registerDirectives(Vue, directives);
-    registerPlugins(Vue, plugins);
+    checkMultipleVue(Vue2);
+    registerComponents(Vue2, components);
+    registerDirectives(Vue2, directives2);
+    registerPlugins(Vue2, plugins);
   };
   install2.installed = false;
   return install2;
 };
 var pluginFactory = function pluginFactory2() {
   var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-  var extend2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-  return _objectSpread4(_objectSpread4({}, extend2), {}, {
+  var extend3 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+  return _objectSpread4(_objectSpread4({}, extend3), {}, {
     install: installFactory(options)
   });
 };
 var pluginFactoryNoConfig = function pluginFactoryNoConfig2() {
   var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-  var extend2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-  return _objectSpread4(_objectSpread4({}, extend2), {}, {
+  var extend3 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+  return _objectSpread4(_objectSpread4({}, extend3), {}, {
     install: installFactoryNoConfig(options)
   });
 };
-var registerPlugins = function registerPlugins2(Vue) {
+var registerPlugins = function registerPlugins2(Vue2) {
   var plugins = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
   for (var plugin5 in plugins) {
     if (plugin5 && plugins[plugin5]) {
-      Vue.use(plugins[plugin5]);
+      Vue2.use(plugins[plugin5]);
     }
   }
 };
-var registerComponent = function registerComponent2(Vue, name2, def) {
-  if (Vue && name2 && def) {
-    Vue.component(name2, def);
+var registerComponent = function registerComponent2(Vue2, name2, def2) {
+  if (Vue2 && name2 && def2) {
+    Vue2.component(name2, def2);
   }
 };
-var registerComponents = function registerComponents2(Vue) {
+var registerComponents = function registerComponents2(Vue2) {
   var components = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
   for (var component in components) {
-    registerComponent(Vue, component, components[component]);
+    registerComponent(Vue2, component, components[component]);
   }
 };
-var registerDirective = function registerDirective2(Vue, name2, def) {
-  if (Vue && name2 && def) {
-    Vue.directive(name2.replace(/^VB/, "B"), def);
+var registerDirective = function registerDirective2(Vue2, name2, def2) {
+  if (Vue2 && name2 && def2) {
+    Vue2.directive(name2.replace(/^VB/, "B"), def2);
   }
 };
-var registerDirectives = function registerDirectives2(Vue) {
-  var directives = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-  for (var directive3 in directives) {
-    registerDirective(Vue, directive3, directives[directive3]);
+var registerDirectives = function registerDirectives2(Vue2) {
+  var directives2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+  for (var directive4 in directives2) {
+    registerDirective(Vue2, directive4, directives2[directive4]);
   }
 };
 
@@ -1283,14 +7707,14 @@ var from = function from2() {
 var arrayIncludes = function arrayIncludes2(array, value2) {
   return array.indexOf(value2) !== -1;
 };
-var concat = function concat2() {
+var concat2 = function concat3() {
   for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
   return Array.prototype.concat.apply([], args);
 };
 var createArray = function createArray2(length, fillFn) {
-  var mapFn = isFunction(fillFn) ? fillFn : function() {
+  var mapFn = isFunction2(fillFn) ? fillFn : function() {
     return fillFn;
   };
   return Array.apply(null, {
@@ -1299,12 +7723,12 @@ var createArray = function createArray2(length, fillFn) {
 };
 var flatten = function flatten2(array) {
   return array.reduce(function(result, item) {
-    return concat(result, item);
+    return concat2(result, item);
   }, []);
 };
 var flattenDeep = function flattenDeep2(array) {
   return array.reduce(function(result, item) {
-    return concat(result, Array.isArray(item) ? flattenDeep2(item) : item);
+    return concat2(result, Array.isArray(item) ? flattenDeep2(item) : item);
   }, []);
 };
 
@@ -1312,7 +7736,7 @@ var flattenDeep = function flattenDeep2(array) {
 var hasNormalizedSlot = function hasNormalizedSlot2(names) {
   var $scopedSlots = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
   var $slots = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-  names = concat(names).filter(identity);
+  names = concat2(names).filter(identity2);
   return names.some(function(name2) {
     return $scopedSlots[name2] || $slots[name2];
   });
@@ -1321,17 +7745,17 @@ var normalizeSlot = function normalizeSlot2(names) {
   var scope = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
   var $scopedSlots = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
   var $slots = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : {};
-  names = concat(names).filter(identity);
+  names = concat2(names).filter(identity2);
   var slot;
   for (var i = 0; i < names.length && !slot; i++) {
     var name2 = names[i];
     slot = $scopedSlots[name2] || $slots[name2];
   }
-  return isFunction(slot) ? slot(scope) : slot;
+  return isFunction2(slot) ? slot(scope) : slot;
 };
 
 // node_modules/bootstrap-vue/esm/mixins/normalize-slot.js
-var normalizeSlotMixin = extend({
+var normalizeSlotMixin = extend2({
   methods: {
     // Returns `true` if the either a `$scopedSlot` or `$slot` exists with the specified name
     // `name` can be a string name or an array of names
@@ -1349,7 +7773,7 @@ var normalizeSlotMixin = extend({
       var scopedSlots = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : this.$scopedSlots;
       var slots = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : this.$slots;
       var vNodes = normalizeSlot(name2, scope, scopedSlots, slots);
-      return vNodes ? concat(vNodes) : vNodes;
+      return vNodes ? concat2(vNodes) : vNodes;
     }
   }
 });
@@ -1397,18 +7821,18 @@ var upperFirst = function upperFirst2(str) {
 var escapeRegExp = function escapeRegExp2(str) {
   return str.replace(RX_REGEXP_REPLACE, "\\$&");
 };
-var toString3 = function toString4(val) {
+var toString4 = function toString5(val) {
   var spaces = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 2;
-  return isUndefinedOrNull(val) ? "" : isArray(val) || isPlainObject(val) && val.toString === Object.prototype.toString ? JSON.stringify(val, null, spaces) : String(val);
+  return isUndefinedOrNull(val) ? "" : isArray2(val) || isPlainObject2(val) && val.toString === Object.prototype.toString ? JSON.stringify(val, null, spaces) : String(val);
 };
 var trimLeft = function trimLeft2(str) {
-  return toString3(str).replace(RX_TRIM_LEFT, "");
+  return toString4(str).replace(RX_TRIM_LEFT, "");
 };
 var trim = function trim2(str) {
-  return toString3(str).trim();
+  return toString4(str).trim();
 };
 var lowerCase = function lowerCase2(str) {
-  return toString3(str).toLowerCase();
+  return toString4(str).toLowerCase();
 };
 
 // node_modules/bootstrap-vue/esm/utils/dom.js
@@ -1420,7 +7844,7 @@ var matchesEl = ELEMENT_PROTO.matches || ELEMENT_PROTO.msMatchesSelector || ELEM
 var closestEl = ELEMENT_PROTO.closest || function(sel) {
   var el = this;
   do {
-    if (matches(el, sel)) {
+    if (matches2(el, sel)) {
       return el;
     }
     el = el.parentElement || el.parentNode;
@@ -1448,7 +7872,7 @@ var getActiveElement = function getActiveElement2() {
   }) ? activeElement : null;
 };
 var isTag = function isTag2(tag3, name2) {
-  return toString3(tag3).toLowerCase() === toString3(name2).toLowerCase();
+  return toString4(tag3).toLowerCase() === toString4(name2).toLowerCase();
 };
 var isActiveElement = function isActiveElement2(el) {
   return isElement(el) && el === getActiveElement();
@@ -1457,7 +7881,7 @@ var isVisible = function isVisible2(el) {
   if (!isElement(el) || !el.parentNode || !contains(DOCUMENT.body, el)) {
     return false;
   }
-  if (getStyle(el, "display") === "none") {
+  if (getStyle2(el, "display") === "none") {
     return false;
   }
   var bcr = getBCR(el);
@@ -1475,7 +7899,7 @@ var selectAll = function selectAll2(selector, root) {
 var select = function select2(selector, root) {
   return (isElement(root) ? root : DOCUMENT).querySelector(selector) || null;
 };
-var matches = function matches2(el, selector) {
+var matches2 = function matches3(el, selector) {
   return isElement(el) ? matchesEl.call(el, selector) : false;
 };
 var closest = function closest2(selector, root) {
@@ -1487,17 +7911,17 @@ var closest = function closest2(selector, root) {
   return includeRoot ? el : el === root ? null : el;
 };
 var contains = function contains2(parent, child) {
-  return parent && isFunction(parent.contains) ? parent.contains(child) : false;
+  return parent && isFunction2(parent.contains) ? parent.contains(child) : false;
 };
 var getById = function getById2(id) {
   return DOCUMENT.getElementById(/^#/.test(id) ? id.slice(1) : id) || null;
 };
-var addClass = function addClass2(el, className) {
+var addClass2 = function addClass3(el, className) {
   if (className && isElement(el) && el.classList) {
     el.classList.add(className);
   }
 };
-var removeClass = function removeClass2(el, className) {
+var removeClass2 = function removeClass3(el, className) {
   if (className && isElement(el) && el.classList) {
     el.classList.remove(className);
   }
@@ -1508,7 +7932,7 @@ var hasClass = function hasClass2(el, className) {
   }
   return false;
 };
-var setAttr = function setAttr2(el, attr, value2) {
+var setAttr2 = function setAttr3(el, attr, value2) {
   if (attr && isElement(el)) {
     el.setAttribute(attr, value2);
   }
@@ -1534,7 +7958,7 @@ var removeStyle = function removeStyle2(el, prop2) {
     el.style[prop2] = "";
   }
 };
-var getStyle = function getStyle2(el, prop2) {
+var getStyle2 = function getStyle3(el, prop2) {
   return prop2 && isElement(el) ? el.style[prop2] || null : null;
 };
 var getBCR = function getBCR2(el) {
@@ -1633,7 +8057,7 @@ var memoize = function memoize2(fn) {
 };
 
 // node_modules/bootstrap-vue/esm/utils/config.js
-var VueProto = Vue$1.prototype;
+var VueProto = Vue.prototype;
 var getConfigValue = function getConfigValue2(key) {
   var defaultValue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : void 0;
   var bvConfig = VueProto[PROP_NAME];
@@ -1670,16 +8094,16 @@ function ownKeys5(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread5(target) {
+function _objectSpread5(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys5(Object(source), true).forEach(function(key) {
-      _defineProperty5(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys5(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty5(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys5(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty5(obj, key, value2) {
   if (key in obj) {
@@ -1710,29 +8134,29 @@ var makeProp = function makeProp2() {
   } : {}), required2 ? {
     required: required2
   } : isUndefined(value2) ? {} : {
-    default: isObject(value2) ? function() {
+    default: isObject2(value2) ? function() {
       return value2;
     } : value2
   }), isUndefined(validator3) ? {} : {
     validator: validator3
   });
 };
-var copyProps = function copyProps2(props152) {
-  var transformFn = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : identity;
-  if (isArray(props152)) {
-    return props152.map(transformFn);
+var copyProps = function copyProps2(props153) {
+  var transformFn = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : identity2;
+  if (isArray2(props153)) {
+    return props153.map(transformFn);
   }
   var copied = {};
-  for (var prop2 in props152) {
-    if (hasOwnProperty(props152, prop2)) {
-      copied[transformFn(prop2)] = isObject(props152[prop2]) ? clone(props152[prop2]) : props152[prop2];
+  for (var prop2 in props153) {
+    if (hasOwnProperty2(props153, prop2)) {
+      copied[transformFn(prop2)] = isObject2(props153[prop2]) ? clone(props153[prop2]) : props153[prop2];
     }
   }
   return copied;
 };
 var pluckProps = function pluckProps2(keysToPluck, objToPluck) {
-  var transformFn = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : identity;
-  return (isArray(keysToPluck) ? keysToPluck.slice() : keys(keysToPluck)).reduce(function(memo, prop2) {
+  var transformFn = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : identity2;
+  return (isArray2(keysToPluck) ? keysToPluck.slice() : keys(keysToPluck)).reduce(function(memo, prop2) {
     memo[transformFn(prop2)] = objToPluck[prop2];
     return memo;
   }, {});
@@ -1741,18 +8165,18 @@ var makePropConfigurable = function makePropConfigurable2(prop2, key, componentK
   return _objectSpread5(_objectSpread5({}, cloneDeep(prop2)), {}, {
     default: function bvConfigurablePropDefault() {
       var value2 = getComponentConfig(componentKey, key, prop2.default);
-      return isFunction(value2) ? value2() : value2;
+      return isFunction2(value2) ? value2() : value2;
     }
   });
 };
-var makePropsConfigurable = function makePropsConfigurable2(props152, componentKey) {
-  return keys(props152).reduce(function(result, key) {
-    return _objectSpread5(_objectSpread5({}, result), {}, _defineProperty5({}, key, makePropConfigurable(props152[key], key, componentKey)));
+var makePropsConfigurable = function makePropsConfigurable2(props153, componentKey) {
+  return keys(props153).reduce(function(result, key) {
+    return _objectSpread5(_objectSpread5({}, result), {}, _defineProperty5({}, key, makePropConfigurable(props153[key], key, componentKey)));
   }, {});
 };
 var configurablePropDefaultFnName = makePropConfigurable({}, "", "").default.name;
 var hasPropFunction = function hasPropFunction2(fn) {
-  return isFunction(fn) && fn.name && fn.name !== configurablePropDefaultFnName;
+  return isFunction2(fn) && fn.name && fn.name !== configurablePropDefaultFnName;
 };
 
 // node_modules/bootstrap-vue/esm/utils/model.js
@@ -1766,17 +8190,17 @@ function _defineProperty6(obj, key, value2) {
 }
 var makeModelMixin = function makeModelMixin2(prop2) {
   var _ref = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {}, _ref$type = _ref.type, type2 = _ref$type === void 0 ? PROP_TYPE_ANY : _ref$type, _ref$defaultValue = _ref.defaultValue, defaultValue = _ref$defaultValue === void 0 ? void 0 : _ref$defaultValue, _ref$validator = _ref.validator, validator3 = _ref$validator === void 0 ? void 0 : _ref$validator, _ref$event = _ref.event, event2 = _ref$event === void 0 ? EVENT_NAME_INPUT : _ref$event;
-  var props152 = _defineProperty6({}, prop2, makeProp(type2, defaultValue, validator3));
-  var mixin2 = extend({
+  var props153 = _defineProperty6({}, prop2, makeProp(type2, defaultValue, validator3));
+  var mixin2 = extend2({
     model: {
       prop: prop2,
       event: event2
     },
-    props: props152
+    props: props153
   });
   return {
     mixin: mixin2,
-    props: props152,
+    props: props153,
     prop: prop2,
     event: event2
   };
@@ -1785,11 +8209,11 @@ var makeModelMixin = function makeModelMixin2(prop2) {
 // node_modules/bootstrap-vue/esm/utils/events.js
 var parseEventOptions = function parseEventOptions2(options) {
   if (HAS_PASSIVE_EVENT_SUPPORT) {
-    return isObject(options) ? options : {
+    return isObject2(options) ? options : {
       capture: !!options || false
     };
   } else {
-    return !!(isObject(options) ? options.capture : options);
+    return !!(isObject2(options) ? options.capture : options);
   }
 };
 var eventOn = function eventOn2(el, eventName, handler3, options) {
@@ -1840,31 +8264,31 @@ function _defineProperty7(obj, key, value2) {
   }
   return obj;
 }
-var props = makePropsConfigurable({
+var props2 = makePropsConfigurable({
   ariaLabel: makeProp(PROP_TYPE_STRING, "Close"),
   content: makeProp(PROP_TYPE_STRING, "&times;"),
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   textVariant: makeProp(PROP_TYPE_STRING)
 }, NAME_BUTTON_CLOSE);
-var BButtonClose = extend({
+var BButtonClose = extend2({
   name: NAME_BUTTON_CLOSE,
   functional: true,
-  props,
+  props: props2,
   render: function render(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
+    var props153 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
     var $slots = slots();
     var $scopedSlots = scopedSlots || {};
     var componentData = {
       staticClass: "close",
-      class: _defineProperty7({}, "text-".concat(props152.textVariant), props152.textVariant),
+      class: _defineProperty7({}, "text-".concat(props153.textVariant), props153.textVariant),
       attrs: {
         type: "button",
-        disabled: props152.disabled,
-        "aria-label": props152.ariaLabel ? String(props152.ariaLabel) : null
+        disabled: props153.disabled,
+        "aria-label": props153.ariaLabel ? String(props153.ariaLabel) : null
       },
       on: {
         click: function click2(event2) {
-          if (props152.disabled && isEvent(event2)) {
+          if (props153.disabled && isEvent(event2)) {
             stopEvent(event2);
           }
         }
@@ -1872,7 +8296,7 @@ var BButtonClose = extend({
     };
     if (!hasNormalizedSlot(SLOT_NAME_DEFAULT, $scopedSlots, $slots)) {
       componentData.domProps = {
-        innerHTML: props152.content
+        innerHTML: props153.content
       };
     }
     return h("button", a(data48, componentData), normalizeSlot(SLOT_NAME_DEFAULT, {}, $scopedSlots, $slots));
@@ -1890,16 +8314,16 @@ function ownKeys6(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread6(target) {
+function _objectSpread6(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys6(Object(source), true).forEach(function(key) {
-      _defineProperty8(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys6(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty8(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys6(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty8(obj, key, value2) {
   if (key in obj) {
@@ -1922,7 +8346,7 @@ var FADE_PROPS = _objectSpread6(_objectSpread6({}, NO_FADE_PROPS), {}, {
   enterActiveClass: "fade",
   leaveActiveClass: "fade"
 });
-var props2 = {
+var props3 = {
   // Has no effect if `trans-props` provided
   appear: makeProp(PROP_TYPE_BOOLEAN, false),
   // Can be overridden by user supplied `trans-props`
@@ -1933,16 +8357,16 @@ var props2 = {
   // For user supplied transitions (if needed)
   transProps: makeProp(PROP_TYPE_OBJECT)
 };
-var BVTransition = extend({
+var BVTransition = extend2({
   name: NAME_TRANSITION,
   functional: true,
-  props: props2,
+  props: props3,
   render: function render2(h, _ref) {
-    var children2 = _ref.children, data48 = _ref.data, props152 = _ref.props;
-    var transProps = props152.transProps;
-    if (!isPlainObject(transProps)) {
-      transProps = props152.noFade ? NO_FADE_PROPS : FADE_PROPS;
-      if (props152.appear) {
+    var children2 = _ref.children, data48 = _ref.data, props153 = _ref.props;
+    var transProps = props153.transProps;
+    if (!isPlainObject2(transProps)) {
+      transProps = props153.noFade ? NO_FADE_PROPS : FADE_PROPS;
+      if (props153.appear) {
         transProps = _objectSpread6(_objectSpread6({}, transProps), {}, {
           appear: true,
           appearClass: transProps.enterClass,
@@ -1952,7 +8376,7 @@ var BVTransition = extend({
       }
     }
     transProps = _objectSpread6(_objectSpread6({
-      mode: props152.mode
+      mode: props153.mode
     }, transProps), {}, {
       // We always need `css` true
       css: true
@@ -1982,16 +8406,16 @@ function ownKeys7(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread7(target) {
+function _objectSpread7(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys7(Object(source), true).forEach(function(key) {
-      _defineProperty9(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys7(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty9(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys7(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty9(obj, key, value2) {
   if (key in obj) {
@@ -2009,32 +8433,32 @@ var modelMixin = _makeModelMixin.mixin;
 var modelProps = _makeModelMixin.props;
 var MODEL_PROP_NAME = _makeModelMixin.prop;
 var MODEL_EVENT_NAME = _makeModelMixin.event;
-var parseCountDown = function parseCountDown2(show6) {
-  if (show6 === "" || isBoolean(show6)) {
+var parseCountDown = function parseCountDown2(show7) {
+  if (show7 === "" || isBoolean2(show7)) {
     return 0;
   }
-  show6 = toInteger(show6, 0);
-  return show6 > 0 ? show6 : 0;
+  show7 = toInteger(show7, 0);
+  return show7 > 0 ? show7 : 0;
 };
-var parseShow = function parseShow2(show6) {
-  if (show6 === "" || show6 === true) {
+var parseShow = function parseShow2(show7) {
+  if (show7 === "" || show7 === true) {
     return true;
   }
-  if (toInteger(show6, 0) < 1) {
+  if (toInteger(show7, 0) < 1) {
     return false;
   }
-  return !!show6;
+  return !!show7;
 };
-var props3 = makePropsConfigurable(sortKeys(_objectSpread7(_objectSpread7({}, modelProps), {}, {
+var props4 = makePropsConfigurable(sortKeys(_objectSpread7(_objectSpread7({}, modelProps), {}, {
   dismissLabel: makeProp(PROP_TYPE_STRING, "Close"),
   dismissible: makeProp(PROP_TYPE_BOOLEAN, false),
   fade: makeProp(PROP_TYPE_BOOLEAN, false),
   variant: makeProp(PROP_TYPE_STRING, "info")
 })), NAME_ALERT);
-var BAlert = extend({
+var BAlert = extend2({
   name: NAME_ALERT,
   mixins: [modelMixin, normalizeSlotMixin],
-  props: props3,
+  props: props4,
   data: function data() {
     return {
       countDown: 0,
@@ -2048,10 +8472,10 @@ var BAlert = extend({
   }), _defineProperty9(_watch, "countDown", function countDown(newValue) {
     var _this = this;
     this.clearCountDownInterval();
-    var show6 = this[MODEL_PROP_NAME];
-    if (isNumeric(show6)) {
+    var show7 = this[MODEL_PROP_NAME];
+    if (isNumeric(show7)) {
       this.$emit(EVENT_NAME_DISMISS_COUNT_DOWN, newValue);
-      if (show6 !== newValue) {
+      if (show7 !== newValue) {
         this.$emit(MODEL_EVENT_NAME, newValue);
       }
       if (newValue > 0) {
@@ -2068,19 +8492,19 @@ var BAlert = extend({
       }
     }
   }), _defineProperty9(_watch, "localShow", function localShow(newValue) {
-    var show6 = this[MODEL_PROP_NAME];
-    if (!newValue && (this.dismissible || isNumeric(show6))) {
+    var show7 = this[MODEL_PROP_NAME];
+    if (!newValue && (this.dismissible || isNumeric(show7))) {
       this.$emit(EVENT_NAME_DISMISSED);
     }
-    if (!isNumeric(show6) && show6 !== newValue) {
+    if (!isNumeric(show7) && show7 !== newValue) {
       this.$emit(MODEL_EVENT_NAME, newValue);
     }
   }), _watch),
   created: function created() {
     this.$_filterTimer = null;
-    var show6 = this[MODEL_PROP_NAME];
-    this.countDown = parseCountDown(show6);
-    this.localShow = parseShow(show6);
+    var show7 = this[MODEL_PROP_NAME];
+    this.countDown = parseCountDown(show7);
+    this.localShow = parseShow(show7);
   },
   beforeDestroy: function beforeDestroy() {
     this.clearCountDownInterval();
@@ -2209,16 +8633,16 @@ function _arrayWithHoles(arr) {
     return arr;
 }
 var CLASS_NAME = "b-aspect";
-var props4 = makePropsConfigurable({
+var props5 = makePropsConfigurable({
   // Accepts a number (i.e. `16 / 9`, `1`, `4 / 3`)
   // Or a string (i.e. '16/9', '16:9', '4:3' '1:1')
   aspect: makeProp(PROP_TYPE_NUMBER_STRING, "1:1"),
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_ASPECT);
-var BAspect = extend({
+var BAspect = extend2({
   name: NAME_ASPECT,
   mixins: [normalizeSlotMixin],
-  props: props4,
+  props: props5,
   computed: {
     padding: function padding() {
       var aspect = this.aspect;
@@ -2262,13 +8686,13 @@ var AspectPlugin = pluginFactory({
 });
 
 // node_modules/bootstrap-vue/esm/utils/safe-vue-instance.js
-function safeVueInstance(target) {
+function safeVueInstance(target2) {
   if (!isVue3) {
-    return target;
+    return target2;
   }
-  return new Proxy(target, {
-    get: function get10(target2, prop2) {
-      return prop2 in target2 ? target2[prop2] : void 0;
+  return new Proxy(target2, {
+    get: function get10(target3, prop2) {
+      return prop2 in target3 ? target3[prop2] : void 0;
     }
   });
 }
@@ -2279,20 +8703,20 @@ var encodeReserveReplacer = function encodeReserveReplacer2(c) {
   return "%" + c.charCodeAt(0).toString(16);
 };
 var encode = function encode2(str) {
-  return encodeURIComponent(toString3(str)).replace(RX_ENCODE_REVERSE, encodeReserveReplacer).replace(RX_ENCODED_COMMA, ",");
+  return encodeURIComponent(toString4(str)).replace(RX_ENCODE_REVERSE, encodeReserveReplacer).replace(RX_ENCODED_COMMA, ",");
 };
 var decode = decodeURIComponent;
 var stringifyQueryObj = function stringifyQueryObj2(obj) {
-  if (!isPlainObject(obj)) {
+  if (!isPlainObject2(obj)) {
     return "";
   }
-  var query = keys(obj).map(function(key) {
+  var query2 = keys(obj).map(function(key) {
     var value2 = obj[key];
     if (isUndefined(value2)) {
       return "";
     } else if (isNull(value2)) {
       return encode(key);
-    } else if (isArray(value2)) {
+    } else if (isArray2(value2)) {
       return value2.reduce(function(results, value22) {
         if (isNull(value22)) {
           results.push(encode(key));
@@ -2306,21 +8730,21 @@ var stringifyQueryObj = function stringifyQueryObj2(obj) {
   }).filter(function(x) {
     return x.length > 0;
   }).join("&");
-  return query ? "?".concat(query) : "";
+  return query2 ? "?".concat(query2) : "";
 };
-var parseQuery = function parseQuery2(query) {
+var parseQuery = function parseQuery2(query2) {
   var parsed = {};
-  query = toString3(query).trim().replace(RX_QUERY_START, "");
-  if (!query) {
+  query2 = toString4(query2).trim().replace(RX_QUERY_START, "");
+  if (!query2) {
     return parsed;
   }
-  query.split("&").forEach(function(param) {
+  query2.split("&").forEach(function(param) {
     var parts = param.replace(RX_PLUS, " ").split("=");
     var key = decode(parts.shift());
     var value2 = parts.length > 0 ? decode(parts.join("=")) : null;
     if (isUndefined(parsed[key])) {
       parsed[key] = value2;
-    } else if (isArray(parsed[key])) {
+    } else if (isArray2(parsed[key])) {
       parsed[key].push(value2);
     } else {
       parsed[key] = [parsed[key], value2];
@@ -2328,8 +8752,8 @@ var parseQuery = function parseQuery2(query) {
   });
   return parsed;
 };
-var isLink = function isLink2(props152) {
-  return !!(props152.href || props152.to);
+var isLink = function isLink2(props153) {
+  return !!(props153.href || props153.to);
 };
 var isRouterLink = function isRouterLink2(tag3) {
   return !!(tag3 && !isTag(tag3, "a"));
@@ -2344,8 +8768,8 @@ var computeTag = function computeTag2(_ref, thisOrParent) {
   return routerComponentName || (hasNuxt ? "nuxt-link" : "router-link");
 };
 var computeRel = function computeRel2() {
-  var _ref2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, target = _ref2.target, rel = _ref2.rel;
-  return target === "_blank" && isNull(rel) ? "noopener" : rel || null;
+  var _ref2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, target2 = _ref2.target, rel = _ref2.rel;
+  return target2 === "_blank" && isNull(rel) ? "noopener" : rel || null;
 };
 var computeHref = function computeHref2() {
   var _ref3 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, href = _ref3.href, to2 = _ref3.to;
@@ -2361,12 +8785,12 @@ var computeHref = function computeHref2() {
   if (isString(to2)) {
     return to2 || toFallback;
   }
-  if (isPlainObject(to2) && (to2.path || to2.query || to2.hash)) {
-    var path = toString3(to2.path);
-    var query = stringifyQueryObj(to2.query);
-    var hash = toString3(to2.hash);
+  if (isPlainObject2(to2) && (to2.path || to2.query || to2.hash)) {
+    var path = toString4(to2.path);
+    var query2 = stringifyQueryObj(to2.query);
+    var hash = toString4(to2.hash);
     hash = !hash || hash.charAt(0) === "#" ? hash : "#".concat(hash);
-    return "".concat(path).concat(query).concat(hash) || toFallback;
+    return "".concat(path).concat(query2).concat(hash) || toFallback;
   }
   return fallback;
 };
@@ -2395,7 +8819,7 @@ var STACKED_ATTRS = {
   role: null,
   "aria-label": null
 };
-var props5 = {
+var props6 = {
   animation: makeProp(PROP_TYPE_STRING),
   content: makeProp(PROP_TYPE_STRING),
   flipH: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -2409,24 +8833,24 @@ var props5 = {
   title: makeProp(PROP_TYPE_STRING),
   variant: makeProp(PROP_TYPE_STRING)
 };
-var BVIconBase = extend({
+var BVIconBase = extend2({
   name: NAME_ICON_BASE,
   functional: true,
-  props: props5,
+  props: props6,
   render: function render5(h, _ref) {
     var _class;
-    var data48 = _ref.data, props152 = _ref.props, children2 = _ref.children;
-    var animation = props152.animation, content = props152.content, flipH = props152.flipH, flipV = props152.flipV, stacked = props152.stacked, title2 = props152.title, variant = props152.variant;
-    var fontScale = mathMax(toFloat(props152.fontScale, 1), 0) || 1;
-    var scale = mathMax(toFloat(props152.scale, 1), 0) || 1;
-    var rotate = toFloat(props152.rotate, 0);
-    var shiftH = toFloat(props152.shiftH, 0);
-    var shiftV = toFloat(props152.shiftV, 0);
+    var data48 = _ref.data, props153 = _ref.props, children2 = _ref.children;
+    var animation = props153.animation, content = props153.content, flipH = props153.flipH, flipV = props153.flipV, stacked = props153.stacked, title2 = props153.title, variant = props153.variant;
+    var fontScale = mathMax(toFloat(props153.fontScale, 1), 0) || 1;
+    var scale = mathMax(toFloat(props153.scale, 1), 0) || 1;
+    var rotate = toFloat(props153.rotate, 0);
+    var shiftH = toFloat(props153.shiftH, 0);
+    var shiftV = toFloat(props153.shiftV, 0);
     var hasScale = flipH || flipV || scale !== 1;
     var hasTransforms = hasScale || rotate;
     var hasShift = shiftH || shiftV;
     var hasContent = !isUndefinedOrNull(content);
-    var transforms = [hasTransforms ? "translate(8 8)" : null, hasScale ? "scale(".concat((flipH ? -1 : 1) * scale, " ").concat((flipV ? -1 : 1) * scale, ")") : null, rotate ? "rotate(".concat(rotate, ")") : null, hasTransforms ? "translate(-8 -8)" : null].filter(identity);
+    var transforms = [hasTransforms ? "translate(8 8)" : null, hasScale ? "scale(".concat((flipH ? -1 : 1) * scale, " ").concat((flipV ? -1 : 1) * scale, ")") : null, rotate ? "rotate(".concat(rotate, ")") : null, hasTransforms ? "translate(-8 -8)" : null].filter(identity2);
     var $inner = h("g", {
       attrs: {
         transform: transforms.join(" ") || null
@@ -2446,7 +8870,7 @@ var BVIconBase = extend({
       $inner = h("g", [$inner]);
     }
     var $title = title2 ? h("title", title2) : null;
-    var $content = [$title, $inner].filter(identity);
+    var $content = [$title, $inner].filter(identity2);
     return h("svg", a(
       {
         staticClass: "b-icon bi",
@@ -2484,16 +8908,16 @@ function ownKeys8(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread8(target) {
+function _objectSpread8(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys8(Object(source), true).forEach(function(key) {
-      _defineProperty11(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys8(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty11(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys8(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty11(obj, key, value2) {
   if (key in obj) {
@@ -2503,19 +8927,19 @@ function _defineProperty11(obj, key, value2) {
   }
   return obj;
 }
-var iconProps = omit(props5, ["content"]);
+var iconProps = omit(props6, ["content"]);
 var makeIcon = function makeIcon2(name2, content) {
   var kebabName = kebabCase(name2);
   var iconName = "BIcon".concat(pascalCase(name2));
   var iconNameClass = "bi-".concat(kebabName);
   var iconTitle = kebabName.replace(/-/g, " ");
   var svgContent = trim(content || "");
-  return extend({
+  return extend2({
     name: iconName,
     functional: true,
     props: iconProps,
     render: function render123(h, _ref) {
-      var data48 = _ref.data, props152 = _ref.props;
+      var data48 = _ref.data, props153 = _ref.props;
       return h(BVIconBase, a(
         // Defaults
         {
@@ -2531,7 +8955,7 @@ var makeIcon = function makeIcon2(name2, content) {
         // Required data
         {
           staticClass: iconNameClass,
-          props: _objectSpread8(_objectSpread8({}, props152), {}, {
+          props: _objectSpread8(_objectSpread8({}, props153), {}, {
             content: svgContent
           })
         }
@@ -3924,16 +10348,16 @@ function ownKeys9(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread9(target) {
+function _objectSpread9(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys9(Object(source), true).forEach(function(key) {
-      _defineProperty12(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys9(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty12(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys9(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty12(obj, key, value2) {
   if (key in obj) {
@@ -3945,25 +10369,25 @@ function _defineProperty12(obj, key, value2) {
 }
 var findIconComponent = function findIconComponent2(ctx, iconName) {
   if (!ctx) {
-    return Vue$1.component(iconName);
+    return Vue.component(iconName);
   }
   var components = (ctx.$options || {}).components;
   var iconComponent = components && components[iconName];
   return iconComponent || findIconComponent2(ctx.$parent, iconName);
 };
-var iconProps2 = omit(props5, ["content"]);
-var props6 = makePropsConfigurable(sortKeys(_objectSpread9(_objectSpread9({}, iconProps2), {}, {
+var iconProps2 = omit(props6, ["content"]);
+var props7 = makePropsConfigurable(sortKeys(_objectSpread9(_objectSpread9({}, iconProps2), {}, {
   icon: makeProp(PROP_TYPE_STRING)
 })), NAME_ICON);
-var BIcon = extend({
+var BIcon = extend2({
   name: NAME_ICON,
   functional: true,
-  props: props6,
+  props: props7,
   render: function render6(h, _ref) {
-    var data48 = _ref.data, props152 = _ref.props, parent = _ref.parent;
-    var icon = pascalCase(trim(props152.icon || "")).replace(RX_ICON_PREFIX, "");
+    var data48 = _ref.data, props153 = _ref.props, parent = _ref.parent;
+    var icon = pascalCase(trim(props153.icon || "")).replace(RX_ICON_PREFIX, "");
     return h(icon ? findIconComponent(parent, "BIcon".concat(icon)) || BIconBlank : BIconBlank, a(data48, {
-      props: pluckProps(iconProps2, props152)
+      props: pluckProps(iconProps2, props153)
     }));
   }
 });
@@ -3990,11 +10414,11 @@ var compareArrays = function compareArrays2(a2, b) {
   }
   var equal = true;
   for (var i = 0; equal && i < a2.length; i++) {
-    equal = looseEqual(a2[i], b[i]);
+    equal = looseEqual2(a2[i], b[i]);
   }
   return equal;
 };
-var looseEqual = function looseEqual2(a2, b) {
+var looseEqual2 = function looseEqual3(a2, b) {
   if (a2 === b) {
     return true;
   }
@@ -4003,13 +10427,13 @@ var looseEqual = function looseEqual2(a2, b) {
   if (aValidType || bValidType) {
     return aValidType && bValidType ? a2.getTime() === b.getTime() : false;
   }
-  aValidType = isArray(a2);
-  bValidType = isArray(b);
+  aValidType = isArray2(a2);
+  bValidType = isArray2(b);
   if (aValidType || bValidType) {
     return aValidType && bValidType ? compareArrays(a2, b) : false;
   }
-  aValidType = isObject(a2);
-  bValidType = isObject(b);
+  aValidType = isObject2(a2);
+  bValidType = isObject2(b);
   if (aValidType || bValidType) {
     if (!aValidType || !bValidType) {
       return false;
@@ -4020,9 +10444,9 @@ var looseEqual = function looseEqual2(a2, b) {
       return false;
     }
     for (var key in a2) {
-      var aHasKey = hasOwnProperty(a2, key);
-      var bHasKey = hasOwnProperty(b, key);
-      if (aHasKey && !bHasKey || !aHasKey && bHasKey || !looseEqual2(a2[key], b[key])) {
+      var aHasKey = hasOwnProperty2(a2, key);
+      var bHasKey = hasOwnProperty2(b, key);
+      if (aHasKey && !bHasKey || !aHasKey && bHasKey || !looseEqual3(a2[key], b[key])) {
         return false;
       }
     }
@@ -4045,7 +10469,7 @@ var isEmpty = function isEmpty2(value2) {
 var makePropWatcher = function makePropWatcher2(propName) {
   return {
     handler: function handler3(newValue, oldValue) {
-      if (looseEqual(newValue, oldValue)) {
+      if (looseEqual2(newValue, oldValue)) {
         return;
       }
       if (isEmpty(newValue) || isEmpty(oldValue)) {
@@ -4053,7 +10477,7 @@ var makePropWatcher = function makePropWatcher2(propName) {
         return;
       }
       for (var key in oldValue) {
-        if (!hasOwnProperty(newValue, key)) {
+        if (!hasOwnProperty2(newValue, key)) {
           this.$delete(this.$data[propName], key);
         }
       }
@@ -4064,7 +10488,7 @@ var makePropWatcher = function makePropWatcher2(propName) {
   };
 };
 var makePropCacheMixin = function makePropCacheMixin2(propName, proxyPropName) {
-  return extend({
+  return extend2({
     data: function data48() {
       return _defineProperty13({}, proxyPropName, cloneDeep(this[propName]));
     },
@@ -4083,16 +10507,16 @@ function ownKeys10(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread10(target) {
+function _objectSpread10(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys10(Object(source), true).forEach(function(key) {
-      _defineProperty14(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys10(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty14(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys10(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty14(obj, key, value2) {
   if (key in obj) {
@@ -4103,7 +10527,7 @@ function _defineProperty14(obj, key, value2) {
   return obj;
 }
 var attrsMixinVue2 = makePropCacheMixin("$attrs", "bvAttrs");
-var attrsMixinVue3 = extend({
+var attrsMixinVue3 = extend2({
   computed: {
     bvAttrs: function bvAttrs() {
       var bvAttrs2 = _objectSpread10({}, this.$attrs);
@@ -4125,7 +10549,7 @@ var getEventRoot = function getEventRoot2(vm) {
 
 // node_modules/bootstrap-vue/esm/mixins/listen-on-root.js
 var PROP = "$_rootListeners";
-var listenOnRootMixin = extend({
+var listenOnRootMixin = extend2({
   computed: {
     bvEventRoot: function bvEventRoot() {
       return getEventRoot(this);
@@ -4243,16 +10667,16 @@ function ownKeys11(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread11(target) {
+function _objectSpread11(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys11(Object(source), true).forEach(function(key) {
-      _defineProperty15(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys11(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty15(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys11(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty15(obj, key, value2) {
   if (key in obj) {
@@ -4263,7 +10687,7 @@ function _defineProperty15(obj, key, value2) {
   return obj;
 }
 var listenersMixinVue2 = makePropCacheMixin("$listeners", "bvListeners");
-var listenersMixinVue3 = extend({
+var listenersMixinVue3 = extend2({
   data: function data2() {
     return {
       bvListeners: {}
@@ -4324,16 +10748,16 @@ function ownKeys12(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread12(target) {
+function _objectSpread12(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys12(Object(source), true).forEach(function(key) {
-      _defineProperty16(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys12(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty16(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys12(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty16(obj, key, value2) {
   if (key in obj) {
@@ -4366,7 +10790,7 @@ var nuxtLinkProps = {
   // so we must set it as `null` here to be a true tri-state prop
   prefetch: makeProp(PROP_TYPE_BOOLEAN, null)
 };
-var props7 = makePropsConfigurable(sortKeys(_objectSpread12(_objectSpread12(_objectSpread12({}, nuxtLinkProps), routerLinkProps), {}, {
+var props8 = makePropsConfigurable(sortKeys(_objectSpread12(_objectSpread12(_objectSpread12({}, nuxtLinkProps), routerLinkProps), {}, {
   active: makeProp(PROP_TYPE_BOOLEAN, false),
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   href: makeProp(PROP_TYPE_STRING),
@@ -4379,12 +10803,12 @@ var props7 = makePropsConfigurable(sortKeys(_objectSpread12(_objectSpread12(_obj
   routerComponentName: makeProp(PROP_TYPE_STRING),
   target: makeProp(PROP_TYPE_STRING, "_self")
 })), NAME_LINK);
-var BLink = extend({
+var BLink = extend2({
   name: NAME_LINK,
   // Mixin order is important!
   mixins: [attrsMixin, listenersMixin, listenOnRootMixin, normalizeSlotMixin],
   inheritAttrs: false,
-  props: props7,
+  props: props8,
   computed: {
     computedTag: function computedTag() {
       var to2 = this.to, disabled6 = this.disabled, routerComponentName = this.routerComponentName;
@@ -4398,9 +10822,9 @@ var BLink = extend({
       return isRouterLink(this.computedTag);
     },
     computedRel: function computedRel() {
-      var target = this.target, rel = this.rel;
+      var target2 = this.target, rel = this.rel;
       return computeRel({
-        target,
+        target: target2,
         rel
       });
     },
@@ -4415,19 +10839,19 @@ var BLink = extend({
       var event2 = this.event, prefetch = this.prefetch, routerTag = this.routerTag;
       return this.isRouterLink ? _objectSpread12(_objectSpread12(_objectSpread12(_objectSpread12({}, pluckProps(omit(_objectSpread12(_objectSpread12({}, routerLinkProps), this.computedTag === "nuxt-link" ? nuxtLinkProps : {}), ["event", "prefetch", "routerTag"]), this)), event2 ? {
         event: event2
-      } : {}), isBoolean(prefetch) ? {
+      } : {}), isBoolean2(prefetch) ? {
         prefetch
       } : {}), routerTag ? {
         tag: routerTag
       } : {}) : {};
     },
     computedAttrs: function computedAttrs() {
-      var bvAttrs2 = this.bvAttrs, href = this.computedHref, rel = this.computedRel, disabled6 = this.disabled, target = this.target, routerTag = this.routerTag, isRouterLink4 = this.isRouterLink;
+      var bvAttrs2 = this.bvAttrs, href = this.computedHref, rel = this.computedRel, disabled6 = this.disabled, target2 = this.target, routerTag = this.routerTag, isRouterLink4 = this.isRouterLink;
       return _objectSpread12(_objectSpread12(_objectSpread12(_objectSpread12({}, bvAttrs2), href ? {
         href
       } : {}), isRouterLink4 && routerTag && !isTag(routerTag, "a") ? {} : {
         rel,
-        target
+        target: target2
       }), {}, {
         tabindex: disabled6 ? "-1" : isUndefined(bvAttrs2.tabindex) ? null : bvAttrs2.tabindex,
         "aria-disabled": disabled6 ? "true" : null
@@ -4456,8 +10880,8 @@ var BLink = extend({
           var _event$currentTarget$;
           (_event$currentTarget$ = event2.currentTarget.__vue__) === null || _event$currentTarget$ === void 0 ? void 0 : _event$currentTarget$.$emit(EVENT_NAME_CLICK, event2);
         }
-        concat(suppliedHandler).filter(function(h) {
-          return isFunction(h);
+        concat2(suppliedHandler).filter(function(h) {
+          return isFunction2(h);
         }).forEach(function(handler3) {
           handler3.apply(void 0, _toConsumableArray2(_arguments));
         });
@@ -4501,16 +10925,16 @@ function ownKeys13(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread13(target) {
+function _objectSpread13(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys13(Object(source), true).forEach(function(key) {
-      _defineProperty17(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys13(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty17(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys13(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty17(obj, key, value2) {
   if (key in obj) {
@@ -4520,10 +10944,10 @@ function _defineProperty17(obj, key, value2) {
   }
   return obj;
 }
-var linkProps = omit(props7, ["event", "routerTag"]);
+var linkProps = omit(props8, ["event", "routerTag"]);
 delete linkProps.href.default;
 delete linkProps.to.default;
-var props8 = makePropsConfigurable(sortKeys(_objectSpread13(_objectSpread13({}, linkProps), {}, {
+var props9 = makePropsConfigurable(sortKeys(_objectSpread13(_objectSpread13({}, linkProps), {}, {
   block: makeProp(PROP_TYPE_BOOLEAN, false),
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   pill: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -4538,36 +10962,36 @@ var props8 = makePropsConfigurable(sortKeys(_objectSpread13(_objectSpread13({}, 
 })), NAME_BUTTON);
 var handleFocus = function handleFocus2(event2) {
   if (event2.type === "focusin") {
-    addClass(event2.target, "focus");
+    addClass2(event2.target, "focus");
   } else if (event2.type === "focusout") {
-    removeClass(event2.target, "focus");
+    removeClass2(event2.target, "focus");
   }
 };
-var isLink3 = function isLink4(props152) {
-  return isLink(props152) || isTag(props152.tag, "a");
+var isLink3 = function isLink4(props153) {
+  return isLink(props153) || isTag(props153.tag, "a");
 };
-var isToggle = function isToggle2(props152) {
-  return isBoolean(props152.pressed);
+var isToggle = function isToggle2(props153) {
+  return isBoolean2(props153.pressed);
 };
-var isButton = function isButton2(props152) {
-  return !(isLink3(props152) || props152.tag && !isTag(props152.tag, "button"));
+var isButton = function isButton2(props153) {
+  return !(isLink3(props153) || props153.tag && !isTag(props153.tag, "button"));
 };
-var isNonStandardTag = function isNonStandardTag2(props152) {
-  return !isLink3(props152) && !isButton(props152);
+var isNonStandardTag = function isNonStandardTag2(props153) {
+  return !isLink3(props153) && !isButton(props153);
 };
-var computeClass = function computeClass2(props152) {
+var computeClass = function computeClass2(props153) {
   var _ref;
-  return ["btn-".concat(props152.variant || "secondary"), (_ref = {}, _defineProperty17(_ref, "btn-".concat(props152.size), props152.size), _defineProperty17(_ref, "btn-block", props152.block), _defineProperty17(_ref, "rounded-pill", props152.pill), _defineProperty17(_ref, "rounded-0", props152.squared && !props152.pill), _defineProperty17(_ref, "disabled", props152.disabled), _defineProperty17(_ref, "active", props152.pressed), _ref)];
+  return ["btn-".concat(props153.variant || "secondary"), (_ref = {}, _defineProperty17(_ref, "btn-".concat(props153.size), props153.size), _defineProperty17(_ref, "btn-block", props153.block), _defineProperty17(_ref, "rounded-pill", props153.pill), _defineProperty17(_ref, "rounded-0", props153.squared && !props153.pill), _defineProperty17(_ref, "disabled", props153.disabled), _defineProperty17(_ref, "active", props153.pressed), _ref)];
 };
-var computeLinkProps = function computeLinkProps2(props152) {
-  return isLink3(props152) ? pluckProps(linkProps, props152) : {};
+var computeLinkProps = function computeLinkProps2(props153) {
+  return isLink3(props153) ? pluckProps(linkProps, props153) : {};
 };
-var computeAttrs = function computeAttrs2(props152, data48) {
-  var button = isButton(props152);
-  var link = isLink3(props152);
-  var toggle5 = isToggle(props152);
-  var nonStandardTag = isNonStandardTag(props152);
-  var hashLink = link && props152.href === "#";
+var computeAttrs = function computeAttrs2(props153, data48) {
+  var button = isButton(props153);
+  var link = isLink3(props153);
+  var toggle5 = isToggle(props153);
+  var nonStandardTag = isNonStandardTag(props153);
+  var hashLink = link && props153.href === "#";
   var role = data48.attrs && data48.attrs.role ? data48.attrs.role : null;
   var tabindex = data48.attrs ? data48.attrs.tabindex : null;
   if (nonStandardTag || hashLink) {
@@ -4575,17 +10999,17 @@ var computeAttrs = function computeAttrs2(props152, data48) {
   }
   return {
     // Type only used for "real" buttons
-    type: button && !link ? props152.type : null,
+    type: button && !link ? props153.type : null,
     // Disabled only set on "real" buttons
-    disabled: button ? props152.disabled : null,
+    disabled: button ? props153.disabled : null,
     // We add a role of button when the tag is not a link or button for ARIA
     // Don't bork any role provided in `data.attrs` when `isLink` or `isButton`
     // Except when link has `href` of `#`
     role: nonStandardTag || hashLink ? "button" : role,
     // We set the `aria-disabled` state for non-standard tags
-    "aria-disabled": nonStandardTag ? String(props152.disabled) : null,
+    "aria-disabled": nonStandardTag ? String(props153.disabled) : null,
     // For toggles, we need to set the pressed state for ARIA
-    "aria-pressed": toggle5 ? String(props152.pressed) : null,
+    "aria-pressed": toggle5 ? String(props153.pressed) : null,
     // `autocomplete="off"` is needed in toggle mode to prevent some browsers
     // from remembering the previous setting when using the back button
     autocomplete: toggle5 ? "off" : null,
@@ -4593,40 +11017,40 @@ var computeAttrs = function computeAttrs2(props152, data48) {
     // Links are tabbable, but don't allow disabled, while non buttons or links
     // are not tabbable, so we mimic that functionality by disabling tabbing
     // when disabled, and adding a `tabindex="0"` to non buttons or non links
-    tabindex: props152.disabled && !button ? "-1" : tabindex
+    tabindex: props153.disabled && !button ? "-1" : tabindex
   };
 };
-var BButton = extend({
+var BButton = extend2({
   name: NAME_BUTTON,
   functional: true,
-  props: props8,
+  props: props9,
   render: function render8(h, _ref2) {
-    var props152 = _ref2.props, data48 = _ref2.data, listeners = _ref2.listeners, children2 = _ref2.children;
-    var toggle5 = isToggle(props152);
-    var link = isLink3(props152);
-    var nonStandardTag = isNonStandardTag(props152);
-    var hashLink = link && props152.href === "#";
+    var props153 = _ref2.props, data48 = _ref2.data, listeners = _ref2.listeners, children2 = _ref2.children;
+    var toggle5 = isToggle(props153);
+    var link = isLink3(props153);
+    var nonStandardTag = isNonStandardTag(props153);
+    var hashLink = link && props153.href === "#";
     var on = {
       keydown: function keydown(event2) {
-        if (props152.disabled || !(nonStandardTag || hashLink)) {
+        if (props153.disabled || !(nonStandardTag || hashLink)) {
           return;
         }
         var keyCode = event2.keyCode;
         if (keyCode === CODE_SPACE || keyCode === CODE_ENTER && nonStandardTag) {
-          var target = event2.currentTarget || event2.target;
+          var target2 = event2.currentTarget || event2.target;
           stopEvent(event2, {
             propagation: false
           });
-          target.click();
+          target2.click();
         }
       },
       click: function click2(event2) {
-        if (props152.disabled && isEvent(event2)) {
+        if (props153.disabled && isEvent(event2)) {
           stopEvent(event2);
         } else if (toggle5 && listeners && listeners["update:pressed"]) {
-          concat(listeners["update:pressed"]).forEach(function(fn) {
-            if (isFunction(fn)) {
-              fn(!props152.pressed);
+          concat2(listeners["update:pressed"]).forEach(function(fn) {
+            if (isFunction2(fn)) {
+              fn(!props153.pressed);
             }
           });
         }
@@ -4638,12 +11062,12 @@ var BButton = extend({
     }
     var componentData = {
       staticClass: "btn",
-      class: computeClass(props152),
-      props: computeLinkProps(props152),
-      attrs: computeAttrs(props152, data48),
+      class: computeClass(props153),
+      props: computeLinkProps(props153),
+      attrs: computeAttrs(props153, data48),
       on
     };
-    return h(link ? BLink : props152.tag, a(_objectSpread13(_objectSpread13({}, data48), {}, {
+    return h(link ? BLink : props153.tag, a(_objectSpread13(_objectSpread13({}, data48), {}, {
       props: void 0
     }), componentData), children2);
   }
@@ -4660,16 +11084,16 @@ function ownKeys14(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread14(target) {
+function _objectSpread14(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys14(Object(source), true).forEach(function(key) {
-      _defineProperty18(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys14(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty18(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys14(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty18(obj, key, value2) {
   if (key in obj) {
@@ -4687,8 +11111,8 @@ var computeSize = function computeSize2(value2) {
   value2 = isString(value2) && isNumeric(value2) ? toFloat(value2, 0) : value2;
   return isNumber(value2) ? "".concat(value2, "px") : value2 || null;
 };
-var linkProps2 = omit(props7, ["active", "event", "routerTag"]);
-var props9 = makePropsConfigurable(sortKeys(_objectSpread14(_objectSpread14({}, linkProps2), {}, {
+var linkProps2 = omit(props8, ["active", "event", "routerTag"]);
+var props10 = makePropsConfigurable(sortKeys(_objectSpread14(_objectSpread14({}, linkProps2), {}, {
   alt: makeProp(PROP_TYPE_STRING, "avatar"),
   ariaLabel: makeProp(PROP_TYPE_STRING),
   badge: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
@@ -4706,7 +11130,7 @@ var props9 = makePropsConfigurable(sortKeys(_objectSpread14(_objectSpread14({}, 
   text: makeProp(PROP_TYPE_STRING),
   variant: makeProp(PROP_TYPE_STRING, "secondary")
 })), NAME_AVATAR);
-var BAvatar = extend({
+var BAvatar = extend2({
   name: NAME_AVATAR,
   mixins: [normalizeSlotMixin],
   inject: {
@@ -4718,7 +11142,7 @@ var BAvatar = extend({
       }
     }
   },
-  props: props9,
+  props: props10,
   data: function data3() {
     return {
       localSrc: this.src || null
@@ -4872,7 +11296,7 @@ var BAvatar = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/avatar/avatar-group.js
-var props10 = makePropsConfigurable({
+var props11 = makePropsConfigurable({
   overlap: makeProp(PROP_TYPE_NUMBER_STRING, 0.3),
   // Child avatars will prefer this prop (if set) over their own
   rounded: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
@@ -4884,7 +11308,7 @@ var props10 = makePropsConfigurable({
   // Child avatars will prefer this variant over their own
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_AVATAR_GROUP);
-var BAvatarGroup = extend({
+var BAvatarGroup = extend2({
   name: NAME_AVATAR_GROUP,
   mixins: [normalizeSlotMixin],
   provide: function provide() {
@@ -4895,7 +11319,7 @@ var BAvatarGroup = extend({
       }
     };
   },
-  props: props10,
+  props: props11,
   computed: {
     computedSize: function computedSize2() {
       return computeSize(this.size);
@@ -4945,16 +11369,16 @@ function ownKeys15(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread15(target) {
+function _objectSpread15(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys15(Object(source), true).forEach(function(key) {
-      _defineProperty19(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys15(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty19(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys15(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty19(obj, key, value2) {
   if (key in obj) {
@@ -4964,32 +11388,32 @@ function _defineProperty19(obj, key, value2) {
   }
   return obj;
 }
-var linkProps3 = omit(props7, ["event", "routerTag"]);
+var linkProps3 = omit(props8, ["event", "routerTag"]);
 delete linkProps3.href.default;
 delete linkProps3.to.default;
-var props11 = makePropsConfigurable(sortKeys(_objectSpread15(_objectSpread15({}, linkProps3), {}, {
+var props12 = makePropsConfigurable(sortKeys(_objectSpread15(_objectSpread15({}, linkProps3), {}, {
   pill: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "span"),
   variant: makeProp(PROP_TYPE_STRING, "secondary")
 })), NAME_BADGE);
-var BBadge = extend({
+var BBadge = extend2({
   name: NAME_BADGE,
   functional: true,
-  props: props11,
+  props: props12,
   render: function render11(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var active = props152.active, disabled6 = props152.disabled;
-    var link = isLink(props152);
-    var tag3 = link ? BLink : props152.tag;
-    var variant = props152.variant || "secondary";
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var active = props153.active, disabled6 = props153.disabled;
+    var link = isLink(props153);
+    var tag3 = link ? BLink : props153.tag;
+    var variant = props153.variant || "secondary";
     return h(tag3, a(data48, {
       staticClass: "badge",
       class: ["badge-".concat(variant), {
-        "badge-pill": props152.pill,
+        "badge-pill": props153.pill,
         active,
         disabled: disabled6
       }],
-      props: link ? pluckProps(linkProps3, props152) : {}
+      props: link ? pluckProps(linkProps3, props153) : {}
     }), children2);
   }
 });
@@ -5025,16 +11449,16 @@ function ownKeys16(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread16(target) {
+function _objectSpread16(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys16(Object(source), true).forEach(function(key) {
-      _defineProperty20(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys16(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty20(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys16(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty20(obj, key, value2) {
   if (key in obj) {
@@ -5044,15 +11468,15 @@ function _defineProperty20(obj, key, value2) {
   }
   return obj;
 }
-var props12 = makePropsConfigurable(sortKeys(_objectSpread16(_objectSpread16({}, omit(props7, ["event", "routerTag"])), {}, {
+var props13 = makePropsConfigurable(sortKeys(_objectSpread16(_objectSpread16({}, omit(props8, ["event", "routerTag"])), {}, {
   ariaCurrent: makeProp(PROP_TYPE_STRING, "location"),
   html: makeProp(PROP_TYPE_STRING),
   text: makeProp(PROP_TYPE_STRING)
 })), NAME_BREADCRUMB_LINK);
-var BBreadcrumbLink = extend({
+var BBreadcrumbLink = extend2({
   name: NAME_BREADCRUMB_LINK,
   functional: true,
-  props: props12,
+  props: props13,
   render: function render12(h, _ref) {
     var suppliedProps = _ref.props, data48 = _ref.data, children2 = _ref.children;
     var active = suppliedProps.active;
@@ -5061,7 +11485,7 @@ var BBreadcrumbLink = extend({
       attrs: {
         "aria-current": active ? suppliedProps.ariaCurrent : null
       },
-      props: pluckProps(props12, suppliedProps)
+      props: pluckProps(props13, suppliedProps)
     };
     if (!children2) {
       componentData.domProps = htmlOrText(suppliedProps.html, suppliedProps.text);
@@ -5071,20 +11495,20 @@ var BBreadcrumbLink = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/breadcrumb/breadcrumb-item.js
-var props13 = makePropsConfigurable(props12, NAME_BREADCRUMB_ITEM);
-var BBreadcrumbItem = extend({
+var props14 = makePropsConfigurable(props13, NAME_BREADCRUMB_ITEM);
+var BBreadcrumbItem = extend2({
   name: NAME_BREADCRUMB_ITEM,
   functional: true,
-  props: props13,
+  props: props14,
   render: function render13(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
     return h("li", a(data48, {
       staticClass: "breadcrumb-item",
       class: {
-        active: props152.active
+        active: props153.active
       }
     }), [h(BBreadcrumbLink, {
-      props: props152
+      props: props153
     }, children2)]);
   }
 });
@@ -5100,16 +11524,16 @@ function ownKeys17(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread17(target) {
+function _objectSpread17(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys17(Object(source), true).forEach(function(key) {
-      _defineProperty21(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys17(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty21(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys17(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty21(obj, key, value2) {
   if (key in obj) {
@@ -5119,23 +11543,23 @@ function _defineProperty21(obj, key, value2) {
   }
   return obj;
 }
-var props14 = makePropsConfigurable({
+var props15 = makePropsConfigurable({
   items: makeProp(PROP_TYPE_ARRAY)
 }, NAME_BREADCRUMB);
-var BBreadcrumb = extend({
+var BBreadcrumb = extend2({
   name: NAME_BREADCRUMB,
   functional: true,
-  props: props14,
+  props: props15,
   render: function render14(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var items3 = props152.items;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var items3 = props153.items;
     var childNodes = children2;
-    if (isArray(items3)) {
+    if (isArray2(items3)) {
       var activeDefined = false;
       childNodes = items3.map(function(item, idx) {
-        if (!isObject(item)) {
+        if (!isObject2(item)) {
           item = {
-            text: toString3(item)
+            text: toString4(item)
           };
         }
         var _item = item, active = _item.active;
@@ -5188,16 +11612,16 @@ function ownKeys18(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread18(target) {
+function _objectSpread18(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys18(Object(source), true).forEach(function(key) {
-      _defineProperty22(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys18(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty22(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys18(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty22(obj, key, value2) {
   if (key in obj) {
@@ -5207,25 +11631,25 @@ function _defineProperty22(obj, key, value2) {
   }
   return obj;
 }
-var props15 = makePropsConfigurable(sortKeys(_objectSpread18(_objectSpread18({}, pick(props8, ["size"])), {}, {
+var props16 = makePropsConfigurable(sortKeys(_objectSpread18(_objectSpread18({}, pick(props9, ["size"])), {}, {
   ariaRole: makeProp(PROP_TYPE_STRING, "group"),
   size: makeProp(PROP_TYPE_STRING),
   tag: makeProp(PROP_TYPE_STRING, "div"),
   vertical: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_BUTTON_GROUP);
-var BButtonGroup = extend({
+var BButtonGroup = extend2({
   name: NAME_BUTTON_GROUP,
   functional: true,
-  props: props15,
+  props: props16,
   render: function render15(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.tag, a(data48, {
       class: _defineProperty22({
-        "btn-group": !props152.vertical,
-        "btn-group-vertical": props152.vertical
-      }, "btn-group-".concat(props152.size), props152.size),
+        "btn-group": !props153.vertical,
+        "btn-group-vertical": props153.vertical
+      }, "btn-group-".concat(props153.size), props153.size),
       attrs: {
-        role: props152.ariaRole
+        role: props153.ariaRole
       }
     }), children2);
   }
@@ -5241,14 +11665,14 @@ var ButtonGroupPlugin = pluginFactory({
 
 // node_modules/bootstrap-vue/esm/components/button-toolbar/button-toolbar.js
 var ITEM_SELECTOR = [".btn:not(.disabled):not([disabled]):not(.dropdown-item)", ".form-control:not(.disabled):not([disabled])", "select:not(.disabled):not([disabled])", 'input[type="checkbox"]:not(.disabled)', 'input[type="radio"]:not(.disabled)'].join(",");
-var props16 = makePropsConfigurable({
+var props17 = makePropsConfigurable({
   justify: makeProp(PROP_TYPE_BOOLEAN, false),
   keyNav: makeProp(PROP_TYPE_BOOLEAN, false)
 }, NAME_BUTTON_TOOLBAR);
-var BButtonToolbar = extend({
+var BButtonToolbar = extend2({
   name: NAME_BUTTON_TOOLBAR,
   mixins: [normalizeSlotMixin],
-  props: props16,
+  props: props17,
   mounted: function mounted() {
     if (this.keyNav) {
       this.getItems();
@@ -5270,17 +11694,17 @@ var BButtonToolbar = extend({
     },
     focusPrev: function focusPrev(event2) {
       var items3 = this.getItems();
-      var index2 = items3.indexOf(event2.target);
-      if (index2 > -1) {
-        items3 = items3.slice(0, index2).reverse();
+      var index3 = items3.indexOf(event2.target);
+      if (index3 > -1) {
+        items3 = items3.slice(0, index3).reverse();
         attemptFocus(items3[0]);
       }
     },
     focusNext: function focusNext(event2) {
       var items3 = this.getItems();
-      var index2 = items3.indexOf(event2.target);
-      if (index2 > -1) {
-        items3 = items3.slice(index2 + 1);
+      var index3 = items3.indexOf(event2.target);
+      if (index3 > -1) {
+        items3 = items3.slice(index3 + 1);
         attemptFocus(items3[0]);
       }
     },
@@ -5468,7 +11892,7 @@ var formatYMD = function formatYMD2(date) {
 };
 var resolveLocale = function resolveLocale2(locales) {
   var calendar2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : CALENDAR_GREGORY;
-  locales = concat(locales).filter(identity);
+  locales = concat2(locales).filter(identity2);
   var fmt = new Intl.DateTimeFormat(locales, {
     calendar: calendar2
   });
@@ -5545,18 +11969,18 @@ var RTL_LANGS = ["ar", "az", "ckb", "fa", "he", "ks", "lrc", "mzn", "ps", "sd", 
   return locale.toLowerCase();
 });
 var isLocaleRTL = function isLocaleRTL2(locale) {
-  var parts = toString3(locale).toLowerCase().replace(RX_STRIP_LOCALE_MODS, "").split("-");
+  var parts = toString4(locale).toLowerCase().replace(RX_STRIP_LOCALE_MODS, "").split("-");
   var locale1 = parts.slice(0, 2).join("-");
   var locale2 = parts[0];
   return arrayIncludes(RTL_LANGS, locale1) || arrayIncludes(RTL_LANGS, locale2);
 };
 
 // node_modules/bootstrap-vue/esm/mixins/id.js
-var props17 = {
+var props18 = {
   id: makeProp(PROP_TYPE_STRING)
 };
-var idMixin = extend({
-  props: props17,
+var idMixin = extend2({
+  props: props18,
   data: function data4() {
     return {
       localId_: null
@@ -5595,16 +12019,16 @@ function ownKeys19(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread19(target) {
+function _objectSpread19(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys19(Object(source), true).forEach(function(key) {
-      _defineProperty23(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys19(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty23(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys19(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty23(obj, key, value2) {
   if (key in obj) {
@@ -5621,7 +12045,7 @@ var modelMixin2 = _makeModelMixin2.mixin;
 var modelProps2 = _makeModelMixin2.props;
 var MODEL_PROP_NAME2 = _makeModelMixin2.prop;
 var MODEL_EVENT_NAME2 = _makeModelMixin2.event;
-var props18 = makePropsConfigurable(sortKeys(_objectSpread19(_objectSpread19(_objectSpread19({}, props17), modelProps2), {}, {
+var props19 = makePropsConfigurable(sortKeys(_objectSpread19(_objectSpread19(_objectSpread19({}, props18), modelProps2), {}, {
   ariaControls: makeProp(PROP_TYPE_STRING),
   // Makes calendar the full width of its parent container
   block: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -5702,11 +12126,11 @@ var props18 = makePropsConfigurable(sortKeys(_objectSpread19(_objectSpread19(_ob
   // Has no effect if prop `block` is set
   width: makeProp(PROP_TYPE_STRING, "270px")
 })), NAME_CALENDAR);
-var BCalendar = extend({
+var BCalendar = extend2({
   name: NAME_CALENDAR,
   // Mixin order is important!
   mixins: [attrsMixin, idMixin, modelMixin2, normalizeSlotMixin],
-  props: props18,
+  props: props19,
   data: function data5() {
     var selected = formatYMD(this[MODEL_PROP_NAME2]) || "";
     return {
@@ -5760,7 +12184,7 @@ var BCalendar = extend({
       return mathMax(toInteger(this.startWeekday, 0), 0) % 7;
     },
     computedLocale: function computedLocale() {
-      return resolveLocale(concat(this.locale).filter(identity), CALENDAR_GREGORY);
+      return resolveLocale(concat2(this.locale).filter(identity2), CALENDAR_GREGORY);
     },
     computedDateDisabledFn: function computedDateDisabledFn() {
       var dateDisabledFn = this.dateDisabledFn;
@@ -5810,7 +12234,7 @@ var BCalendar = extend({
       return "btn-outline-".concat(this.navButtonVariant || "primary");
     },
     isRTL: function isRTL() {
-      var dir = toString3(this.direction).toLowerCase();
+      var dir = toString4(this.direction).toLowerCase();
       if (dir === "rtl") {
         return true;
       } else if (dir === "ltr") {
@@ -5953,12 +12377,12 @@ var BCalendar = extend({
           var dayYMD = formatYMD(date);
           var dayDisabled = this.dateDisabled(date);
           var dateInfo = this.computedDateInfoFn(dayYMD, parseYMD(dayYMD));
-          dateInfo = isString(dateInfo) || isArray(dateInfo) ? (
+          dateInfo = isString(dateInfo) || isArray2(dateInfo) ? (
             /* istanbul ignore next */
             {
               class: dateInfo
             }
-          ) : isPlainObject(dateInfo) ? _objectSpread19({
+          ) : isPlainObject2(dateInfo) ? _objectSpread19({
             class: ""
           }, dateInfo) : (
             /* istanbul ignore next */
@@ -6003,7 +12427,7 @@ var BCalendar = extend({
       this.$emit(MODEL_EVENT_NAME2, this.valueAsDate ? parseYMD(newYMD) || null : newYMD || "");
     }
   }), _defineProperty23(_watch2, "context", function context2(newValue, oldValue) {
-    if (!looseEqual(newValue, oldValue)) {
+    if (!looseEqual2(newValue, oldValue)) {
       this.$emit(EVENT_NAME_CONTEXT, newValue);
     }
   }), _defineProperty23(_watch2, "hidden", function hidden(newValue) {
@@ -6198,7 +12622,7 @@ var BCalendar = extend({
           tabindex: disabled6 ? null : "-1",
           // Mainly for testing purposes, as we do not know
           // the exact format `Intl` will format the date string
-          "data-selected": toString3(selectedYMD2),
+          "data-selected": toString4(selectedYMD2),
           // We wait until after mount to enable `aria-live`
           // to prevent initial announcement on page render
           "aria-live": isLive ? "polite" : "off",
@@ -6216,7 +12640,7 @@ var BCalendar = extend({
         // Although IE 11 does not deal with <BDI> at all (equivalent to a span)
         h("bdi", {
           staticClass: "sr-only"
-        }, " (".concat(toString3(this.labelSelected), ") ")),
+        }, " (".concat(toString4(this.labelSelected), ") ")),
         h("bdi", this.formatDateString(this.selectedDate))
       ] : this.labelNoDateSelected || " "
       // '&nbsp;'
@@ -6364,7 +12788,7 @@ var BCalendar = extend({
               // Only days in the month are presented as buttons to screen readers
               "aria-hidden": day.isThisMonth ? null : "true",
               "aria-disabled": day.isDisabled || disabled6 ? "true" : null,
-              "aria-label": [day.label, isSelected ? "(".concat(_this6.labelSelected, ")") : null, isToday ? "(".concat(_this6.labelToday, ")") : null].filter(identity).join(" "),
+              "aria-label": [day.label, isSelected ? "(".concat(_this6.labelSelected, ")") : null, isToday ? "(".concat(_this6.labelToday, ")") : null].filter(identity2).join(" "),
               // NVDA doesn't convey `aria-selected`, but does `aria-current`,
               // ChromeVox doesn't convey `aria-current`, but does `aria-selected`,
               // so we set both attributes for robustness
@@ -6446,7 +12870,7 @@ var BCalendar = extend({
           this.bvAttrs["aria-describedby"],
           valueId3,
           gridHelpId2
-        ].filter(identity).join(" ")
+        ].filter(identity2).join(" ")
       },
       on: {
         keydown: this.onKeydownWrapper
@@ -6469,49 +12893,49 @@ var CalendarPlugin = pluginFactory({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/card.js
-var props19 = makePropsConfigurable({
+var props20 = makePropsConfigurable({
   bgVariant: makeProp(PROP_TYPE_STRING),
   borderVariant: makeProp(PROP_TYPE_STRING),
   tag: makeProp(PROP_TYPE_STRING, "div"),
   textVariant: makeProp(PROP_TYPE_STRING)
 }, NAME_CARD);
-var cardMixin = extend({
-  props: props19
+var cardMixin = extend2({
+  props: props20
 });
 
 // node_modules/bootstrap-vue/esm/components/card/card-title.js
-var props20 = makePropsConfigurable({
+var props21 = makePropsConfigurable({
   title: makeProp(PROP_TYPE_STRING),
   titleTag: makeProp(PROP_TYPE_STRING, "h4")
 }, NAME_CARD_TITLE);
-var BCardTitle = extend({
+var BCardTitle = extend2({
   name: NAME_CARD_TITLE,
   functional: true,
-  props: props20,
+  props: props21,
   render: function render18(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.titleTag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.titleTag, a(data48, {
       staticClass: "card-title"
-    }), children2 || toString3(props152.title));
+    }), children2 || toString4(props153.title));
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/card/card-sub-title.js
-var props21 = makePropsConfigurable({
+var props22 = makePropsConfigurable({
   subTitle: makeProp(PROP_TYPE_STRING),
   subTitleTag: makeProp(PROP_TYPE_STRING, "h6"),
   subTitleTextVariant: makeProp(PROP_TYPE_STRING, "muted")
 }, NAME_CARD_SUB_TITLE);
-var BCardSubTitle = extend({
+var BCardSubTitle = extend2({
   name: NAME_CARD_SUB_TITLE,
   functional: true,
-  props: props21,
+  props: props22,
   render: function render19(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.subTitleTag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.subTitleTag, a(data48, {
       staticClass: "card-subtitle",
-      class: [props152.subTitleTextVariant ? "text-".concat(props152.subTitleTextVariant) : null]
-    }), children2 || toString3(props152.subTitle));
+      class: [props153.subTitleTextVariant ? "text-".concat(props153.subTitleTextVariant) : null]
+    }), children2 || toString4(props153.subTitle));
   }
 });
 
@@ -6526,16 +12950,16 @@ function ownKeys20(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread20(target) {
+function _objectSpread20(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys20(Object(source), true).forEach(function(key) {
-      _defineProperty24(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys20(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty24(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys20(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty24(obj, key, value2) {
   if (key in obj) {
@@ -6545,36 +12969,36 @@ function _defineProperty24(obj, key, value2) {
   }
   return obj;
 }
-var props22 = makePropsConfigurable(sortKeys(_objectSpread20(_objectSpread20(_objectSpread20(_objectSpread20({}, props20), props21), copyProps(props19, prefixPropName.bind(null, "body"))), {}, {
+var props23 = makePropsConfigurable(sortKeys(_objectSpread20(_objectSpread20(_objectSpread20(_objectSpread20({}, props21), props22), copyProps(props20, prefixPropName.bind(null, "body"))), {}, {
   bodyClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   overlay: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_CARD_BODY);
-var BCardBody = extend({
+var BCardBody = extend2({
   name: NAME_CARD_BODY,
   functional: true,
-  props: props22,
+  props: props23,
   render: function render20(h, _ref) {
     var _ref2;
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var bodyBgVariant = props152.bodyBgVariant, bodyBorderVariant = props152.bodyBorderVariant, bodyTextVariant = props152.bodyTextVariant;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var bodyBgVariant = props153.bodyBgVariant, bodyBorderVariant = props153.bodyBorderVariant, bodyTextVariant = props153.bodyTextVariant;
     var $title = h();
-    if (props152.title) {
+    if (props153.title) {
       $title = h(BCardTitle, {
-        props: pluckProps(props20, props152)
+        props: pluckProps(props21, props153)
       });
     }
     var $subTitle = h();
-    if (props152.subTitle) {
+    if (props153.subTitle) {
       $subTitle = h(BCardSubTitle, {
-        props: pluckProps(props21, props152),
+        props: pluckProps(props22, props153),
         class: ["mb-2"]
       });
     }
-    return h(props152.bodyTag, a(data48, {
+    return h(props153.bodyTag, a(data48, {
       staticClass: "card-body",
       class: [(_ref2 = {
-        "card-img-overlay": props152.overlay
-      }, _defineProperty24(_ref2, "bg-".concat(bodyBgVariant), bodyBgVariant), _defineProperty24(_ref2, "border-".concat(bodyBorderVariant), bodyBorderVariant), _defineProperty24(_ref2, "text-".concat(bodyTextVariant), bodyTextVariant), _ref2), props152.bodyClass]
+        "card-img-overlay": props153.overlay
+      }, _defineProperty24(_ref2, "bg-".concat(bodyBgVariant), bodyBgVariant), _defineProperty24(_ref2, "border-".concat(bodyBorderVariant), bodyBorderVariant), _defineProperty24(_ref2, "text-".concat(bodyTextVariant), bodyTextVariant), _ref2), props153.bodyClass]
     }), [$title, $subTitle, children2]);
   }
 });
@@ -6590,16 +13014,16 @@ function ownKeys21(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread21(target) {
+function _objectSpread21(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys21(Object(source), true).forEach(function(key) {
-      _defineProperty25(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys21(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty25(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys21(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty25(obj, key, value2) {
   if (key in obj) {
@@ -6609,23 +13033,23 @@ function _defineProperty25(obj, key, value2) {
   }
   return obj;
 }
-var props23 = makePropsConfigurable(sortKeys(_objectSpread21(_objectSpread21({}, copyProps(props19, prefixPropName.bind(null, "header"))), {}, {
+var props24 = makePropsConfigurable(sortKeys(_objectSpread21(_objectSpread21({}, copyProps(props20, prefixPropName.bind(null, "header"))), {}, {
   header: makeProp(PROP_TYPE_STRING),
   headerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   headerHtml: makeProp(PROP_TYPE_STRING)
 })), NAME_CARD_HEADER);
-var BCardHeader = extend({
+var BCardHeader = extend2({
   name: NAME_CARD_HEADER,
   functional: true,
-  props: props23,
+  props: props24,
   render: function render21(h, _ref) {
     var _ref2;
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var headerBgVariant = props152.headerBgVariant, headerBorderVariant = props152.headerBorderVariant, headerTextVariant = props152.headerTextVariant;
-    return h(props152.headerTag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var headerBgVariant = props153.headerBgVariant, headerBorderVariant = props153.headerBorderVariant, headerTextVariant = props153.headerTextVariant;
+    return h(props153.headerTag, a(data48, {
       staticClass: "card-header",
-      class: [props152.headerClass, (_ref2 = {}, _defineProperty25(_ref2, "bg-".concat(headerBgVariant), headerBgVariant), _defineProperty25(_ref2, "border-".concat(headerBorderVariant), headerBorderVariant), _defineProperty25(_ref2, "text-".concat(headerTextVariant), headerTextVariant), _ref2)],
-      domProps: children2 ? {} : htmlOrText(props152.headerHtml, props152.header)
+      class: [props153.headerClass, (_ref2 = {}, _defineProperty25(_ref2, "bg-".concat(headerBgVariant), headerBgVariant), _defineProperty25(_ref2, "border-".concat(headerBorderVariant), headerBorderVariant), _defineProperty25(_ref2, "text-".concat(headerTextVariant), headerTextVariant), _ref2)],
+      domProps: children2 ? {} : htmlOrText(props153.headerHtml, props153.header)
     }), children2);
   }
 });
@@ -6641,16 +13065,16 @@ function ownKeys22(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread22(target) {
+function _objectSpread22(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys22(Object(source), true).forEach(function(key) {
-      _defineProperty26(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys22(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty26(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys22(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty26(obj, key, value2) {
   if (key in obj) {
@@ -6660,23 +13084,23 @@ function _defineProperty26(obj, key, value2) {
   }
   return obj;
 }
-var props24 = makePropsConfigurable(sortKeys(_objectSpread22(_objectSpread22({}, copyProps(props19, prefixPropName.bind(null, "footer"))), {}, {
+var props25 = makePropsConfigurable(sortKeys(_objectSpread22(_objectSpread22({}, copyProps(props20, prefixPropName.bind(null, "footer"))), {}, {
   footer: makeProp(PROP_TYPE_STRING),
   footerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   footerHtml: makeProp(PROP_TYPE_STRING)
 })), NAME_CARD_FOOTER);
-var BCardFooter = extend({
+var BCardFooter = extend2({
   name: NAME_CARD_FOOTER,
   functional: true,
-  props: props24,
+  props: props25,
   render: function render22(h, _ref) {
     var _ref2;
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var footerBgVariant = props152.footerBgVariant, footerBorderVariant = props152.footerBorderVariant, footerTextVariant = props152.footerTextVariant;
-    return h(props152.footerTag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var footerBgVariant = props153.footerBgVariant, footerBorderVariant = props153.footerBorderVariant, footerTextVariant = props153.footerTextVariant;
+    return h(props153.footerTag, a(data48, {
       staticClass: "card-footer",
-      class: [props152.footerClass, (_ref2 = {}, _defineProperty26(_ref2, "bg-".concat(footerBgVariant), footerBgVariant), _defineProperty26(_ref2, "border-".concat(footerBorderVariant), footerBorderVariant), _defineProperty26(_ref2, "text-".concat(footerTextVariant), footerTextVariant), _ref2)],
-      domProps: children2 ? {} : htmlOrText(props152.footerHtml, props152.footer)
+      class: [props153.footerClass, (_ref2 = {}, _defineProperty26(_ref2, "bg-".concat(footerBgVariant), footerBgVariant), _defineProperty26(_ref2, "border-".concat(footerBorderVariant), footerBorderVariant), _defineProperty26(_ref2, "text-".concat(footerTextVariant), footerTextVariant), _ref2)],
+      domProps: children2 ? {} : htmlOrText(props153.footerHtml, props153.footer)
     }), children2);
   }
 });
@@ -6692,10 +13116,10 @@ function _defineProperty27(obj, key, value2) {
 }
 var BLANK_TEMPLATE = '<svg width="%{w}" height="%{h}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %{w} %{h}" preserveAspectRatio="none"><rect width="100%" height="100%" style="fill:%{f};"></rect></svg>';
 var makeBlankImgSrc = function makeBlankImgSrc2(width, height, color) {
-  var src2 = encodeURIComponent(BLANK_TEMPLATE.replace("%{w}", toString3(width)).replace("%{h}", toString3(height)).replace("%{f}", color));
+  var src2 = encodeURIComponent(BLANK_TEMPLATE.replace("%{w}", toString4(width)).replace("%{h}", toString4(height)).replace("%{f}", color));
   return "data:image/svg+xml;charset=UTF-8,".concat(src2);
 };
-var props25 = makePropsConfigurable({
+var props26 = makePropsConfigurable({
   alt: makeProp(PROP_TYPE_STRING),
   blank: makeProp(PROP_TYPE_BOOLEAN, false),
   blankColor: makeProp(PROP_TYPE_STRING, "transparent"),
@@ -6723,20 +13147,20 @@ var props25 = makePropsConfigurable({
   thumbnail: makeProp(PROP_TYPE_BOOLEAN, false),
   width: makeProp(PROP_TYPE_NUMBER_STRING)
 }, NAME_IMG);
-var BImg = extend({
+var BImg = extend2({
   name: NAME_IMG,
   functional: true,
-  props: props25,
+  props: props26,
   render: function render23(h, _ref) {
     var _class;
-    var props152 = _ref.props, data48 = _ref.data;
-    var alt = props152.alt, src2 = props152.src, block = props152.block, fluidGrow = props152.fluidGrow, rounded = props152.rounded;
-    var width = toInteger(props152.width) || null;
-    var height = toInteger(props152.height) || null;
+    var props153 = _ref.props, data48 = _ref.data;
+    var alt = props153.alt, src2 = props153.src, block = props153.block, fluidGrow = props153.fluidGrow, rounded = props153.rounded;
+    var width = toInteger(props153.width) || null;
+    var height = toInteger(props153.height) || null;
     var align = null;
-    var srcset = concat(props152.srcset).filter(identity).join(",");
-    var sizes = concat(props152.sizes).filter(identity).join(",");
-    if (props152.blank) {
+    var srcset = concat2(props153.srcset).filter(identity2).join(",");
+    var sizes = concat2(props153.sizes).filter(identity2).join(",");
+    if (props153.blank) {
       if (!height && width) {
         height = width;
       } else if (!width && height) {
@@ -6746,15 +13170,15 @@ var BImg = extend({
         width = 1;
         height = 1;
       }
-      src2 = makeBlankImgSrc(width, height, props152.blankColor || "transparent");
+      src2 = makeBlankImgSrc(width, height, props153.blankColor || "transparent");
       srcset = null;
       sizes = null;
     }
-    if (props152.left) {
+    if (props153.left) {
       align = "float-left";
-    } else if (props152.right) {
+    } else if (props153.right) {
       align = "float-right";
-    } else if (props152.center) {
+    } else if (props153.center) {
       align = "mx-auto";
       block = true;
     }
@@ -6762,14 +13186,14 @@ var BImg = extend({
       attrs: {
         src: src2,
         alt,
-        width: width ? toString3(width) : null,
-        height: height ? toString3(height) : null,
+        width: width ? toString4(width) : null,
+        height: height ? toString4(height) : null,
         srcset: srcset || null,
         sizes: sizes || null
       },
       class: (_class = {
-        "img-thumbnail": props152.thumbnail,
-        "img-fluid": props152.fluid || fluidGrow,
+        "img-thumbnail": props153.thumbnail,
+        "img-fluid": props153.fluid || fluidGrow,
         "w-100": fluidGrow,
         rounded: rounded === "" || rounded === true
       }, _defineProperty27(_class, "rounded-".concat(rounded), isString(rounded) && rounded !== ""), _defineProperty27(_class, align, align), _defineProperty27(_class, "d-block", block), _class)
@@ -6788,16 +13212,16 @@ function ownKeys23(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread23(target) {
+function _objectSpread23(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys23(Object(source), true).forEach(function(key) {
-      _defineProperty28(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys23(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty28(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys23(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty28(obj, key, value2) {
   if (key in obj) {
@@ -6807,27 +13231,27 @@ function _defineProperty28(obj, key, value2) {
   }
   return obj;
 }
-var props26 = makePropsConfigurable(sortKeys(_objectSpread23(_objectSpread23({}, pick(props25, ["src", "alt", "width", "height", "left", "right"])), {}, {
+var props27 = makePropsConfigurable(sortKeys(_objectSpread23(_objectSpread23({}, pick(props26, ["src", "alt", "width", "height", "left", "right"])), {}, {
   bottom: makeProp(PROP_TYPE_BOOLEAN, false),
   end: makeProp(PROP_TYPE_BOOLEAN, false),
   start: makeProp(PROP_TYPE_BOOLEAN, false),
   top: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_CARD_IMG);
-var BCardImg = extend({
+var BCardImg = extend2({
   name: NAME_CARD_IMG,
   functional: true,
-  props: props26,
+  props: props27,
   render: function render24(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data;
-    var src2 = props152.src, alt = props152.alt, width = props152.width, height = props152.height;
+    var props153 = _ref.props, data48 = _ref.data;
+    var src2 = props153.src, alt = props153.alt, width = props153.width, height = props153.height;
     var baseClass = "card-img";
-    if (props152.top) {
+    if (props153.top) {
       baseClass += "-top";
-    } else if (props152.right || props152.end) {
+    } else if (props153.right || props153.end) {
       baseClass += "-right";
-    } else if (props152.bottom) {
+    } else if (props153.bottom) {
       baseClass += "-bottom";
-    } else if (props152.left || props152.start) {
+    } else if (props153.left || props153.start) {
       baseClass += "-left";
     }
     return h("img", a(data48, {
@@ -6853,16 +13277,16 @@ function ownKeys24(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread24(target) {
+function _objectSpread24(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys24(Object(source), true).forEach(function(key) {
-      _defineProperty29(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys24(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty29(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys24(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty29(obj, key, value2) {
   if (key in obj) {
@@ -6872,20 +13296,20 @@ function _defineProperty29(obj, key, value2) {
   }
   return obj;
 }
-var cardImgProps = copyProps(props26, prefixPropName.bind(null, "img"));
+var cardImgProps = copyProps(props27, prefixPropName.bind(null, "img"));
 cardImgProps.imgSrc.required = false;
-var props27 = makePropsConfigurable(sortKeys(_objectSpread24(_objectSpread24(_objectSpread24(_objectSpread24(_objectSpread24(_objectSpread24({}, props22), props23), props24), cardImgProps), props19), {}, {
+var props28 = makePropsConfigurable(sortKeys(_objectSpread24(_objectSpread24(_objectSpread24(_objectSpread24(_objectSpread24(_objectSpread24({}, props23), props24), props25), cardImgProps), props20), {}, {
   align: makeProp(PROP_TYPE_STRING),
   noBody: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_CARD);
-var BCard = extend({
+var BCard = extend2({
   name: NAME_CARD,
   functional: true,
-  props: props27,
+  props: props28,
   render: function render25(h, _ref) {
     var _class;
-    var props152 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
-    var imgSrc = props152.imgSrc, imgLeft = props152.imgLeft, imgRight = props152.imgRight, imgStart = props152.imgStart, imgEnd = props152.imgEnd, imgBottom = props152.imgBottom, header = props152.header, headerHtml = props152.headerHtml, footer = props152.footer, footerHtml = props152.footerHtml, align = props152.align, textVariant = props152.textVariant, bgVariant = props152.bgVariant, borderVariant = props152.borderVariant;
+    var props153 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
+    var imgSrc = props153.imgSrc, imgLeft = props153.imgLeft, imgRight = props153.imgRight, imgStart = props153.imgStart, imgEnd = props153.imgEnd, imgBottom = props153.imgBottom, header = props153.header, headerHtml = props153.headerHtml, footer = props153.footer, footerHtml = props153.footerHtml, align = props153.align, textVariant = props153.textVariant, bgVariant = props153.bgVariant, borderVariant = props153.borderVariant;
     var $scopedSlots = scopedSlots || {};
     var $slots = slots();
     var slotScope6 = {};
@@ -6893,7 +13317,7 @@ var BCard = extend({
     var $imgLast = h();
     if (imgSrc) {
       var $img = h(BCardImg, {
-        props: pluckProps(cardImgProps, props152, unprefixPropName.bind(null, "img"))
+        props: pluckProps(cardImgProps, props153, unprefixPropName.bind(null, "img"))
       });
       if (imgBottom) {
         $imgLast = $img;
@@ -6905,16 +13329,16 @@ var BCard = extend({
     var hasHeaderSlot = hasNormalizedSlot(SLOT_NAME_HEADER, $scopedSlots, $slots);
     if (hasHeaderSlot || header || headerHtml) {
       $header = h(BCardHeader, {
-        props: pluckProps(props23, props152),
+        props: pluckProps(props24, props153),
         domProps: hasHeaderSlot ? {} : htmlOrText(headerHtml, header)
       }, normalizeSlot(SLOT_NAME_HEADER, slotScope6, $scopedSlots, $slots));
     }
     var $content = normalizeSlot(SLOT_NAME_DEFAULT, slotScope6, $scopedSlots, $slots);
-    if (!props152.noBody) {
+    if (!props153.noBody) {
       $content = h(BCardBody, {
-        props: pluckProps(props22, props152)
+        props: pluckProps(props23, props153)
       }, $content);
-      if (props152.overlay && imgSrc) {
+      if (props153.overlay && imgSrc) {
         $content = h("div", {
           staticClass: "position-relative"
         }, [$imgFirst, $content, $imgLast]);
@@ -6926,11 +13350,11 @@ var BCard = extend({
     var hasFooterSlot = hasNormalizedSlot(SLOT_NAME_FOOTER, $scopedSlots, $slots);
     if (hasFooterSlot || footer || footerHtml) {
       $footer = h(BCardFooter, {
-        props: pluckProps(props24, props152),
+        props: pluckProps(props25, props153),
         domProps: hasHeaderSlot ? {} : htmlOrText(footerHtml, footer)
       }, normalizeSlot(SLOT_NAME_FOOTER, slotScope6, $scopedSlots, $slots));
     }
-    return h(props152.tag, a(data48, {
+    return h(props153.tag, a(data48, {
       staticClass: "card",
       class: (_class = {
         "flex-row": imgLeft || imgStart,
@@ -6946,14 +13370,14 @@ function _classCallCheck3(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-function _defineProperties2(target, props152) {
-  for (var i = 0; i < props152.length; i++) {
-    var descriptor = props152[i];
+function _defineProperties2(target2, props153) {
+  for (var i = 0; i < props153.length; i++) {
+    var descriptor = props153[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
       descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target2, descriptor.key, descriptor);
   }
 }
 function _createClass2(Constructor, protoProps, staticProps) {
@@ -6984,7 +13408,7 @@ var VisibilityObserver = function() {
       if (this.observer) {
         this.stop();
       }
-      if (this.doneOnce || !isFunction(this.callback)) {
+      if (this.doneOnce || !isFunction2(this.callback)) {
         return;
       }
       try {
@@ -7002,7 +13426,7 @@ var VisibilityObserver = function() {
         this.callback(null);
         return;
       }
-      nextTick(function() {
+      nextTick2(function() {
         requestAF(function() {
           if (_this.observer) {
             _this.observer.observe(_this.el);
@@ -7041,7 +13465,7 @@ var destroy = function destroy2(el) {
   }
   delete el[OBSERVER_PROP_NAME];
 };
-var bind = function bind2(el, _ref) {
+var bind2 = function bind3(el, _ref) {
   var value2 = _ref.value, modifiers2 = _ref.modifiers;
   var options = {
     margin: "0px",
@@ -7062,8 +13486,8 @@ var bind = function bind2(el, _ref) {
 var componentUpdated = function componentUpdated2(el, _ref2, vnode) {
   var value2 = _ref2.value, oldValue = _ref2.oldValue, modifiers2 = _ref2.modifiers;
   modifiers2 = clone(modifiers2);
-  if (el && (value2 !== oldValue || !el[OBSERVER_PROP_NAME] || !looseEqual(modifiers2, el[OBSERVER_PROP_NAME]._prevModifiers))) {
-    bind(el, {
+  if (el && (value2 !== oldValue || !el[OBSERVER_PROP_NAME] || !looseEqual2(modifiers2, el[OBSERVER_PROP_NAME]._prevModifiers))) {
+    bind2(el, {
       value: value2,
       modifiers: modifiers2
     }, vnode);
@@ -7073,7 +13497,7 @@ var unbind = function unbind2(el) {
   destroy(el);
 };
 var VBVisible = {
-  bind,
+  bind: bind2,
   componentUpdated,
   unbind
 };
@@ -7090,16 +13514,16 @@ function ownKeys25(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread25(target) {
+function _objectSpread25(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys25(Object(source), true).forEach(function(key) {
-      _defineProperty30(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys25(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty30(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys25(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty30(obj, key, value2) {
   if (key in obj) {
@@ -7111,8 +13535,8 @@ function _defineProperty30(obj, key, value2) {
 }
 var MODEL_PROP_NAME_SHOW = "show";
 var MODEL_EVENT_NAME_SHOW = MODEL_EVENT_NAME_PREFIX + MODEL_PROP_NAME_SHOW;
-var imgProps = omit(props25, ["blank"]);
-var props28 = makePropsConfigurable(_objectSpread25(_objectSpread25({}, imgProps), {}, _defineProperty30({
+var imgProps = omit(props26, ["blank"]);
+var props29 = makePropsConfigurable(_objectSpread25(_objectSpread25({}, imgProps), {}, _defineProperty30({
   blankHeight: makeProp(PROP_TYPE_NUMBER_STRING),
   // If `null`, a blank image is generated
   blankSrc: makeProp(PROP_TYPE_STRING, null),
@@ -7121,12 +13545,12 @@ var props28 = makePropsConfigurable(_objectSpread25(_objectSpread25({}, imgProps
   // before being considered "visible"
   offset: makeProp(PROP_TYPE_NUMBER_STRING, 360)
 }, MODEL_PROP_NAME_SHOW, makeProp(PROP_TYPE_BOOLEAN, false))), NAME_IMG_LAZY);
-var BImgLazy = extend({
+var BImgLazy = extend2({
   name: NAME_IMG_LAZY,
   directives: {
     "b-visible": VBVisible
   },
-  props: props28,
+  props: props29,
   data: function data6() {
     return {
       isShown: this[MODEL_PROP_NAME_SHOW]
@@ -7149,11 +13573,11 @@ var BImgLazy = extend({
       return this.isShown ? height : this.blankHeight || height;
     },
     computedSrcset: function computedSrcset() {
-      var srcset = concat(this.srcset).filter(identity).join(",");
+      var srcset = concat2(this.srcset).filter(identity2).join(",");
       return srcset && (!this.blankSrc || this.isShown) ? srcset : null;
     },
     computedSizes: function computedSizes() {
-      var sizes = concat(this.sizes).filter(identity).join(",");
+      var sizes = concat2(this.sizes).filter(identity2).join(",");
       return sizes && (!this.blankSrc || this.isShown) ? sizes : null;
     }
   },
@@ -7190,10 +13614,10 @@ var BImgLazy = extend({
     }
   },
   render: function render26(h) {
-    var directives = [];
+    var directives2 = [];
     if (!this.isShown) {
       var _modifiers;
-      directives.push({
+      directives2.push({
         // Visible directive will silently do nothing if
         // `IntersectionObserver` is not supported
         name: "b-visible",
@@ -7203,7 +13627,7 @@ var BImgLazy = extend({
       });
     }
     return h(BImg, {
-      directives,
+      directives: directives2,
       props: _objectSpread25(_objectSpread25({}, pluckProps(imgProps, this.$props)), {}, {
         // Computed value props
         src: this.computedSrc,
@@ -7228,16 +13652,16 @@ function ownKeys26(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread26(target) {
+function _objectSpread26(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys26(Object(source), true).forEach(function(key) {
-      _defineProperty31(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys26(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty31(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys26(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty31(obj, key, value2) {
   if (key in obj) {
@@ -7247,61 +13671,61 @@ function _defineProperty31(obj, key, value2) {
   }
   return obj;
 }
-var props29 = makePropsConfigurable(sortKeys(_objectSpread26(_objectSpread26({}, omit(props28, keys(props25))), omit(props26, ["src", "alt", "width", "height"]))), NAME_CARD_IMG_LAZY);
-var BCardImgLazy = extend({
+var props30 = makePropsConfigurable(sortKeys(_objectSpread26(_objectSpread26({}, omit(props29, keys(props26))), omit(props27, ["src", "alt", "width", "height"]))), NAME_CARD_IMG_LAZY);
+var BCardImgLazy = extend2({
   name: NAME_CARD_IMG_LAZY,
   functional: true,
-  props: props29,
+  props: props30,
   render: function render27(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data;
+    var props153 = _ref.props, data48 = _ref.data;
     var baseClass = "card-img";
-    if (props152.top) {
+    if (props153.top) {
       baseClass += "-top";
-    } else if (props152.right || props152.end) {
+    } else if (props153.right || props153.end) {
       baseClass += "-right";
-    } else if (props152.bottom) {
+    } else if (props153.bottom) {
       baseClass += "-bottom";
-    } else if (props152.left || props152.start) {
+    } else if (props153.left || props153.start) {
       baseClass += "-left";
     }
     return h(BImgLazy, a(data48, {
       class: [baseClass],
       // Exclude `left` and `right` props before passing to `<b-img-lazy>`
-      props: omit(props152, ["left", "right"])
+      props: omit(props153, ["left", "right"])
     }));
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/card/card-text.js
-var props30 = makePropsConfigurable({
+var props31 = makePropsConfigurable({
   textTag: makeProp(PROP_TYPE_STRING, "p")
 }, NAME_CARD_TEXT);
-var BCardText = extend({
+var BCardText = extend2({
   name: NAME_CARD_TEXT,
   functional: true,
-  props: props30,
+  props: props31,
   render: function render28(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.textTag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.textTag, a(data48, {
       staticClass: "card-text"
     }), children2);
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/card/card-group.js
-var props31 = makePropsConfigurable({
+var props32 = makePropsConfigurable({
   columns: makeProp(PROP_TYPE_BOOLEAN, false),
   deck: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_CARD_GROUP);
-var BCardGroup = extend({
+var BCardGroup = extend2({
   name: NAME_CARD_GROUP,
   functional: true,
-  props: props31,
+  props: props32,
   render: function render29(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.tag, a(data48, {
-      class: props152.deck ? "card-deck" : props152.columns ? "card-columns" : "card-group"
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.tag, a(data48, {
+      class: props153.deck ? "card-deck" : props153.columns ? "card-columns" : "card-group"
     }), children2);
   }
 });
@@ -7323,7 +13747,7 @@ var CardPlugin = pluginFactory({
 });
 
 // node_modules/bootstrap-vue/esm/utils/noop.js
-var noop = function noop2() {
+var noop2 = function noop3() {
 };
 
 // node_modules/bootstrap-vue/esm/utils/observe-dom.js
@@ -7337,16 +13761,16 @@ function ownKeys27(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread27(target) {
+function _objectSpread27(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys27(Object(source), true).forEach(function(key) {
-      _defineProperty32(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys27(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty32(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys27(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty32(obj, key, value2) {
   if (key in obj) {
@@ -7369,8 +13793,8 @@ var observeDom = function observeDom2(el, callback, options) {
     for (var i = 0; i < mutations.length && !changed; i++) {
       var mutation = mutations[i];
       var type2 = mutation.type;
-      var target = mutation.target;
-      if (type2 === "characterData" && target.nodeType === Node.TEXT_NODE) {
+      var target2 = mutation.target;
+      if (type2 === "characterData" && target2.nodeType === Node.TEXT_NODE) {
         changed = true;
       } else if (type2 === "attributes") {
         changed = true;
@@ -7401,16 +13825,16 @@ function ownKeys28(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread28(target) {
+function _objectSpread28(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys28(Object(source), true).forEach(function(key) {
-      _defineProperty33(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys28(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty33(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys28(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty33(obj, key, value2) {
   if (key in obj) {
@@ -7459,7 +13883,7 @@ var getTransitionEndEvent = function getTransitionEndEvent2(el) {
   }
   return null;
 };
-var props32 = makePropsConfigurable(sortKeys(_objectSpread28(_objectSpread28(_objectSpread28({}, props17), modelProps3), {}, {
+var props33 = makePropsConfigurable(sortKeys(_objectSpread28(_objectSpread28(_objectSpread28({}, props18), modelProps3), {}, {
   background: makeProp(PROP_TYPE_STRING),
   controls: makeProp(PROP_TYPE_BOOLEAN, false),
   // Enable cross-fade animation instead of slide animation
@@ -7483,7 +13907,7 @@ var props32 = makePropsConfigurable(sortKeys(_objectSpread28(_objectSpread28(_ob
   // Disable wrapping/looping when start/end is reached
   noWrap: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_CAROUSEL);
-var BCarousel = extend({
+var BCarousel = extend2({
   name: NAME_CAROUSEL,
   mixins: [idMixin, modelMixin3, normalizeSlotMixin],
   provide: function provide2() {
@@ -7494,7 +13918,7 @@ var BCarousel = extend({
       }
     };
   },
-  props: props32,
+  props: props33,
   data: function data7() {
     return {
       index: this[MODEL_PROP_NAME3] || 0,
@@ -7531,7 +13955,7 @@ var BCarousel = extend({
     if (newValue !== oldValue) {
       this.$emit(newValue ? EVENT_NAME_PAUSED : EVENT_NAME_UNPAUSED);
     }
-  }), _defineProperty33(_watch4, "index", function index(to2, from3) {
+  }), _defineProperty33(_watch4, "index", function index2(to2, from3) {
     if (to2 === from3 || this.isSliding) {
       return;
     }
@@ -7666,17 +14090,17 @@ var BCarousel = extend({
       this.$emit(EVENT_NAME_SLIDING_START, to2);
       this.$emit(MODEL_EVENT_NAME3, this.index);
       if (this.noAnimation) {
-        addClass(nextSlide, "active");
-        removeClass(currentSlide, "active");
+        addClass2(nextSlide, "active");
+        removeClass2(currentSlide, "active");
         this.isSliding = false;
         this.$nextTick(function() {
           return _this3.$emit(EVENT_NAME_SLIDING_END, to2);
         });
       } else {
-        addClass(nextSlide, overlayClass);
+        addClass2(nextSlide, overlayClass);
         reflow(nextSlide);
-        addClass(currentSlide, dirClass);
-        addClass(nextSlide, dirClass);
+        addClass2(currentSlide, dirClass);
+        addClass2(nextSlide, dirClass);
         var called = false;
         var onceTransEnd = function onceTransEnd2() {
           if (called) {
@@ -7684,22 +14108,22 @@ var BCarousel = extend({
           }
           called = true;
           if (_this3.transitionEndEvent) {
-            var events2 = _this3.transitionEndEvent.split(/\s+/);
-            events2.forEach(function(event2) {
+            var events3 = _this3.transitionEndEvent.split(/\s+/);
+            events3.forEach(function(event2) {
               return eventOff(nextSlide, event2, onceTransEnd2, EVENT_OPTIONS_NO_CAPTURE);
             });
           }
           _this3.clearAnimationTimeout();
-          removeClass(nextSlide, dirClass);
-          removeClass(nextSlide, overlayClass);
-          addClass(nextSlide, "active");
-          removeClass(currentSlide, "active");
-          removeClass(currentSlide, dirClass);
-          removeClass(currentSlide, overlayClass);
-          setAttr(currentSlide, "aria-current", "false");
-          setAttr(nextSlide, "aria-current", "true");
-          setAttr(currentSlide, "aria-hidden", "true");
-          setAttr(nextSlide, "aria-hidden", "false");
+          removeClass2(nextSlide, dirClass);
+          removeClass2(nextSlide, overlayClass);
+          addClass2(nextSlide, "active");
+          removeClass2(currentSlide, "active");
+          removeClass2(currentSlide, dirClass);
+          removeClass2(currentSlide, overlayClass);
+          setAttr2(currentSlide, "aria-current", "false");
+          setAttr2(nextSlide, "aria-current", "true");
+          setAttr2(currentSlide, "aria-hidden", "true");
+          setAttr2(nextSlide, "aria-hidden", "false");
           _this3.isSliding = false;
           _this3.direction = null;
           _this3.$nextTick(function() {
@@ -7707,8 +14131,8 @@ var BCarousel = extend({
           });
         };
         if (this.transitionEndEvent) {
-          var events = this.transitionEndEvent.split(/\s+/);
-          events.forEach(function(event2) {
+          var events2 = this.transitionEndEvent.split(/\s+/);
+          events2.forEach(function(event2) {
             return eventOn(nextSlide, event2, onceTransEnd, EVENT_OPTIONS_NO_CAPTURE);
           });
         }
@@ -7723,20 +14147,20 @@ var BCarousel = extend({
       this.pause(true);
       this.slides = selectAll(".carousel-item", this.$refs.inner);
       var numSlides2 = this.slides.length;
-      var index2 = mathMax(0, mathMin(mathFloor(this.index), numSlides2 - 1));
+      var index3 = mathMax(0, mathMin(mathFloor(this.index), numSlides2 - 1));
       this.slides.forEach(function(slide, idx) {
         var n = idx + 1;
-        if (idx === index2) {
-          addClass(slide, "active");
-          setAttr(slide, "aria-current", "true");
+        if (idx === index3) {
+          addClass2(slide, "active");
+          setAttr2(slide, "aria-current", "true");
         } else {
-          removeClass(slide, "active");
-          setAttr(slide, "aria-current", "false");
+          removeClass2(slide, "active");
+          setAttr2(slide, "aria-current", "false");
         }
-        setAttr(slide, "aria-posinset", String(n));
-        setAttr(slide, "aria-setsize", String(numSlides2));
+        setAttr2(slide, "aria-posinset", String(n));
+        setAttr2(slide, "aria-setsize", String(numSlides2));
       });
-      this.setSlide(index2);
+      this.setSlide(index3);
       this.start(this.isPaused);
     },
     calcDirection: function calcDirection() {
@@ -7798,7 +14222,7 @@ var BCarousel = extend({
   },
   render: function render30(h) {
     var _this4 = this;
-    var indicators = this.indicators, background = this.background, noAnimation = this.noAnimation, noHoverPause = this.noHoverPause, noTouch = this.noTouch, index2 = this.index, isSliding = this.isSliding, pause2 = this.pause, restart2 = this.restart, touchStart2 = this.touchStart, touchEnd2 = this.touchEnd;
+    var indicators = this.indicators, background = this.background, noAnimation = this.noAnimation, noHoverPause = this.noHoverPause, noTouch = this.noTouch, index3 = this.index, isSliding = this.isSliding, pause2 = this.pause, restart2 = this.restart, touchStart2 = this.touchStart, touchEnd2 = this.touchEnd;
     var idInner = this.safeId("__BV_inner_");
     var $inner = h("div", {
       staticClass: "carousel-inner",
@@ -7863,13 +14287,13 @@ var BCarousel = extend({
       };
       return h("li", {
         class: {
-          active: i === index2
+          active: i === index3
         },
         attrs: {
           role: "button",
           id: _this4.safeId("__BV_indicator_".concat(i + 1, "_")),
           tabindex: indicators ? "0" : "-1",
-          "aria-current": i === index2 ? "true" : "false",
+          "aria-current": i === index3 ? "true" : "false",
           "aria-label": "".concat(_this4.labelGotoSlide, " ").concat(i + 1),
           "aria-describedby": slide.id || null,
           "aria-controls": idInner
@@ -7882,8 +14306,8 @@ var BCarousel = extend({
       });
     }));
     var on = {
-      mouseenter: noHoverPause ? noop : pause2,
-      mouseleave: noHoverPause ? noop : restart2,
+      mouseenter: noHoverPause ? noop2 : pause2,
+      mouseleave: noHoverPause ? noop2 : restart2,
       focusin: pause2,
       focusout: restart2,
       keydown: function keydown(event2) {
@@ -7938,16 +14362,16 @@ function ownKeys29(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread29(target) {
+function _objectSpread29(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys29(Object(source), true).forEach(function(key) {
-      _defineProperty34(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys29(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty34(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys29(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty34(obj, key, value2) {
   if (key in obj) {
@@ -7965,7 +14389,7 @@ var imgProps2 = {
   imgSrc: makeProp(PROP_TYPE_STRING),
   imgWidth: makeProp(PROP_TYPE_NUMBER_STRING)
 };
-var props33 = makePropsConfigurable(sortKeys(_objectSpread29(_objectSpread29(_objectSpread29({}, props17), imgProps2), {}, {
+var props34 = makePropsConfigurable(sortKeys(_objectSpread29(_objectSpread29(_objectSpread29({}, props18), imgProps2), {}, {
   background: makeProp(PROP_TYPE_STRING),
   caption: makeProp(PROP_TYPE_STRING),
   captionHtml: makeProp(PROP_TYPE_STRING),
@@ -7976,7 +14400,7 @@ var props33 = makePropsConfigurable(sortKeys(_objectSpread29(_objectSpread29(_ob
   textHtml: makeProp(PROP_TYPE_STRING),
   textTag: makeProp(PROP_TYPE_STRING, "p")
 })), NAME_CAROUSEL_SLIDE);
-var BCarouselSlide = extend({
+var BCarouselSlide = extend2({
   name: NAME_CAROUSEL_SLIDE,
   mixins: [idMixin, normalizeSlotMixin],
   inject: {
@@ -7991,7 +14415,7 @@ var BCarouselSlide = extend({
       }
     }
   },
-  props: props33,
+  props: props34,
   computed: {
     bvCarousel: function bvCarousel() {
       return this.getBvCarousel();
@@ -8040,7 +14464,7 @@ var BCarouselSlide = extend({
       this.normalizeSlot() || false
     ];
     var $content = h();
-    if ($contentChildren.some(identity)) {
+    if ($contentChildren.some(identity2)) {
       $content = h(this.contentTag, {
         staticClass: "carousel-caption",
         class: this.contentClasses
@@ -8111,16 +14535,16 @@ var TRANSITION_HANDLERS = {
   leave: onLeave,
   afterLeave: onAfterLeave
 };
-var props34 = {
+var props35 = {
   // // If `true` (and `visible` is `true` on mount), animate initially visible
   appear: makeProp(PROP_TYPE_BOOLEAN, false)
 };
-var BVCollapse = extend({
+var BVCollapse = extend2({
   name: NAME_COLLAPSE_HELPER,
   functional: true,
-  props: props34,
+  props: props35,
   render: function render32(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
     return h(
       "transition",
       // We merge in the `appear` prop last
@@ -8128,7 +14552,7 @@ var BVCollapse = extend({
         props: TRANSITION_PROPS,
         on: TRANSITION_HANDLERS
       }, {
-        props: props152
+        props: props153
       }),
       // Note: `<transition>` supports a single root element only
       children2
@@ -8148,16 +14572,16 @@ function ownKeys30(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread30(target) {
+function _objectSpread30(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys30(Object(source), true).forEach(function(key) {
-      _defineProperty35(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys30(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty35(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys30(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty35(obj, key, value2) {
   if (key in obj) {
@@ -8180,17 +14604,17 @@ var modelMixin4 = _makeModelMixin4.mixin;
 var modelProps4 = _makeModelMixin4.props;
 var MODEL_PROP_NAME4 = _makeModelMixin4.prop;
 var MODEL_EVENT_NAME4 = _makeModelMixin4.event;
-var props35 = makePropsConfigurable(sortKeys(_objectSpread30(_objectSpread30(_objectSpread30({}, props17), modelProps4), {}, {
+var props36 = makePropsConfigurable(sortKeys(_objectSpread30(_objectSpread30(_objectSpread30({}, props18), modelProps4), {}, {
   // If `true` (and `visible` is `true` on mount), animate initially visible
   accordion: makeProp(PROP_TYPE_STRING),
   appear: makeProp(PROP_TYPE_BOOLEAN, false),
   isNav: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "div")
 })), NAME_COLLAPSE);
-var BCollapse = extend({
+var BCollapse = extend2({
   name: NAME_COLLAPSE,
   mixins: [idMixin, modelMixin4, normalizeSlotMixin, listenOnRootMixin],
-  props: props35,
+  props: props36,
   data: function data8() {
     return {
       show: this[MODEL_PROP_NAME4],
@@ -8220,7 +14644,7 @@ var BCollapse = extend({
     if (newValue !== this.show) {
       this.show = newValue;
     }
-  }), _defineProperty35(_watch5, "show", function show(newValue, oldValue) {
+  }), _defineProperty35(_watch5, "show", function show2(newValue, oldValue) {
     if (newValue !== oldValue) {
       this.emitState();
     }
@@ -8293,11 +14717,11 @@ var BCollapse = extend({
       this.$emit(EVENT_NAME_HIDDEN);
     },
     emitState: function emitState() {
-      var show6 = this.show, accordion = this.accordion;
+      var show7 = this.show, accordion = this.accordion;
       var id = this.safeId();
-      this.$emit(MODEL_EVENT_NAME4, show6);
-      this.emitOnRoot(ROOT_EVENT_NAME_STATE, id, show6);
-      if (accordion && show6) {
+      this.$emit(MODEL_EVENT_NAME4, show7);
+      this.emitOnRoot(ROOT_EVENT_NAME_STATE, id, show7);
+      if (accordion && show7) {
         this.emitOnRoot(ROOT_EVENT_NAME_ACCORDION, id, accordion);
       }
     },
@@ -8307,10 +14731,10 @@ var BCollapse = extend({
     checkDisplayBlock: function checkDisplayBlock() {
       var $el = this.$el;
       var restore = hasClass($el, CLASS_NAME_SHOW);
-      removeClass($el, CLASS_NAME_SHOW);
+      removeClass2($el, CLASS_NAME_SHOW);
       var isBlock = getCS($el).display === "block";
       if (restore) {
-        addClass($el, CLASS_NAME_SHOW);
+        addClass2($el, CLASS_NAME_SHOW);
       }
       return isBlock;
     },
@@ -8319,7 +14743,7 @@ var BCollapse = extend({
       if (!this.isNav || !el || getCS(this.$el).display !== "block") {
         return;
       }
-      if ((matches(el, ".nav-link,.dropdown-item") || closest(".nav-link,.dropdown-item", el)) && !this.checkDisplayBlock()) {
+      if ((matches2(el, ".nav-link,.dropdown-item") || closest(".nav-link,.dropdown-item", el)) && !this.checkDisplayBlock()) {
         this.show = false;
       }
     },
@@ -8329,12 +14753,12 @@ var BCollapse = extend({
       }
     },
     handleAccordionEvent: function handleAccordionEvent(openedId, openAccordion) {
-      var accordion = this.accordion, show6 = this.show;
+      var accordion = this.accordion, show7 = this.show;
       if (!accordion || accordion !== openAccordion) {
         return;
       }
       var isThis = openedId === this.safeId();
-      if (isThis && !show6 || !isThis && show6) {
+      if (isThis && !show7 || !isThis && show7) {
         this.toggle();
       }
     },
@@ -8409,11 +14833,11 @@ var getTargets = function getTargets2(_ref, el) {
       targets2.push(href.replace(RX_HASH, ""));
     }
   }
-  concat(arg, value2).forEach(function(t2) {
+  concat2(arg, value2).forEach(function(t2) {
     return isString(t2) && targets2.push(t2);
   });
-  return targets2.filter(function(t2, index2, arr) {
-    return t2 && arr.indexOf(t2) === index2;
+  return targets2.filter(function(t2, index3, arr) {
+    return t2 && arr.indexOf(t2) === index3;
   });
 };
 var removeClickListener = function removeClickListener2(el) {
@@ -8430,8 +14854,8 @@ var addClickListener = function addClickListener2(el, instance) {
     var handler3 = function handler4(event2) {
       if (!(event2.type === "keydown" && !arrayIncludes(KEYDOWN_KEY_CODES, event2.keyCode)) && !isDisabled(el)) {
         var targets2 = el[BV_TOGGLE_TARGETS] || [];
-        targets2.forEach(function(target) {
-          getEventRoot(instance).$emit(ROOT_ACTION_EVENT_NAME_TOGGLE2, target);
+        targets2.forEach(function(target2) {
+          getEventRoot(instance).$emit(ROOT_ACTION_EVENT_NAME_TOGGLE2, target2);
         });
       }
     };
@@ -8463,13 +14887,13 @@ var addRootListeners = function addRootListeners2(el, instance) {
 };
 var setToggleState = function setToggleState2(el, state) {
   if (state) {
-    removeClass(el, CLASS_BV_TOGGLE_COLLAPSED);
-    addClass(el, CLASS_BV_TOGGLE_NOT_COLLAPSED);
-    setAttr(el, ATTR_ARIA_EXPANDED, STRING_TRUE);
+    removeClass2(el, CLASS_BV_TOGGLE_COLLAPSED);
+    addClass2(el, CLASS_BV_TOGGLE_NOT_COLLAPSED);
+    setAttr2(el, ATTR_ARIA_EXPANDED, STRING_TRUE);
   } else {
-    removeClass(el, CLASS_BV_TOGGLE_NOT_COLLAPSED);
-    addClass(el, CLASS_BV_TOGGLE_COLLAPSED);
-    setAttr(el, ATTR_ARIA_EXPANDED, STRING_FALSE);
+    removeClass2(el, CLASS_BV_TOGGLE_NOT_COLLAPSED);
+    addClass2(el, CLASS_BV_TOGGLE_COLLAPSED);
+    setAttr2(el, ATTR_ARIA_EXPANDED, STRING_FALSE);
   }
 };
 var resetProp = function resetProp2(el, prop2) {
@@ -8482,16 +14906,16 @@ var handleUpdate = function handleUpdate2(el, binding, vnode) {
   }
   if (isNonStandardTag3(el)) {
     if (!hasAttr(el, ATTR_ROLE)) {
-      setAttr(el, ATTR_ROLE, "button");
+      setAttr2(el, ATTR_ROLE, "button");
     }
     if (!hasAttr(el, ATTR_TABINDEX)) {
-      setAttr(el, ATTR_TABINDEX, "0");
+      setAttr2(el, ATTR_TABINDEX, "0");
     }
   }
   setToggleState(el, el[BV_TOGGLE_STATE]);
   var targets2 = getTargets(binding, el);
   if (targets2.length > 0) {
-    setAttr(el, ATTR_ARIA_CONTROLS, targets2.join(" "));
+    setAttr2(el, ATTR_ARIA_CONTROLS, targets2.join(" "));
     setStyle(el, STYLE_OVERFLOW_ANCHOR, "none");
   } else {
     removeAttr(el, ATTR_ARIA_CONTROLS);
@@ -8500,15 +14924,15 @@ var handleUpdate = function handleUpdate2(el, binding, vnode) {
   requestAF(function() {
     addClickListener(el, getInstanceFromDirective(vnode, binding));
   });
-  if (!looseEqual(targets2, el[BV_TOGGLE_TARGETS])) {
+  if (!looseEqual2(targets2, el[BV_TOGGLE_TARGETS])) {
     el[BV_TOGGLE_TARGETS] = targets2;
-    targets2.forEach(function(target) {
-      getEventRoot(getInstanceFromDirective(vnode, binding)).$emit(ROOT_ACTION_EVENT_NAME_REQUEST_STATE2, target);
+    targets2.forEach(function(target2) {
+      getEventRoot(getInstanceFromDirective(vnode, binding)).$emit(ROOT_ACTION_EVENT_NAME_REQUEST_STATE2, target2);
     });
   }
 };
 var VBToggle = {
-  bind: function bind3(el, binding, vnode) {
+  bind: function bind4(el, binding, vnode) {
     el[BV_TOGGLE_STATE] = false;
     el[BV_TOGGLE_TARGETS] = [];
     addRootListeners(el, getInstanceFromDirective(vnode, binding));
@@ -8523,8 +14947,8 @@ var VBToggle = {
     resetProp(el, BV_TOGGLE_CLICK_HANDLER);
     resetProp(el, BV_TOGGLE_STATE);
     resetProp(el, BV_TOGGLE_TARGETS);
-    removeClass(el, CLASS_BV_TOGGLE_COLLAPSED);
-    removeClass(el, CLASS_BV_TOGGLE_NOT_COLLAPSED);
+    removeClass2(el, CLASS_BV_TOGGLE_COLLAPSED);
+    removeClass2(el, CLASS_BV_TOGGLE_NOT_COLLAPSED);
     removeAttr(el, ATTR_ARIA_EXPANDED);
     removeAttr(el, ATTR_ARIA_CONTROLS);
     removeAttr(el, ATTR_ROLE);
@@ -8587,9 +15011,9 @@ function taskDebounce(fn) {
 }
 var supportsMicroTasks = isBrowser && window.Promise;
 var debounce = supportsMicroTasks ? microtaskDebounce : taskDebounce;
-function isFunction3(functionToCheck) {
-  var getType = {};
-  return functionToCheck && getType.toString.call(functionToCheck) === "[object Function]";
+function isFunction4(functionToCheck) {
+  var getType2 = {};
+  return functionToCheck && getType2.toString.call(functionToCheck) === "[object Function]";
 }
 function getStyleComputedProperty(element, property) {
   if (element.nodeType !== 1) {
@@ -8627,11 +15051,11 @@ function getReferenceNode(reference) {
 }
 var isIE11 = isBrowser && !!(window.MSInputMethodContext && document.documentMode);
 var isIE10 = isBrowser && /MSIE 10/.test(navigator.userAgent);
-function isIE(version) {
-  if (version === 11) {
+function isIE2(version2) {
+  if (version2 === 11) {
     return isIE11;
   }
-  if (version === 10) {
+  if (version2 === 10) {
     return isIE10;
   }
   return isIE11 || isIE10;
@@ -8640,7 +15064,7 @@ function getOffsetParent(element) {
   if (!element) {
     return document.documentElement;
   }
-  var noOffsetParent = isIE(10) ? document.body : null;
+  var noOffsetParent = isIE2(10) ? document.body : null;
   var offsetParent = element.offsetParent || null;
   while (offsetParent === noOffsetParent && element.nextElementSibling) {
     offsetParent = (element = element.nextElementSibling).offsetParent;
@@ -8719,12 +15143,12 @@ function getBordersSize(styles, axis) {
   return parseFloat(styles["border" + sideA + "Width"]) + parseFloat(styles["border" + sideB + "Width"]);
 }
 function getSize(axis, body, html, computedStyle2) {
-  return Math.max(body["offset" + axis], body["scroll" + axis], html["client" + axis], html["offset" + axis], html["scroll" + axis], isIE(10) ? parseInt(html["offset" + axis]) + parseInt(computedStyle2["margin" + (axis === "Height" ? "Top" : "Left")]) + parseInt(computedStyle2["margin" + (axis === "Height" ? "Bottom" : "Right")]) : 0);
+  return Math.max(body["offset" + axis], body["scroll" + axis], html["client" + axis], html["offset" + axis], html["scroll" + axis], isIE2(10) ? parseInt(html["offset" + axis]) + parseInt(computedStyle2["margin" + (axis === "Height" ? "Top" : "Left")]) + parseInt(computedStyle2["margin" + (axis === "Height" ? "Bottom" : "Right")]) : 0);
 }
 function getWindowSizes(document2) {
   var body = document2.body;
   var html = document2.documentElement;
-  var computedStyle2 = isIE(10) && getComputedStyle(html);
+  var computedStyle2 = isIE2(10) && getComputedStyle(html);
   return {
     height: getSize("Height", body, html, computedStyle2),
     width: getSize("Width", body, html, computedStyle2)
@@ -8736,14 +15160,14 @@ var classCallCheck = function(instance, Constructor) {
   }
 };
 var createClass = function() {
-  function defineProperties3(target, props152) {
-    for (var i = 0; i < props152.length; i++) {
-      var descriptor = props152[i];
+  function defineProperties3(target2, props153) {
+    for (var i = 0; i < props153.length; i++) {
+      var descriptor = props153[i];
       descriptor.enumerable = descriptor.enumerable || false;
       descriptor.configurable = true;
       if ("value" in descriptor)
         descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
+      Object.defineProperty(target2, descriptor.key, descriptor);
     }
   }
   return function(Constructor, protoProps, staticProps) {
@@ -8767,16 +15191,16 @@ var defineProperty3 = function(obj, key, value2) {
   }
   return obj;
 };
-var _extends = Object.assign || function(target) {
+var _extends = Object.assign || function(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
     for (var key in source) {
       if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
+        target2[key] = source[key];
       }
     }
   }
-  return target;
+  return target2;
 };
 function getClientRect(offsets) {
   return _extends({}, offsets, {
@@ -8787,7 +15211,7 @@ function getClientRect(offsets) {
 function getBoundingClientRect(element) {
   var rect = {};
   try {
-    if (isIE(10)) {
+    if (isIE2(10)) {
       rect = element.getBoundingClientRect();
       var scrollTop = getScroll(element, "top");
       var scrollLeft = getScroll(element, "left");
@@ -8822,7 +15246,7 @@ function getBoundingClientRect(element) {
 }
 function getOffsetRectRelativeToArbitraryNode(children2, parent) {
   var fixedPosition = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : false;
-  var isIE102 = isIE(10);
+  var isIE102 = isIE2(10);
   var isHTML = parent.nodeName === "HTML";
   var childrenRect = getBoundingClientRect(children2);
   var parentRect = getBoundingClientRect(parent);
@@ -8881,14 +15305,14 @@ function isFixed(element) {
   if (getStyleComputedProperty(element, "position") === "fixed") {
     return true;
   }
-  var parentNode = getParentNode(element);
-  if (!parentNode) {
+  var parentNode2 = getParentNode(element);
+  if (!parentNode2) {
     return false;
   }
-  return isFixed(parentNode);
+  return isFixed(parentNode2);
 }
 function getFixedPositionOffsetParent(element) {
-  if (!element || !element.parentElement || isIE()) {
+  if (!element || !element.parentElement || isIE2()) {
     return document.documentElement;
   }
   var el = element.parentElement;
@@ -9045,7 +15469,7 @@ function runModifiers(modifiers2, data48, ends) {
       console.warn("`modifier.function` is deprecated, use `modifier.fn`!");
     }
     var fn = modifier["function"] || modifier.fn;
-    if (modifier.enabled && isFunction3(fn)) {
+    if (modifier.enabled && isFunction4(fn)) {
       data48.offsets.popper = getClientRect(data48.offsets.popper);
       data48.offsets.reference = getClientRect(data48.offsets.reference);
       data48 = fn(data48, modifier);
@@ -9121,12 +15545,12 @@ function getWindow(element) {
 }
 function attachToScrollParents(scrollParent, event2, callback, scrollParents) {
   var isBody = scrollParent.nodeName === "BODY";
-  var target = isBody ? scrollParent.ownerDocument.defaultView : scrollParent;
-  target.addEventListener(event2, callback, { passive: true });
+  var target2 = isBody ? scrollParent.ownerDocument.defaultView : scrollParent;
+  target2.addEventListener(event2, callback, { passive: true });
   if (!isBody) {
-    attachToScrollParents(getScrollParent(target.parentNode), event2, callback, scrollParents);
+    attachToScrollParents(getScrollParent(target2.parentNode), event2, callback, scrollParents);
   }
-  scrollParents.push(target);
+  scrollParents.push(target2);
 }
 function setupEventListeners(reference, options, state, updateBound) {
   state.updateBound = updateBound;
@@ -9144,8 +15568,8 @@ function enableEventListeners() {
 }
 function removeEventListeners(reference, state) {
   getWindow(reference).removeEventListener("resize", state.updateBound);
-  state.scrollParents.forEach(function(target) {
-    target.removeEventListener("scroll", state.updateBound);
+  state.scrollParents.forEach(function(target2) {
+    target2.removeEventListener("scroll", state.updateBound);
   });
   state.updateBound = null;
   state.scrollParents = [];
@@ -9346,8 +15770,8 @@ var placements = ["auto-start", "auto", "auto-end", "top-start", "top", "top-end
 var validPlacements = placements.slice(3);
 function clockwise(placement) {
   var counter = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
-  var index2 = validPlacements.indexOf(placement);
-  var arr = validPlacements.slice(index2 + 1).concat(validPlacements.slice(0, index2));
+  var index3 = validPlacements.indexOf(placement);
+  var arr = validPlacements.slice(index3 + 1).concat(validPlacements.slice(0, index3));
   return counter ? arr.reverse() : arr;
 }
 var BEHAVIORS = {
@@ -9380,8 +15804,8 @@ function flip(data48, options) {
     default:
       flipOrder = options.behavior;
   }
-  flipOrder.forEach(function(step, index2) {
-    if (placement !== step || flipOrder.length === index2 + 1) {
+  flipOrder.forEach(function(step, index3) {
+    if (placement !== step || flipOrder.length === index3 + 1) {
       return data48;
     }
     placement = data48.placement.split("-")[0];
@@ -9402,7 +15826,7 @@ function flip(data48, options) {
     if (overlapsRef || overflowsBoundaries || flippedVariation) {
       data48.flipped = true;
       if (overlapsRef || overflowsBoundaries) {
-        placement = flipOrder[index2 + 1];
+        placement = flipOrder[index3 + 1];
       }
       if (flippedVariation) {
         variation = getOppositeVariation(variation);
@@ -9476,8 +15900,8 @@ function parseOffset(offset4, popperOffsets, referenceOffsets, basePlacement) {
   }
   var splitRegex = /\s*,\s*|\s+/;
   var ops = divider !== -1 ? [fragments.slice(0, divider).concat([fragments[divider].split(splitRegex)[0]]), [fragments[divider].split(splitRegex)[1]].concat(fragments.slice(divider + 1))] : [fragments];
-  ops = ops.map(function(op, index2) {
-    var measurement = (index2 === 1 ? !useHeight : useHeight) ? "height" : "width";
+  ops = ops.map(function(op, index3) {
+    var measurement = (index3 === 1 ? !useHeight : useHeight) ? "height" : "width";
     var mergeWithPrevious = false;
     return op.reduce(function(a2, b) {
       if (a2[a2.length - 1] === "" && ["+", "-"].indexOf(b) !== -1) {
@@ -9495,10 +15919,10 @@ function parseOffset(offset4, popperOffsets, referenceOffsets, basePlacement) {
       return toValue(str, measurement, popperOffsets, referenceOffsets);
     });
   });
-  ops.forEach(function(op, index2) {
+  ops.forEach(function(op, index3) {
     op.forEach(function(frag, index22) {
       if (isNumeric3(frag)) {
-        offsets[index2] += frag * (op[index22 - 1] === "-" ? -1 : 1);
+        offsets[index3] += frag * (op[index22 - 1] === "-" ? -1 : 1);
       }
     });
   });
@@ -10008,7 +16432,7 @@ var Popper = function() {
       return a2.order - b.order;
     });
     this.modifiers.forEach(function(modifierOptions) {
-      if (modifierOptions.enabled && isFunction3(modifierOptions.onLoad)) {
+      if (modifierOptions.enabled && isFunction4(modifierOptions.onLoad)) {
         modifierOptions.onLoad(_this.reference, _this.popper, _this.options, modifierOptions, _this.state);
       }
     });
@@ -10082,14 +16506,14 @@ function _classCallCheck4(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-function _defineProperties3(target, props152) {
-  for (var i = 0; i < props152.length; i++) {
-    var descriptor = props152[i];
+function _defineProperties3(target2, props153) {
+  for (var i = 0; i < props153.length; i++) {
+    var descriptor = props153[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
       descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target2, descriptor.key, descriptor);
   }
 }
 function _createClass3(Constructor, protoProps, staticProps) {
@@ -10150,7 +16574,7 @@ var BvEvent = function() {
 }();
 
 // node_modules/bootstrap-vue/esm/mixins/click-out.js
-var clickOutMixin = extend({
+var clickOutMixin = extend2({
   data: function data9() {
     return {
       listenForClickOut: false
@@ -10197,7 +16621,7 @@ var clickOutMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/focus-in.js
-var focusInMixin = extend({
+var focusInMixin = extend2({
   data: function data10() {
     return {
       listenForFocusIn: false
@@ -10278,16 +16702,16 @@ function ownKeys31(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread31(target) {
+function _objectSpread31(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys31(Object(source), true).forEach(function(key) {
-      _defineProperty36(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys31(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty36(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys31(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty36(obj, key, value2) {
   if (key in obj) {
@@ -10306,7 +16730,7 @@ var SELECTOR_ITEM = [".dropdown-item", ".b-dropdown-form"].map(function(selector
 var filterVisibles = function filterVisibles2(els) {
   return (els || []).filter(isVisible);
 };
-var props36 = makePropsConfigurable(sortKeys(_objectSpread31(_objectSpread31({}, props17), {}, {
+var props37 = makePropsConfigurable(sortKeys(_objectSpread31(_objectSpread31({}, props18), {}, {
   // String: `scrollParent`, `window` or `viewport`
   // HTMLElement: HTML Element reference
   boundary: makeProp([HTMLElement, PROP_TYPE_STRING], "scrollParent"),
@@ -10326,7 +16750,7 @@ var props36 = makePropsConfigurable(sortKeys(_objectSpread31(_objectSpread31({},
   // Right align menu (default is left align)
   right: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_DROPDOWN);
-var dropdownMixin = extend({
+var dropdownMixin = extend2({
   mixins: [idMixin, listenOnRootMixin, clickOutMixin, focusInMixin],
   provide: function provide3() {
     var _this = this;
@@ -10345,7 +16769,7 @@ var dropdownMixin = extend({
       }
     }
   },
-  props: props36,
+  props: props37,
   data: function data11() {
     return {
       visible: false,
@@ -10449,7 +16873,7 @@ var dropdownMixin = extend({
       }
       if (!this.inNavbar) {
         if (typeof popper_default === "undefined") {
-          warn("Popper.js not found. Falling back to CSS positioning", NAME_DROPDOWN);
+          warn2("Popper.js not found. Falling back to CSS positioning", NAME_DROPDOWN);
         } else {
           var el = this.dropup && this.right || this.split ? this.$el : this.$refs.toggle;
           el = el.$el || el;
@@ -10533,7 +16957,7 @@ var dropdownMixin = extend({
       }
     },
     // Public method to show dropdown
-    show: function show2() {
+    show: function show3() {
       var _this3 = this;
       if (this.disabled) {
         return;
@@ -10609,8 +17033,8 @@ var dropdownMixin = extend({
     // Shared hide handler between click-out and focus-in events
     hideHandler: function hideHandler(event2) {
       var _this4 = this;
-      var target = event2.target;
-      if (this.visible && !contains(this.$refs.menu, target) && !contains(this.toggler, target)) {
+      var target2 = event2.target;
+      if (this.visible && !contains(this.$refs.menu, target2) && !contains(this.toggler, target2)) {
         this.clearHideTimeout();
         this.$_hideTimeout = setTimeout(function() {
           return _this4.hide();
@@ -10628,8 +17052,8 @@ var dropdownMixin = extend({
     // Keyboard nav
     focusNext: function focusNext2(event2, up) {
       var _this5 = this;
-      var target = event2.target;
-      if (!this.visible || event2 && closest(SELECTOR_FORM_CHILD, target)) {
+      var target2 = event2.target;
+      if (!this.visible || event2 && closest(SELECTOR_FORM_CHILD, target2)) {
         return;
       }
       stopEvent(event2);
@@ -10638,21 +17062,21 @@ var dropdownMixin = extend({
         if (items3.length < 1) {
           return;
         }
-        var index2 = items3.indexOf(target);
-        if (up && index2 > 0) {
-          index2--;
-        } else if (!up && index2 < items3.length - 1) {
-          index2++;
+        var index3 = items3.indexOf(target2);
+        if (up && index3 > 0) {
+          index3--;
+        } else if (!up && index3 < items3.length - 1) {
+          index3++;
         }
-        if (index2 < 0) {
-          index2 = 0;
+        if (index3 < 0) {
+          index3 = 0;
         }
-        _this5.focusItem(index2, items3);
+        _this5.focusItem(index3, items3);
       });
     },
-    focusItem: function focusItem(index2, items3) {
+    focusItem: function focusItem(index3, items3) {
       var el = items3.find(function(el2, i) {
-        return i === index2;
+        return i === index3;
       });
       attemptFocus(el);
     },
@@ -10682,16 +17106,16 @@ function ownKeys32(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread32(target) {
+function _objectSpread32(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys32(Object(source), true).forEach(function(key) {
-      _defineProperty37(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys32(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty37(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys32(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty37(obj, key, value2) {
   if (key in obj) {
@@ -10701,7 +17125,7 @@ function _defineProperty37(obj, key, value2) {
   }
   return obj;
 }
-var props37 = makePropsConfigurable(sortKeys(_objectSpread32(_objectSpread32(_objectSpread32({}, props17), props36), {}, {
+var props38 = makePropsConfigurable(sortKeys(_objectSpread32(_objectSpread32(_objectSpread32({}, props18), props37), {}, {
   block: makeProp(PROP_TYPE_BOOLEAN, false),
   html: makeProp(PROP_TYPE_STRING),
   // If `true`, only render menu contents when open
@@ -10726,10 +17150,10 @@ var props37 = makePropsConfigurable(sortKeys(_objectSpread32(_objectSpread32(_ob
   toggleText: makeProp(PROP_TYPE_STRING, "Toggle dropdown"),
   variant: makeProp(PROP_TYPE_STRING, "secondary")
 })), NAME_DROPDOWN);
-var BDropdown = extend({
+var BDropdown = extend2({
   name: NAME_DROPDOWN,
   mixins: [idMixin, dropdownMixin, normalizeSlotMixin],
-  props: props37,
+  props: props38,
   computed: {
     dropdownClasses: function dropdownClasses() {
       var block = this.block, split = this.split;
@@ -10806,7 +17230,7 @@ var BDropdown = extend({
         // Must have attributes
         id: this.safeId("_BV_toggle_"),
         "aria-haspopup": ariaHasPopupRoles.includes(role) ? role : "false",
-        "aria-expanded": toString3(visible2)
+        "aria-expanded": toString4(visible2)
       }),
       props: _objectSpread32(_objectSpread32({}, commonProps), {}, {
         tag: this.toggleTag,
@@ -10858,16 +17282,16 @@ function ownKeys33(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread33(target) {
+function _objectSpread33(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys33(Object(source), true).forEach(function(key) {
-      _defineProperty38(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys33(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty38(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys33(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty38(obj, key, value2) {
   if (key in obj) {
@@ -10877,12 +17301,12 @@ function _defineProperty38(obj, key, value2) {
   }
   return obj;
 }
-var linkProps4 = omit(props7, ["event", "routerTag"]);
-var props38 = makePropsConfigurable(sortKeys(_objectSpread33(_objectSpread33({}, linkProps4), {}, {
+var linkProps4 = omit(props8, ["event", "routerTag"]);
+var props39 = makePropsConfigurable(sortKeys(_objectSpread33(_objectSpread33({}, linkProps4), {}, {
   linkClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   variant: makeProp(PROP_TYPE_STRING)
 })), NAME_DROPDOWN_ITEM);
-var BDropdownItem = extend({
+var BDropdownItem = extend2({
   name: NAME_DROPDOWN_ITEM,
   mixins: [attrsMixin, normalizeSlotMixin],
   inject: {
@@ -10895,7 +17319,7 @@ var BDropdownItem = extend({
     }
   },
   inheritAttrs: false,
-  props: props38,
+  props: props39,
   computed: {
     bvDropdown: function bvDropdown() {
       return this.getBvDropdown();
@@ -10952,16 +17376,16 @@ function ownKeys34(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread34(target) {
+function _objectSpread34(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys34(Object(source), true).forEach(function(key) {
-      _defineProperty39(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys34(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty39(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys34(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty39(obj, key, value2) {
   if (key in obj) {
@@ -10971,14 +17395,14 @@ function _defineProperty39(obj, key, value2) {
   }
   return obj;
 }
-var props39 = makePropsConfigurable({
+var props40 = makePropsConfigurable({
   active: makeProp(PROP_TYPE_BOOLEAN, false),
   activeClass: makeProp(PROP_TYPE_STRING, "active"),
   buttonClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_DROPDOWN_ITEM_BUTTON);
-var BDropdownItemButton = extend({
+var BDropdownItemButton = extend2({
   name: NAME_DROPDOWN_ITEM_BUTTON,
   mixins: [attrsMixin, normalizeSlotMixin],
   inject: {
@@ -10991,7 +17415,7 @@ var BDropdownItemButton = extend({
     }
   },
   inheritAttrs: false,
-  props: props39,
+  props: props40,
   computed: {
     bvDropdown: function bvDropdown2() {
       return this.getBvDropdown();
@@ -11047,16 +17471,16 @@ function ownKeys35(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread35(target) {
+function _objectSpread35(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys35(Object(source), true).forEach(function(key) {
-      _defineProperty40(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys35(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty40(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys35(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty40(obj, key, value2) {
   if (key in obj) {
@@ -11066,18 +17490,18 @@ function _defineProperty40(obj, key, value2) {
   }
   return obj;
 }
-var props40 = makePropsConfigurable({
+var props41 = makePropsConfigurable({
   id: makeProp(PROP_TYPE_STRING),
   tag: makeProp(PROP_TYPE_STRING, "header"),
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_DROPDOWN_HEADER);
-var BDropdownHeader = extend({
+var BDropdownHeader = extend2({
   name: NAME_DROPDOWN_HEADER,
   functional: true,
-  props: props40,
+  props: props41,
   render: function render37(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var tag3 = props152.tag, variant = props152.variant;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var tag3 = props153.tag, variant = props153.variant;
     return h("li", a(omit(data48, ["attrs"]), {
       attrs: {
         role: "presentation"
@@ -11086,7 +17510,7 @@ var BDropdownHeader = extend({
       staticClass: "dropdown-header",
       class: _defineProperty40({}, "text-".concat(variant), variant),
       attrs: _objectSpread35(_objectSpread35({}, data48.attrs || {}), {}, {
-        id: props152.id || null,
+        id: props153.id || null,
         role: isTag(tag3, "header") ? null : "heading"
       }),
       ref: "header"
@@ -11105,16 +17529,16 @@ function ownKeys36(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread36(target) {
+function _objectSpread36(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys36(Object(source), true).forEach(function(key) {
-      _defineProperty41(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys36(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty41(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys36(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty41(obj, key, value2) {
   if (key in obj) {
@@ -11124,20 +17548,20 @@ function _defineProperty41(obj, key, value2) {
   }
   return obj;
 }
-var props41 = makePropsConfigurable({
+var props42 = makePropsConfigurable({
   tag: makeProp(PROP_TYPE_STRING, "hr")
 }, NAME_DROPDOWN_DIVIDER);
-var BDropdownDivider = extend({
+var BDropdownDivider = extend2({
   name: NAME_DROPDOWN_DIVIDER,
   functional: true,
-  props: props41,
+  props: props42,
   render: function render38(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data;
+    var props153 = _ref.props, data48 = _ref.data;
     return h("li", a(omit(data48, ["attrs"]), {
       attrs: {
         role: "presentation"
       }
-    }), [h(props152.tag, {
+    }), [h(props153.tag, {
       staticClass: "dropdown-divider",
       attrs: _objectSpread36(_objectSpread36({}, data48.attrs || {}), {}, {
         role: "separator",
@@ -11149,26 +17573,26 @@ var BDropdownDivider = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/form/form.js
-var props42 = makePropsConfigurable({
+var props43 = makePropsConfigurable({
   id: makeProp(PROP_TYPE_STRING),
   inline: makeProp(PROP_TYPE_BOOLEAN, false),
   novalidate: makeProp(PROP_TYPE_BOOLEAN, false),
   validated: makeProp(PROP_TYPE_BOOLEAN, false)
 }, NAME_FORM);
-var BForm = extend({
+var BForm = extend2({
   name: NAME_FORM,
   functional: true,
-  props: props42,
+  props: props43,
   render: function render39(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
     return h("form", a(data48, {
       class: {
-        "form-inline": props152.inline,
-        "was-validated": props152.validated
+        "form-inline": props153.inline,
+        "was-validated": props153.validated
       },
       attrs: {
-        id: props152.id,
-        novalidate: props152.novalidate
+        id: props153.id,
+        novalidate: props153.novalidate
       }
     }), children2);
   }
@@ -11185,16 +17609,16 @@ function ownKeys37(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread37(target) {
+function _objectSpread37(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys37(Object(source), true).forEach(function(key) {
-      _defineProperty42(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys37(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty42(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys37(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty42(obj, key, value2) {
   if (key in obj) {
@@ -11204,30 +17628,30 @@ function _defineProperty42(obj, key, value2) {
   }
   return obj;
 }
-var props43 = makePropsConfigurable(sortKeys(_objectSpread37(_objectSpread37({}, props42), {}, {
+var props44 = makePropsConfigurable(sortKeys(_objectSpread37(_objectSpread37({}, props43), {}, {
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   formClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)
 })), NAME_DROPDOWN_FORM);
-var BDropdownForm = extend({
+var BDropdownForm = extend2({
   name: NAME_DROPDOWN_FORM,
   functional: true,
-  props: props43,
+  props: props44,
   render: function render40(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, listeners = _ref.listeners, children2 = _ref.children;
+    var props153 = _ref.props, data48 = _ref.data, listeners = _ref.listeners, children2 = _ref.children;
     return h("li", a(omit(data48, ["attrs", "on"]), {
       attrs: {
         role: "presentation"
       }
     }), [h(BForm, {
       staticClass: "b-dropdown-form",
-      class: [props152.formClass, {
-        disabled: props152.disabled
+      class: [props153.formClass, {
+        disabled: props153.disabled
       }],
-      props: props152,
+      props: props153,
       attrs: _objectSpread37(_objectSpread37({}, data48.attrs || {}), {}, {
-        disabled: props152.disabled,
+        disabled: props153.disabled,
         // Tab index of -1 for keyboard navigation
-        tabindex: props152.disabled ? null : "-1"
+        tabindex: props153.disabled ? null : "-1"
       }),
       on: listeners,
       ref: "form"
@@ -11244,18 +17668,18 @@ function _defineProperty43(obj, key, value2) {
   }
   return obj;
 }
-var props44 = makePropsConfigurable({
+var props45 = makePropsConfigurable({
   tag: makeProp(PROP_TYPE_STRING, "p"),
   textClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_DROPDOWN_TEXT);
-var BDropdownText = extend({
+var BDropdownText = extend2({
   name: NAME_DROPDOWN_TEXT,
   functional: true,
-  props: props44,
+  props: props45,
   render: function render41(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var tag3 = props152.tag, textClass = props152.textClass, variant = props152.variant;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var tag3 = props153.tag, textClass = props153.textClass, variant = props153.variant;
     return h("li", a(omit(data48, ["attrs"]), {
       attrs: {
         role: "presentation"
@@ -11263,7 +17687,7 @@ var BDropdownText = extend({
     }), [h(tag3, {
       staticClass: "b-dropdown-text",
       class: [textClass, _defineProperty43({}, "text-".concat(variant), variant)],
-      props: props152,
+      props: props153,
       attrs: data48.attrs || {},
       ref: "text"
     }, children2)]);
@@ -11281,16 +17705,16 @@ function ownKeys38(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread38(target) {
+function _objectSpread38(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys38(Object(source), true).forEach(function(key) {
-      _defineProperty44(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys38(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty44(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys38(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty44(obj, key, value2) {
   if (key in obj) {
@@ -11300,7 +17724,7 @@ function _defineProperty44(obj, key, value2) {
   }
   return obj;
 }
-var props45 = makePropsConfigurable({
+var props46 = makePropsConfigurable({
   ariaDescribedby: makeProp(PROP_TYPE_STRING),
   header: makeProp(PROP_TYPE_STRING),
   headerClasses: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
@@ -11308,13 +17732,13 @@ var props45 = makePropsConfigurable({
   headerVariant: makeProp(PROP_TYPE_STRING),
   id: makeProp(PROP_TYPE_STRING)
 }, NAME_DROPDOWN_GROUP);
-var BDropdownGroup = extend({
+var BDropdownGroup = extend2({
   name: NAME_DROPDOWN_GROUP,
   functional: true,
-  props: props45,
+  props: props46,
   render: function render42(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
-    var id = props152.id, variant = props152.variant, header = props152.header, headerTag = props152.headerTag;
+    var props153 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
+    var id = props153.id, variant = props153.variant, header = props153.header, headerTag = props153.headerTag;
     var $slots = slots();
     var $scopedSlots = scopedSlots || {};
     var slotScope6 = {};
@@ -11323,7 +17747,7 @@ var BDropdownGroup = extend({
     if (hasNormalizedSlot(SLOT_NAME_HEADER, $scopedSlots, $slots) || header) {
       $header = h(headerTag, {
         staticClass: "dropdown-header",
-        class: [props152.headerClasses, _defineProperty44({}, "text-".concat(variant), variant)],
+        class: [props153.headerClasses, _defineProperty44({}, "text-".concat(variant), variant)],
         attrs: {
           id: headerId,
           role: isTag(headerTag, "header") ? null : "heading"
@@ -11339,7 +17763,7 @@ var BDropdownGroup = extend({
       attrs: _objectSpread38(_objectSpread38({}, data48.attrs || {}), {}, {
         id,
         role: "group",
-        "aria-describedby": [headerId, props152.ariaDescribedBy].filter(identity).join(" ").trim() || null
+        "aria-describedby": [headerId, props153.ariaDescribedBy].filter(identity2).join(" ").trim() || null
       })
     }, normalizeSlot(SLOT_NAME_DEFAULT, slotScope6, $scopedSlots, $slots))]);
   }
@@ -11379,25 +17803,25 @@ function _defineProperty45(obj, key, value2) {
   return obj;
 }
 var TYPES = ["iframe", "embed", "video", "object", "img", "b-img", "b-img-lazy"];
-var props46 = makePropsConfigurable({
+var props47 = makePropsConfigurable({
   aspect: makeProp(PROP_TYPE_STRING, "16by9"),
   tag: makeProp(PROP_TYPE_STRING, "div"),
   type: makeProp(PROP_TYPE_STRING, "iframe", function(value2) {
     return arrayIncludes(TYPES, value2);
   })
 }, NAME_EMBED);
-var BEmbed = extend({
+var BEmbed = extend2({
   name: NAME_EMBED,
   functional: true,
-  props: props46,
+  props: props47,
   render: function render43(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var aspect = props152.aspect;
-    return h(props152.tag, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var aspect = props153.aspect;
+    return h(props153.tag, {
       staticClass: "embed-responsive",
       class: _defineProperty45({}, "embed-responsive-".concat(aspect), aspect),
       ref: data48.ref
-    }, [h(props152.type, a(omit(data48, ["ref"]), {
+    }, [h(props153.type, a(omit(data48, ["ref"]), {
       staticClass: "embed-responsive-item"
     }), children2)]);
   }
@@ -11412,15 +17836,15 @@ var EmbedPlugin = pluginFactory({
 
 // node_modules/bootstrap-vue/esm/mixins/form-options.js
 var OPTIONS_OBJECT_DEPRECATED_MSG = 'Setting prop "options" to an object is deprecated. Use the array format instead.';
-var props47 = makePropsConfigurable({
+var props48 = makePropsConfigurable({
   disabledField: makeProp(PROP_TYPE_STRING, "disabled"),
   htmlField: makeProp(PROP_TYPE_STRING, "html"),
   options: makeProp(PROP_TYPE_ARRAY_OBJECT, []),
   textField: makeProp(PROP_TYPE_STRING, "text"),
   valueField: makeProp(PROP_TYPE_STRING, "value")
 }, "formOptionControls");
-var formOptionsMixin = extend({
-  props: props47,
+var formOptionsMixin = extend2({
+  props: props48,
   computed: {
     formOptions: function formOptions() {
       return this.normalizeOptions(this.options);
@@ -11429,7 +17853,7 @@ var formOptionsMixin = extend({
   methods: {
     normalizeOption: function normalizeOption(option) {
       var key = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
-      if (isPlainObject(option)) {
+      if (isPlainObject2(option)) {
         var value2 = get(option, this.valueField);
         var text = get(option, this.textField);
         return {
@@ -11447,12 +17871,12 @@ var formOptionsMixin = extend({
     },
     normalizeOptions: function normalizeOptions(options) {
       var _this = this;
-      if (isArray(options)) {
+      if (isArray2(options)) {
         return options.map(function(option) {
           return _this.normalizeOption(option);
         });
-      } else if (isPlainObject(options)) {
-        warn(OPTIONS_OBJECT_DEPRECATED_MSG, this.$options.name);
+      } else if (isPlainObject2(options)) {
+        warn2(OPTIONS_OBJECT_DEPRECATED_MSG, this.$options.name);
         return keys(options).map(function(key) {
           return _this.normalizeOption(options[key] || {}, key);
         });
@@ -11473,16 +17897,16 @@ function ownKeys39(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread39(target) {
+function _objectSpread39(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys39(Object(source), true).forEach(function(key) {
-      _defineProperty46(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys39(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty46(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys39(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty46(obj, key, value2) {
   if (key in obj) {
@@ -11492,17 +17916,17 @@ function _defineProperty46(obj, key, value2) {
   }
   return obj;
 }
-var props48 = makePropsConfigurable(sortKeys(_objectSpread39(_objectSpread39({}, props47), {}, {
+var props49 = makePropsConfigurable(sortKeys(_objectSpread39(_objectSpread39({}, props48), {}, {
   id: makeProp(PROP_TYPE_STRING, void 0, true)
   // Required
 })), NAME_FORM_DATALIST);
-var BFormDatalist = extend({
+var BFormDatalist = extend2({
   name: NAME_FORM_DATALIST,
   mixins: [formOptionsMixin, normalizeSlotMixin],
-  props: props48,
+  props: props49,
   render: function render44(h) {
     var id = this.id;
-    var $options = this.formOptions.map(function(option, index2) {
+    var $options = this.formOptions.map(function(option, index3) {
       var value2 = option.value, text = option.text, html = option.html, disabled6 = option.disabled;
       return h("option", {
         attrs: {
@@ -11510,7 +17934,7 @@ var BFormDatalist = extend({
           disabled: disabled6
         },
         domProps: htmlOrText(html, text),
-        key: "option_".concat(index2)
+        key: "option_".concat(index3)
       });
     });
     return h("datalist", {
@@ -11530,65 +17954,30 @@ function _defineProperty47(obj, key, value2) {
   }
   return obj;
 }
-var props49 = makePropsConfigurable({
+var props50 = makePropsConfigurable({
   id: makeProp(PROP_TYPE_STRING),
   inline: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "small"),
   textVariant: makeProp(PROP_TYPE_STRING, "muted")
 }, NAME_FORM_TEXT);
-var BFormText = extend({
+var BFormText = extend2({
   name: NAME_FORM_TEXT,
   functional: true,
-  props: props49,
+  props: props50,
   render: function render45(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.tag, a(data48, {
       class: _defineProperty47({
-        "form-text": !props152.inline
-      }, "text-".concat(props152.textVariant), props152.textVariant),
+        "form-text": !props153.inline
+      }, "text-".concat(props153.textVariant), props153.textVariant),
       attrs: {
-        id: props152.id
+        id: props153.id
       }
     }), children2);
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/form/form-invalid-feedback.js
-var props50 = makePropsConfigurable({
-  ariaLive: makeProp(PROP_TYPE_STRING),
-  forceShow: makeProp(PROP_TYPE_BOOLEAN, false),
-  id: makeProp(PROP_TYPE_STRING),
-  role: makeProp(PROP_TYPE_STRING),
-  // Tri-state prop: `true`, `false`, or `null`
-  state: makeProp(PROP_TYPE_BOOLEAN, null),
-  tag: makeProp(PROP_TYPE_STRING, "div"),
-  tooltip: makeProp(PROP_TYPE_BOOLEAN, false)
-}, NAME_FORM_INVALID_FEEDBACK);
-var BFormInvalidFeedback = extend({
-  name: NAME_FORM_INVALID_FEEDBACK,
-  functional: true,
-  props: props50,
-  render: function render46(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var tooltip = props152.tooltip, ariaLive = props152.ariaLive;
-    var show6 = props152.forceShow === true || props152.state === false;
-    return h(props152.tag, a(data48, {
-      class: {
-        "d-block": show6,
-        "invalid-feedback": !tooltip,
-        "invalid-tooltip": tooltip
-      },
-      attrs: {
-        id: props152.id || null,
-        role: props152.role || null,
-        "aria-live": ariaLive || null,
-        "aria-atomic": ariaLive ? "true" : null
-      }
-    }), children2);
-  }
-});
-
-// node_modules/bootstrap-vue/esm/components/form/form-valid-feedback.js
 var props51 = makePropsConfigurable({
   ariaLive: makeProp(PROP_TYPE_STRING),
   forceShow: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -11598,24 +17987,59 @@ var props51 = makePropsConfigurable({
   state: makeProp(PROP_TYPE_BOOLEAN, null),
   tag: makeProp(PROP_TYPE_STRING, "div"),
   tooltip: makeProp(PROP_TYPE_BOOLEAN, false)
-}, NAME_FORM_VALID_FEEDBACK);
-var BFormValidFeedback = extend({
-  name: NAME_FORM_VALID_FEEDBACK,
+}, NAME_FORM_INVALID_FEEDBACK);
+var BFormInvalidFeedback = extend2({
+  name: NAME_FORM_INVALID_FEEDBACK,
   functional: true,
   props: props51,
-  render: function render47(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var tooltip = props152.tooltip, ariaLive = props152.ariaLive;
-    var show6 = props152.forceShow === true || props152.state === true;
-    return h(props152.tag, a(data48, {
+  render: function render46(h, _ref) {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var tooltip = props153.tooltip, ariaLive = props153.ariaLive;
+    var show7 = props153.forceShow === true || props153.state === false;
+    return h(props153.tag, a(data48, {
       class: {
-        "d-block": show6,
+        "d-block": show7,
+        "invalid-feedback": !tooltip,
+        "invalid-tooltip": tooltip
+      },
+      attrs: {
+        id: props153.id || null,
+        role: props153.role || null,
+        "aria-live": ariaLive || null,
+        "aria-atomic": ariaLive ? "true" : null
+      }
+    }), children2);
+  }
+});
+
+// node_modules/bootstrap-vue/esm/components/form/form-valid-feedback.js
+var props52 = makePropsConfigurable({
+  ariaLive: makeProp(PROP_TYPE_STRING),
+  forceShow: makeProp(PROP_TYPE_BOOLEAN, false),
+  id: makeProp(PROP_TYPE_STRING),
+  role: makeProp(PROP_TYPE_STRING),
+  // Tri-state prop: `true`, `false`, or `null`
+  state: makeProp(PROP_TYPE_BOOLEAN, null),
+  tag: makeProp(PROP_TYPE_STRING, "div"),
+  tooltip: makeProp(PROP_TYPE_BOOLEAN, false)
+}, NAME_FORM_VALID_FEEDBACK);
+var BFormValidFeedback = extend2({
+  name: NAME_FORM_VALID_FEEDBACK,
+  functional: true,
+  props: props52,
+  render: function render47(h, _ref) {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var tooltip = props153.tooltip, ariaLive = props153.ariaLive;
+    var show7 = props153.forceShow === true || props153.state === true;
+    return h(props153.tag, a(data48, {
+      class: {
+        "d-block": show7,
         "valid-feedback": !tooltip,
         "valid-tooltip": tooltip
       },
       attrs: {
-        id: props152.id || null,
-        role: props152.role || null,
+        id: props153.id || null,
+        role: props153.role || null,
         "aria-live": ariaLive || null,
         "aria-atomic": ariaLive ? "true" : null
       }
@@ -11624,16 +18048,16 @@ var BFormValidFeedback = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/layout/form-row.js
-var props52 = makePropsConfigurable({
+var props53 = makePropsConfigurable({
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_FORM_ROW);
-var BFormRow = extend({
+var BFormRow = extend2({
   name: NAME_FORM_ROW,
   functional: true,
-  props: props52,
+  props: props53,
   render: function render48(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.tag, a(data48, {
       staticClass: "form-row"
     }), children2);
   }
@@ -11655,9 +18079,9 @@ var FormPlugin = pluginFactory({
 });
 
 // node_modules/bootstrap-vue/esm/utils/loose-index-of.js
-var looseIndexOf = function looseIndexOf2(array, value2) {
+var looseIndexOf2 = function looseIndexOf3(array, value2) {
   for (var i = 0; i < array.length; i++) {
-    if (looseEqual(array[i], value2)) {
+    if (looseEqual2(array[i], value2)) {
       return i;
     }
   }
@@ -11666,7 +18090,7 @@ var looseIndexOf = function looseIndexOf2(array, value2) {
 
 // node_modules/bootstrap-vue/esm/mixins/form-control.js
 var SELECTOR = "input, textarea, select";
-var props53 = makePropsConfigurable({
+var props54 = makePropsConfigurable({
   autofocus: makeProp(PROP_TYPE_BOOLEAN, false),
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   form: makeProp(PROP_TYPE_STRING),
@@ -11674,8 +18098,8 @@ var props53 = makePropsConfigurable({
   name: makeProp(PROP_TYPE_STRING),
   required: makeProp(PROP_TYPE_BOOLEAN, false)
 }, "formControls");
-var formControlMixin = extend({
-  props: props53,
+var formControlMixin = extend2({
+  props: props54,
   mounted: function mounted10() {
     this.handleAutofocus();
   },
@@ -11690,7 +18114,7 @@ var formControlMixin = extend({
         requestAF(function() {
           var el = _this.$el;
           if (_this.autofocus && isVisible(el)) {
-            if (!matches(el, SELECTOR)) {
+            if (!matches2(el, SELECTOR)) {
               el = select(SELECTOR, el);
             }
             attemptFocus(el);
@@ -11702,11 +18126,11 @@ var formControlMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/form-custom.js
-var props54 = makePropsConfigurable({
+var props55 = makePropsConfigurable({
   plain: makeProp(PROP_TYPE_BOOLEAN, false)
 }, "formControls");
-var formCustomMixin = extend({
-  props: props54,
+var formCustomMixin = extend2({
+  props: props55,
   computed: {
     custom: function custom() {
       return !this.plain;
@@ -11715,11 +18139,11 @@ var formCustomMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/form-size.js
-var props55 = makePropsConfigurable({
+var props56 = makePropsConfigurable({
   size: makeProp(PROP_TYPE_STRING)
 }, "formControls");
-var formSizeMixin = extend({
-  props: props55,
+var formSizeMixin = extend2({
+  props: props56,
   computed: {
     sizeFormClass: function sizeFormClass() {
       return [this.size ? "form-control-".concat(this.size) : null];
@@ -11728,15 +18152,15 @@ var formSizeMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/form-state.js
-var props56 = makePropsConfigurable({
+var props57 = makePropsConfigurable({
   // Tri-state prop: true, false, null (or undefined)
   state: makeProp(PROP_TYPE_BOOLEAN, null)
 }, "formState");
-var formStateMixin = extend({
-  props: props56,
+var formStateMixin = extend2({
+  props: props57,
   computed: {
     computedState: function computedState() {
-      return isBoolean(this.state) ? this.state : null;
+      return isBoolean2(this.state) ? this.state : null;
     },
     stateClass: function stateClass() {
       var state = this.computedState;
@@ -11765,16 +18189,16 @@ function ownKeys40(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread40(target) {
+function _objectSpread40(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys40(Object(source), true).forEach(function(key) {
-      _defineProperty48(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys40(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty48(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys40(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty48(obj, key, value2) {
   if (key in obj) {
@@ -11791,7 +18215,7 @@ var modelMixin5 = _makeModelMixin5.mixin;
 var modelProps5 = _makeModelMixin5.props;
 var MODEL_PROP_NAME5 = _makeModelMixin5.prop;
 var MODEL_EVENT_NAME5 = _makeModelMixin5.event;
-var props57 = makePropsConfigurable(sortKeys(_objectSpread40(_objectSpread40(_objectSpread40(_objectSpread40(_objectSpread40(_objectSpread40(_objectSpread40({}, props17), modelProps5), props53), props55), props56), props54), {}, {
+var props58 = makePropsConfigurable(sortKeys(_objectSpread40(_objectSpread40(_objectSpread40(_objectSpread40(_objectSpread40(_objectSpread40(_objectSpread40({}, props18), modelProps5), props54), props56), props57), props55), {}, {
   ariaLabel: makeProp(PROP_TYPE_STRING),
   ariaLabelledby: makeProp(PROP_TYPE_STRING),
   // Only applicable in standalone mode (non group)
@@ -11801,10 +18225,10 @@ var props57 = makePropsConfigurable(sortKeys(_objectSpread40(_objectSpread40(_ob
   inline: makeProp(PROP_TYPE_BOOLEAN, false),
   value: makeProp(PROP_TYPE_ANY)
 })), "formRadioCheckControls");
-var formRadioCheckMixin = extend({
+var formRadioCheckMixin = extend2({
   mixins: [attrsMixin, idMixin, modelMixin5, normalizeSlotMixin, formControlMixin, formSizeMixin, formStateMixin, formCustomMixin],
   inheritAttrs: false,
-  props: props57,
+  props: props58,
   data: function data12() {
     return {
       localChecked: this.isGroup ? this.bvGroup[MODEL_PROP_NAME5] : this[MODEL_PROP_NAME5],
@@ -11816,7 +18240,7 @@ var formRadioCheckMixin = extend({
       get: function get3() {
         return this.isGroup ? this.bvGroup.localChecked : this.localChecked;
       },
-      set: function set(value2) {
+      set: function set2(value2) {
         if (this.isGroup) {
           this.bvGroup.localChecked = value2;
         } else {
@@ -11825,7 +18249,7 @@ var formRadioCheckMixin = extend({
       }
     },
     isChecked: function isChecked() {
-      return looseEqual(this.value, this.computedLocalChecked);
+      return looseEqual2(this.value, this.computedLocalChecked);
     },
     isRadio: function isRadio() {
       return true;
@@ -11864,7 +18288,7 @@ var formRadioCheckMixin = extend({
       return (this.isGroup ? this.bvGroup.size : this.size) || "";
     },
     computedState: function computedState2() {
-      return this.isGroup ? this.bvGroup.computedState : isBoolean(this.state) ? this.state : null;
+      return this.isGroup ? this.bvGroup.computedState : isBoolean2(this.state) ? this.state : null;
     },
     computedButtonVariant: function computedButtonVariant() {
       var buttonVariant = this.buttonVariant;
@@ -11901,12 +18325,12 @@ var formRadioCheckMixin = extend({
   }), _defineProperty48(_watch6, "computedLocalChecked", function computedLocalChecked() {
     this.computedLocalCheckedWatcher.apply(this, arguments);
   }), _watch6),
-  methods: (_methods = {}, _defineProperty48(_methods, "".concat(MODEL_PROP_NAME5, "Watcher"), function Watcher(newValue) {
-    if (!looseEqual(newValue, this.computedLocalChecked)) {
+  methods: (_methods = {}, _defineProperty48(_methods, "".concat(MODEL_PROP_NAME5, "Watcher"), function Watcher2(newValue) {
+    if (!looseEqual2(newValue, this.computedLocalChecked)) {
       this.computedLocalChecked = newValue;
     }
   }), _defineProperty48(_methods, "computedLocalCheckedWatcher", function computedLocalCheckedWatcher(newValue, oldValue) {
-    if (!looseEqual(newValue, oldValue)) {
+    if (!looseEqual2(newValue, oldValue)) {
       this.$emit(MODEL_EVENT_NAME5, newValue);
     }
   }), _defineProperty48(_methods, "handleChange", function handleChange(_ref2) {
@@ -12016,16 +18440,16 @@ function ownKeys41(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread41(target) {
+function _objectSpread41(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys41(Object(source), true).forEach(function(key) {
-      _defineProperty49(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys41(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty49(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys41(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty49(obj, key, value2) {
   if (key in obj) {
@@ -12037,8 +18461,8 @@ function _defineProperty49(obj, key, value2) {
 }
 var MODEL_PROP_NAME_INDETERMINATE = "indeterminate";
 var MODEL_EVENT_NAME_INDETERMINATE = MODEL_EVENT_NAME_PREFIX + MODEL_PROP_NAME_INDETERMINATE;
-var props58 = makePropsConfigurable(sortKeys(_objectSpread41(_objectSpread41({}, props57), {}, (_objectSpread210 = {}, _defineProperty49(_objectSpread210, MODEL_PROP_NAME_INDETERMINATE, makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty49(_objectSpread210, "switch", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty49(_objectSpread210, "uncheckedValue", makeProp(PROP_TYPE_ANY, false)), _defineProperty49(_objectSpread210, "value", makeProp(PROP_TYPE_ANY, true)), _objectSpread210))), NAME_FORM_CHECKBOX);
-var BFormCheckbox = extend({
+var props59 = makePropsConfigurable(sortKeys(_objectSpread41(_objectSpread41({}, props58), {}, (_objectSpread210 = {}, _defineProperty49(_objectSpread210, MODEL_PROP_NAME_INDETERMINATE, makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty49(_objectSpread210, "switch", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty49(_objectSpread210, "uncheckedValue", makeProp(PROP_TYPE_ANY, false)), _defineProperty49(_objectSpread210, "value", makeProp(PROP_TYPE_ANY, true)), _objectSpread210))), NAME_FORM_CHECKBOX);
+var BFormCheckbox = extend2({
   name: NAME_FORM_CHECKBOX,
   mixins: [formRadioCheckMixin],
   inject: {
@@ -12051,21 +18475,21 @@ var BFormCheckbox = extend({
       }
     }
   },
-  props: props58,
+  props: props59,
   computed: {
     bvGroup: function bvGroup() {
       return this.getBvGroup();
     },
     isChecked: function isChecked2() {
       var value2 = this.value, checked = this.computedLocalChecked;
-      return isArray(checked) ? looseIndexOf(checked, value2) > -1 : looseEqual(checked, value2);
+      return isArray2(checked) ? looseIndexOf2(checked, value2) > -1 : looseEqual2(checked, value2);
     },
     isRadio: function isRadio2() {
       return false;
     }
   },
   watch: _defineProperty49({}, MODEL_PROP_NAME_INDETERMINATE, function(newValue, oldValue) {
-    if (!looseEqual(newValue, oldValue)) {
+    if (!looseEqual2(newValue, oldValue)) {
       this.setIndeterminate(newValue);
     }
   }),
@@ -12074,7 +18498,7 @@ var BFormCheckbox = extend({
   },
   methods: {
     computedLocalCheckedWatcher: function computedLocalCheckedWatcher2(newValue, oldValue) {
-      if (!looseEqual(newValue, oldValue)) {
+      if (!looseEqual2(newValue, oldValue)) {
         this.$emit(MODEL_EVENT_NAME5, newValue);
         var $input = this.$refs.input;
         if ($input) {
@@ -12087,12 +18511,12 @@ var BFormCheckbox = extend({
       var _ref$target = _ref.target, checked = _ref$target.checked, indeterminate = _ref$target.indeterminate;
       var value2 = this.value, uncheckedValue = this.uncheckedValue;
       var localChecked2 = this.computedLocalChecked;
-      if (isArray(localChecked2)) {
-        var index2 = looseIndexOf(localChecked2, value2);
-        if (checked && index2 < 0) {
+      if (isArray2(localChecked2)) {
+        var index3 = looseIndexOf2(localChecked2, value2);
+        if (checked && index3 < 0) {
           localChecked2 = localChecked2.concat(value2);
-        } else if (!checked && index2 > -1) {
-          localChecked2 = localChecked2.slice(0, index2).concat(localChecked2.slice(index2 + 1));
+        } else if (!checked && index3 > -1) {
+          localChecked2 = localChecked2.slice(0, index3).concat(localChecked2.slice(index3 + 1));
         }
       } else {
         localChecked2 = checked ? value2 : uncheckedValue;
@@ -12107,7 +18531,7 @@ var BFormCheckbox = extend({
       });
     },
     setIndeterminate: function setIndeterminate(state) {
-      if (isArray(this.computedLocalChecked)) {
+      if (isArray2(this.computedLocalChecked)) {
         state = false;
       }
       var $input = this.$refs.input;
@@ -12120,8 +18544,8 @@ var BFormCheckbox = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/form-radio/form-radio.js
-var props59 = makePropsConfigurable(props57, NAME_FORM_RADIO);
-var BFormRadio = extend({
+var props60 = makePropsConfigurable(props58, NAME_FORM_RADIO);
+var BFormRadio = extend2({
   name: NAME_FORM_RADIO,
   mixins: [formRadioCheckMixin],
   inject: {
@@ -12134,7 +18558,7 @@ var BFormRadio = extend({
       }
     }
   },
-  props: props59,
+  props: props60,
   computed: {
     bvGroup: function bvGroup2() {
       return this.getBvGroup();
@@ -12154,16 +18578,16 @@ function ownKeys42(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread42(target) {
+function _objectSpread42(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys42(Object(source), true).forEach(function(key) {
-      _defineProperty50(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys42(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty50(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys42(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty50(obj, key, value2) {
   if (key in obj) {
@@ -12179,7 +18603,7 @@ var modelMixin6 = _makeModelMixin6.mixin;
 var modelProps6 = _makeModelMixin6.props;
 var MODEL_PROP_NAME6 = _makeModelMixin6.prop;
 var MODEL_EVENT_NAME6 = _makeModelMixin6.event;
-var props60 = makePropsConfigurable(sortKeys(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42({}, props17), modelProps6), props53), props47), props55), props56), props54), {}, {
+var props61 = makePropsConfigurable(sortKeys(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42(_objectSpread42({}, props18), modelProps6), props54), props48), props56), props57), props55), {}, {
   ariaInvalid: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
   // Only applicable when rendered with button style
   buttonVariant: makeProp(PROP_TYPE_STRING),
@@ -12188,10 +18612,10 @@ var props60 = makePropsConfigurable(sortKeys(_objectSpread42(_objectSpread42(_ob
   stacked: makeProp(PROP_TYPE_BOOLEAN, false),
   validated: makeProp(PROP_TYPE_BOOLEAN, false)
 })), "formRadioCheckGroups");
-var formRadioCheckGroupMixin = extend({
+var formRadioCheckGroupMixin = extend2({
   mixins: [idMixin, modelMixin6, normalizeSlotMixin, formControlMixin, formOptionsMixin, formSizeMixin, formStateMixin, formCustomMixin],
   inheritAttrs: false,
-  props: props60,
+  props: props61,
   data: function data13() {
     return {
       localChecked: this[MODEL_PROP_NAME6]
@@ -12219,21 +18643,21 @@ var formRadioCheckGroupMixin = extend({
     }
   },
   watch: (_watch7 = {}, _defineProperty50(_watch7, MODEL_PROP_NAME6, function(newValue) {
-    if (!looseEqual(newValue, this.localChecked)) {
+    if (!looseEqual2(newValue, this.localChecked)) {
       this.localChecked = newValue;
     }
   }), _defineProperty50(_watch7, "localChecked", function localChecked(newValue, oldValue) {
-    if (!looseEqual(newValue, oldValue)) {
+    if (!looseEqual2(newValue, oldValue)) {
       this.$emit(MODEL_EVENT_NAME6, newValue);
     }
   }), _watch7),
   render: function render50(h) {
     var _this = this;
     var isRadioGroup3 = this.isRadioGroup;
-    var attrs = pick(this.$attrs, PASS_DOWN_ATTRS);
+    var attrs2 = pick(this.$attrs, PASS_DOWN_ATTRS);
     var optionComponent = isRadioGroup3 ? BFormRadio : BFormCheckbox;
-    var $inputs = this.formOptions.map(function(option, index2) {
-      var key = "BV_option_".concat(index2);
+    var $inputs = this.formOptions.map(function(option, index3) {
+      var key = "BV_option_".concat(index3);
       return h(optionComponent, {
         props: {
           // Individual radios or checks can be disabled in a group
@@ -12246,7 +18670,7 @@ var formRadioCheckGroupMixin = extend({
           // required: Boolean(this.name && this.required),
           // state: this.state
         },
-        attrs,
+        attrs: attrs2,
         key
       }, [h("span", {
         domProps: htmlOrText(option.html, option.text)
@@ -12278,16 +18702,16 @@ function ownKeys43(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread43(target) {
+function _objectSpread43(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys43(Object(source), true).forEach(function(key) {
-      _defineProperty51(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys43(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty51(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys43(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty51(obj, key, value2) {
   if (key in obj) {
@@ -12297,8 +18721,8 @@ function _defineProperty51(obj, key, value2) {
   }
   return obj;
 }
-var props61 = makePropsConfigurable(sortKeys(_objectSpread43(_objectSpread43({}, props60), {}, (_objectSpread211 = {}, _defineProperty51(_objectSpread211, MODEL_PROP_NAME6, makeProp(PROP_TYPE_ARRAY, [])), _defineProperty51(_objectSpread211, "switches", makeProp(PROP_TYPE_BOOLEAN, false)), _objectSpread211))), NAME_FORM_CHECKBOX_GROUP);
-var BFormCheckboxGroup = extend({
+var props62 = makePropsConfigurable(sortKeys(_objectSpread43(_objectSpread43({}, props61), {}, (_objectSpread211 = {}, _defineProperty51(_objectSpread211, MODEL_PROP_NAME6, makeProp(PROP_TYPE_ARRAY, [])), _defineProperty51(_objectSpread211, "switches", makeProp(PROP_TYPE_BOOLEAN, false)), _objectSpread211))), NAME_FORM_CHECKBOX_GROUP);
+var BFormCheckboxGroup = extend2({
   name: NAME_FORM_CHECKBOX_GROUP,
   // Includes render function
   mixins: [formRadioCheckGroupMixin],
@@ -12310,7 +18734,7 @@ var BFormCheckboxGroup = extend({
       }
     };
   },
-  props: props61,
+  props: props62,
   computed: {
     isRadioGroup: function isRadioGroup() {
       return false;
@@ -12341,31 +18765,31 @@ var createListener = function createListener2(handler3) {
   listener.fn = handler3;
   return listener;
 };
-var updateListeners = function updateListeners2(on, el, listener) {
+var updateListeners2 = function updateListeners3(on, el, listener) {
   eventOnOff(on, el, MOUSEENTER, listener, EVENT_OPTIONS_NO_CAPTURE);
   eventOnOff(on, el, MOUSELEAVE, listener, EVENT_OPTIONS_NO_CAPTURE);
 };
-var directive = function directive2(el, _ref) {
+var directive2 = function directive3(el, _ref) {
   var _ref$value = _ref.value, handler3 = _ref$value === void 0 ? null : _ref$value;
   if (IS_BROWSER) {
     var listener = el[PROP2];
-    var hasListener2 = isFunction(listener);
+    var hasListener2 = isFunction2(listener);
     var handlerChanged = !(hasListener2 && listener.fn === handler3);
     if (hasListener2 && handlerChanged) {
-      updateListeners(false, el, listener);
+      updateListeners2(false, el, listener);
       delete el[PROP2];
     }
-    if (isFunction(handler3) && handlerChanged) {
+    if (isFunction2(handler3) && handlerChanged) {
       el[PROP2] = createListener(handler3);
-      updateListeners(true, el, el[PROP2]);
+      updateListeners2(true, el, el[PROP2]);
     }
   }
 };
 var VBHover = {
-  bind: directive,
-  componentUpdated: directive,
+  bind: directive2,
+  componentUpdated: directive2,
   unbind: function unbind4(el) {
-    directive(el, {
+    directive2(el, {
       value: null
     });
   }
@@ -12382,16 +18806,16 @@ function ownKeys44(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread44(target) {
+function _objectSpread44(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys44(Object(source), true).forEach(function(key) {
-      _defineProperty52(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys44(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty52(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys44(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty52(obj, key, value2) {
   if (key in obj) {
@@ -12401,7 +18825,7 @@ function _defineProperty52(obj, key, value2) {
   }
   return obj;
 }
-var props62 = sortKeys(_objectSpread44(_objectSpread44(_objectSpread44(_objectSpread44(_objectSpread44(_objectSpread44({}, props17), props55), props56), omit(props36, ["disabled"])), omit(props53, ["autofocus"])), {}, {
+var props63 = sortKeys(_objectSpread44(_objectSpread44(_objectSpread44(_objectSpread44(_objectSpread44(_objectSpread44({}, props18), props56), props57), omit(props37, ["disabled"])), omit(props54, ["autofocus"])), {}, {
   // When `true`, renders a `btn-group` wrapper and visually hides the label
   buttonOnly: makeProp(PROP_TYPE_BOOLEAN, false),
   // Applicable in button mode only
@@ -12421,13 +18845,13 @@ var props62 = sortKeys(_objectSpread44(_objectSpread44(_objectSpread44(_objectSp
   rtl: makeProp(PROP_TYPE_BOOLEAN, null),
   value: makeProp(PROP_TYPE_STRING, "")
 }));
-var BVFormBtnLabelControl = extend({
+var BVFormBtnLabelControl = extend2({
   name: NAME_FORM_BUTTON_LABEL_CONTROL,
   directives: {
     "b-hover": VBHover
   },
   mixins: [idMixin, formSizeMixin, formStateMixin, dropdownMixin, normalizeSlotMixin],
-  props: props62,
+  props: props63,
   data: function data14() {
     return {
       isHovered: false,
@@ -12472,7 +18896,7 @@ var BVFormBtnLabelControl = extend({
   render: function render51(h) {
     var _class;
     var idButton2 = this.idButton, idLabel2 = this.idLabel, idMenu2 = this.idMenu, idWrapper2 = this.idWrapper, disabled6 = this.disabled, readonly2 = this.readonly, required2 = this.required, name2 = this.name, state = this.state, visible2 = this.visible, size = this.size, isHovered = this.isHovered, hasFocus = this.hasFocus, labelSelected = this.labelSelected, buttonVariant = this.buttonVariant, buttonOnly = this.buttonOnly;
-    var value2 = toString3(this.value) || "";
+    var value2 = toString4(this.value) || "";
     var invalid = state === false || required2 && !value2;
     var btnScope = {
       isHovered,
@@ -12621,16 +19045,16 @@ function ownKeys45(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread45(target) {
+function _objectSpread45(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys45(Object(source), true).forEach(function(key) {
-      _defineProperty53(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys45(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty53(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys45(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty53(obj, key, value2) {
   if (key in obj) {
@@ -12647,9 +19071,9 @@ var modelMixin7 = _makeModelMixin7.mixin;
 var modelProps7 = _makeModelMixin7.props;
 var MODEL_PROP_NAME7 = _makeModelMixin7.prop;
 var MODEL_EVENT_NAME7 = _makeModelMixin7.event;
-var calendarProps = omit(props18, ["block", "hidden", "id", "noKeyNav", "roleDescription", "value", "width"]);
-var formBtnLabelControlProps = omit(props62, ["formattedValue", "id", "lang", "rtl", "value"]);
-var props63 = makePropsConfigurable(sortKeys(_objectSpread45(_objectSpread45(_objectSpread45(_objectSpread45(_objectSpread45({}, props17), modelProps7), calendarProps), formBtnLabelControlProps), {}, {
+var calendarProps = omit(props19, ["block", "hidden", "id", "noKeyNav", "roleDescription", "value", "width"]);
+var formBtnLabelControlProps = omit(props63, ["formattedValue", "id", "lang", "rtl", "value"]);
+var props64 = makePropsConfigurable(sortKeys(_objectSpread45(_objectSpread45(_objectSpread45(_objectSpread45(_objectSpread45({}, props18), modelProps7), calendarProps), formBtnLabelControlProps), {}, {
   // Width of the calendar dropdown
   calendarWidth: makeProp(PROP_TYPE_STRING, "270px"),
   closeButton: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -12666,10 +19090,10 @@ var props63 = makePropsConfigurable(sortKeys(_objectSpread45(_objectSpread45(_ob
   todayButton: makeProp(PROP_TYPE_BOOLEAN, false),
   todayButtonVariant: makeProp(PROP_TYPE_STRING, "outline-primary")
 })), NAME_FORM_DATEPICKER);
-var BFormDatepicker = extend({
+var BFormDatepicker = extend2({
   name: NAME_FORM_DATEPICKER,
   mixins: [idMixin, modelMixin7],
-  props: props63,
+  props: props64,
   data: function data15() {
     return {
       // We always use `YYYY-MM-DD` value internally
@@ -12786,7 +19210,7 @@ var BFormDatepicker = extend({
   },
   render: function render52(h) {
     var localYMD2 = this.localYMD, disabled6 = this.disabled, readonly2 = this.readonly, dark = this.dark, $props = this.$props, $scopedSlots = this.$scopedSlots;
-    var placeholder = isUndefinedOrNull(this.placeholder) ? this.labelNoDateSelected : this.placeholder;
+    var placeholder2 = isUndefinedOrNull(this.placeholder) ? this.labelNoDateSelected : this.placeholder;
     var $footer = [];
     if (this.todayButton) {
       var label = this.labelTodayButton;
@@ -12872,7 +19296,7 @@ var BFormDatepicker = extend({
           "bg-dark": dark,
           "text-light": dark
         }, this.menuClass],
-        placeholder,
+        placeholder: placeholder2,
         rtl: this.isRTL,
         value: localYMD2
       }),
@@ -12907,16 +19331,16 @@ function ownKeys46(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread46(target) {
+function _objectSpread46(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys46(Object(source), true).forEach(function(key) {
-      _defineProperty54(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys46(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty54(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys46(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty54(obj, key, value2) {
   if (key in obj) {
@@ -12931,7 +19355,7 @@ var _makeModelMixin8 = makeModelMixin("value", {
   defaultValue: null,
   validator: function validator(value2) {
     if (value2 === "") {
-      warn(VALUE_EMPTY_DEPRECATED_MSG, NAME_FORM_FILE);
+      warn2(VALUE_EMPTY_DEPRECATED_MSG, NAME_FORM_FILE);
       return true;
     }
     return isUndefinedOrNull(value2) || isValidValue(value2);
@@ -12943,12 +19367,12 @@ var MODEL_PROP_NAME8 = _makeModelMixin8.prop;
 var MODEL_EVENT_NAME8 = _makeModelMixin8.event;
 var VALUE_EMPTY_DEPRECATED_MSG = 'Setting "value"/"v-model" to an empty string for reset is deprecated. Set to "null" instead.';
 var isValidValue = function isValidValue2(value2) {
-  return isFile(value2) || isArray(value2) && value2.every(function(v) {
+  return isFile(value2) || isArray2(value2) && value2.every(function(v) {
     return isValidValue2(v);
   });
 };
 var getDataTransferItemEntry = function getDataTransferItemEntry2(item) {
-  return isFunction(item.getAsEntry) ? item.getAsEntry() : isFunction(item.webkitGetAsEntry) ? item.webkitGetAsEntry() : null;
+  return isFunction2(item.getAsEntry) ? item.getAsEntry() : isFunction2(item.webkitGetAsEntry) ? item.webkitGetAsEntry() : null;
 };
 var getAllFileEntries = function getAllFileEntries2(dataTransferItemList) {
   var traverseDirectories = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true;
@@ -12969,7 +19393,7 @@ var getAllFileEntries = function getAllFileEntries2(dataTransferItemList) {
       }
     }
     return null;
-  }).filter(identity));
+  }).filter(identity2));
 };
 var getAllFileEntriesInDirectory = function getAllFileEntriesInDirectory2(directoryReader) {
   var path = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "";
@@ -12996,7 +19420,7 @@ var getAllFileEntriesInDirectory = function getAllFileEntriesInDirectory2(direct
               }
             }
             return null;
-          }).filter(identity)));
+          }).filter(identity2)));
           readDirectoryEntries2();
         }
       });
@@ -13004,7 +19428,7 @@ var getAllFileEntriesInDirectory = function getAllFileEntriesInDirectory2(direct
     readDirectoryEntries();
   });
 };
-var props64 = makePropsConfigurable(sortKeys(_objectSpread46(_objectSpread46(_objectSpread46(_objectSpread46(_objectSpread46(_objectSpread46(_objectSpread46({}, props17), modelProps8), props53), props54), props56), props55), {}, {
+var props65 = makePropsConfigurable(sortKeys(_objectSpread46(_objectSpread46(_objectSpread46(_objectSpread46(_objectSpread46(_objectSpread46(_objectSpread46({}, props18), modelProps8), props54), props55), props57), props56), {}, {
   accept: makeProp(PROP_TYPE_STRING, ""),
   browseText: makeProp(PROP_TYPE_STRING, "Browse"),
   // Instruct input to capture from camera
@@ -13026,11 +19450,11 @@ var props64 = makePropsConfigurable(sortKeys(_objectSpread46(_objectSpread46(_ob
   noTraverse: makeProp(PROP_TYPE_BOOLEAN, false),
   placeholder: makeProp(PROP_TYPE_STRING, "No file chosen")
 })), NAME_FORM_FILE);
-var BFormFile = extend({
+var BFormFile = extend2({
   name: NAME_FORM_FILE,
   mixins: [attrsMixin, idMixin, modelMixin8, normalizeSlotMixin, formControlMixin, formStateMixin, formCustomMixin, normalizeSlotMixin],
   inheritAttrs: false,
-  props: props64,
+  props: props65,
   data: function data16() {
     return {
       files: [],
@@ -13046,7 +19470,7 @@ var BFormFile = extend({
     // Convert `accept` to an array of `[{ RegExpr, isMime }, ...]`
     computedAccept: function computedAccept() {
       var accept = this.accept;
-      accept = (accept || "").trim().split(/[,\s]+/).filter(identity);
+      accept = (accept || "").trim().split(/[,\s]+/).filter(identity2);
       if (accept.length === 0) {
         return null;
       }
@@ -13133,11 +19557,11 @@ var BFormFile = extend({
     }
   },
   watch: (_watch9 = {}, _defineProperty54(_watch9, MODEL_PROP_NAME8, function(newValue) {
-    if (!newValue || isArray(newValue) && newValue.length === 0) {
+    if (!newValue || isArray2(newValue) && newValue.length === 0) {
       this.reset();
     }
   }), _defineProperty54(_watch9, "files", function files(newValue, oldValue) {
-    if (!looseEqual(newValue, oldValue)) {
+    if (!looseEqual2(newValue, oldValue)) {
       var multiple = this.multiple, noTraverse = this.noTraverse;
       var files2 = !multiple || noTraverse ? flattenDeep(newValue) : newValue;
       this.$emit(MODEL_EVENT_NAME8, multiple ? files2 : files2[0] || null);
@@ -13171,7 +19595,7 @@ var BFormFile = extend({
     },
     isFilesArrayValid: function isFilesArrayValid(files2) {
       var _this = this;
-      return isArray(files2) ? files2.every(function(file) {
+      return isArray2(files2) ? files2.every(function(file) {
         return _this.isFileValid(file);
       }) : this.isFileValid(files2);
     },
@@ -13226,7 +19650,7 @@ var BFormFile = extend({
     },
     onChange: function onChange(event2) {
       var _this2 = this;
-      var type2 = event2.type, target = event2.target, _event$dataTransfer = event2.dataTransfer, dataTransfer = _event$dataTransfer === void 0 ? {} : _event$dataTransfer;
+      var type2 = event2.type, target2 = event2.target, _event$dataTransfer = event2.dataTransfer, dataTransfer = _event$dataTransfer === void 0 ? {} : _event$dataTransfer;
       var isDrop = type2 === "drop";
       this.$emit(EVENT_NAME_CHANGE, event2);
       var items3 = from(dataTransfer.items || []);
@@ -13235,7 +19659,7 @@ var BFormFile = extend({
           return _this2.handleFiles(files3, isDrop);
         });
       } else {
-        var files2 = from(target.files || dataTransfer.files || []).map(function(file) {
+        var files2 = from(target2.files || dataTransfer.files || []).map(function(file) {
           file.$path = file.webkitRelativePath || "";
           return file;
         });
@@ -13362,11 +19786,11 @@ var escapeChar = function escapeChar2(value2) {
   return "\\" + value2;
 };
 var cssEscape = function cssEscape2(value2) {
-  value2 = toString3(value2);
+  value2 = toString4(value2);
   var length = value2.length;
   var firstCharCode = value2.charCodeAt(0);
-  return value2.split("").reduce(function(result, char, index2) {
-    var charCode = value2.charCodeAt(index2);
+  return value2.split("").reduce(function(result, char, index3) {
+    var charCode = value2.charCodeAt(index3);
     if (charCode === 0) {
       return result + "�";
     }
@@ -13374,15 +19798,15 @@ var cssEscape = function cssEscape2(value2) {
       // ... is U+007F OR
       charCode === 127 || // ... is in the range [\1-\1F] (U+0001 to U+001F) OR ...
       charCode >= 1 && charCode <= 31 || // ... is the first character and is in the range [0-9] (U+0030 to U+0039) OR ...
-      index2 === 0 && charCode >= 48 && charCode <= 57 || // ... is the second character and is in the range [0-9] (U+0030 to U+0039)
+      index3 === 0 && charCode >= 48 && charCode <= 57 || // ... is the second character and is in the range [0-9] (U+0030 to U+0039)
       // and the first character is a `-` (U+002D) ...
-      index2 === 1 && charCode >= 48 && charCode <= 57 && firstCharCode === 45
+      index3 === 1 && charCode >= 48 && charCode <= 57 && firstCharCode === 45
     ) {
       return result + escapeChar("".concat(charCode.toString(16), " "));
     }
     if (
       // ... is the first character AND ...
-      index2 === 0 && // ... is a `-` (U+002D) AND ...
+      index3 === 0 && // ... is a `-` (U+002D) AND ...
       charCode === 45 && // ... there is no second character ...
       length === 1
     ) {
@@ -13414,16 +19838,16 @@ function ownKeys47(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread47(target) {
+function _objectSpread47(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys47(Object(source), true).forEach(function(key) {
-      _defineProperty55(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys47(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty55(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys47(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty55(obj, key, value2) {
   if (key in obj) {
@@ -13451,18 +19875,18 @@ var computeBreakpoint = function computeBreakpoint2(type2, breakpoint, value2) {
 var computeBreakpointClass = memoize(computeBreakpoint);
 var breakpointPropMap = create(null);
 var generateProps = function generateProps2() {
-  var breakpoints = getBreakpointsUpCached().filter(identity);
-  var breakpointCol = breakpoints.reduce(function(props152, breakpoint) {
-    props152[breakpoint] = makeProp(PROP_TYPE_BOOLEAN_NUMBER_STRING);
-    return props152;
+  var breakpoints = getBreakpointsUpCached().filter(identity2);
+  var breakpointCol = breakpoints.reduce(function(props153, breakpoint) {
+    props153[breakpoint] = makeProp(PROP_TYPE_BOOLEAN_NUMBER_STRING);
+    return props153;
   }, create(null));
-  var breakpointOffset = breakpoints.reduce(function(props152, breakpoint) {
-    props152[suffixPropName(breakpoint, "offset")] = makeProp(PROP_TYPE_NUMBER_STRING);
-    return props152;
+  var breakpointOffset = breakpoints.reduce(function(props153, breakpoint) {
+    props153[suffixPropName(breakpoint, "offset")] = makeProp(PROP_TYPE_NUMBER_STRING);
+    return props153;
   }, create(null));
-  var breakpointOrder = breakpoints.reduce(function(props152, breakpoint) {
-    props152[suffixPropName(breakpoint, "order")] = makeProp(PROP_TYPE_NUMBER_STRING);
-    return props152;
+  var breakpointOrder = breakpoints.reduce(function(props153, breakpoint) {
+    props153[suffixPropName(breakpoint, "order")] = makeProp(PROP_TYPE_NUMBER_STRING);
+    return props153;
   }, create(null));
   breakpointPropMap = assign(create(null), {
     col: keys(breakpointCol),
@@ -13492,13 +19916,13 @@ var BCol = {
   },
   render: function render54(h, _ref) {
     var _classList$push;
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var cols = props152.cols, offset4 = props152.offset, order = props152.order, alignSelf = props152.alignSelf;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var cols = props153.cols, offset4 = props153.offset, order = props153.order, alignSelf = props153.alignSelf;
     var classList = [];
     for (var type2 in breakpointPropMap) {
       var _keys = breakpointPropMap[type2];
       for (var i = 0; i < _keys.length; i++) {
-        var c = computeBreakpointClass(type2, _keys[i].replace(type2, ""), props152[_keys[i]]);
+        var c = computeBreakpointClass(type2, _keys[i].replace(type2, ""), props153[_keys[i]]);
         if (c) {
           classList.push(c);
         }
@@ -13509,9 +19933,9 @@ var BCol = {
     });
     classList.push((_classList$push = {
       // Default to .col if no other col-{bp}-* classes generated nor `cols` specified.
-      col: props152.col || !hasColClasses && !cols
+      col: props153.col || !hasColClasses && !cols
     }, _defineProperty55(_classList$push, "col-".concat(cols), cols), _defineProperty55(_classList$push, "offset-".concat(offset4), offset4), _defineProperty55(_classList$push, "order-".concat(order), order), _defineProperty55(_classList$push, "align-self-".concat(alignSelf), alignSelf), _classList$push));
-    return h(props152.tag, a(data48, {
+    return h(props153.tag, a(data48, {
       class: classList
     }), children2);
   }
@@ -13528,16 +19952,16 @@ function ownKeys48(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread48(target) {
+function _objectSpread48(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys48(Object(source), true).forEach(function(key) {
-      _defineProperty56(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys48(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty56(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys48(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty56(obj, key, value2) {
   if (key in obj) {
@@ -13553,11 +19977,11 @@ var INPUT_SELECTOR = INPUTS.map(function(v) {
 }).join();
 var LEGEND_INTERACTIVE_ELEMENTS = [].concat(INPUTS, ["a", "button", "label"]);
 var generateProps3 = function generateProps4() {
-  return makePropsConfigurable(sortKeys(_objectSpread48(_objectSpread48(_objectSpread48(_objectSpread48({}, props17), props56), getBreakpointsUpCached().reduce(function(props152, breakpoint) {
-    props152[suffixPropName(breakpoint, "contentCols")] = makeProp(PROP_TYPE_BOOLEAN_NUMBER_STRING);
-    props152[suffixPropName(breakpoint, "labelAlign")] = makeProp(PROP_TYPE_STRING);
-    props152[suffixPropName(breakpoint, "labelCols")] = makeProp(PROP_TYPE_BOOLEAN_NUMBER_STRING);
-    return props152;
+  return makePropsConfigurable(sortKeys(_objectSpread48(_objectSpread48(_objectSpread48(_objectSpread48({}, props18), props57), getBreakpointsUpCached().reduce(function(props153, breakpoint) {
+    props153[suffixPropName(breakpoint, "contentCols")] = makeProp(PROP_TYPE_BOOLEAN_NUMBER_STRING);
+    props153[suffixPropName(breakpoint, "labelAlign")] = makeProp(PROP_TYPE_STRING);
+    props153[suffixPropName(breakpoint, "labelCols")] = makeProp(PROP_TYPE_BOOLEAN_NUMBER_STRING);
+    return props153;
   }, create(null))), {}, {
     description: makeProp(PROP_TYPE_STRING),
     disabled: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -13613,25 +20037,25 @@ var BFormGroup = {
     });
   },
   methods: {
-    getAlignClasses: function getAlignClasses(props152, prefix) {
+    getAlignClasses: function getAlignClasses(props153, prefix) {
       return getBreakpointsUpCached().reduce(function(result, breakpoint) {
-        var propValue = props152[suffixPropName(breakpoint, "".concat(prefix, "Align"))] || null;
+        var propValue = props153[suffixPropName(breakpoint, "".concat(prefix, "Align"))] || null;
         if (propValue) {
-          result.push(["text", breakpoint, propValue].filter(identity).join("-"));
+          result.push(["text", breakpoint, propValue].filter(identity2).join("-"));
         }
         return result;
       }, []);
     },
-    getColProps: function getColProps(props152, prefix) {
+    getColProps: function getColProps(props153, prefix) {
       return getBreakpointsUpCached().reduce(function(result, breakpoint) {
-        var propValue = props152[suffixPropName(breakpoint, "".concat(prefix, "Cols"))];
+        var propValue = props153[suffixPropName(breakpoint, "".concat(prefix, "Cols"))];
         propValue = propValue === "" ? true : propValue || false;
-        if (!isBoolean(propValue) && propValue !== "auto") {
+        if (!isBoolean2(propValue) && propValue !== "auto") {
           propValue = toInteger(propValue, 0);
           propValue = propValue > 0 ? propValue : false;
         }
         if (propValue) {
-          result[breakpoint || (isBoolean(propValue) ? "col" : "cols")] = propValue;
+          result[breakpoint || (isBoolean2(propValue) ? "col" : "cols")] = propValue;
         }
         return result;
       }, {});
@@ -13649,11 +20073,11 @@ var BFormGroup = {
           var oldIds = (oldValue || "").split(RX_SPACE_SPLIT);
           var ids = (getAttr($input, attr) || "").split(RX_SPACE_SPLIT).filter(function(id) {
             return !arrayIncludes(oldIds, id);
-          }).concat(newIds).filter(function(id, index2, ids2) {
-            return ids2.indexOf(id) === index2;
-          }).filter(identity).join(" ").trim();
+          }).concat(newIds).filter(function(id, index3, ids2) {
+            return ids2.indexOf(id) === index3;
+          }).filter(identity2).join(" ").trim();
           if (ids) {
-            setAttr($input, attr, ids);
+            setAttr2($input, attr, ids);
           } else {
             removeAttr($input, attr);
           }
@@ -13664,9 +20088,9 @@ var BFormGroup = {
       if (this.labelFor) {
         return;
       }
-      var target = event2.target;
-      var tagName = target ? target.tagName : "";
-      if (LEGEND_INTERACTIVE_ELEMENTS.indexOf(tagName) !== -1) {
+      var target2 = event2.target;
+      var tagName2 = target2 ? target2.tagName : "";
+      if (LEGEND_INTERACTIVE_ELEMENTS.indexOf(tagName2) !== -1) {
         return;
       }
       var inputs = selectAll(INPUT_SELECTOR, this.$refs.content).filter(isVisible);
@@ -13778,7 +20202,7 @@ var BFormGroup = {
         }
       }, [descriptionContent]);
     }
-    var ariaDescribedby2 = this.ariaDescribedby = [descriptionId, state === false ? invalidFeedbackId : null, state === true ? validFeedbackId : null].filter(identity).join(" ") || null;
+    var ariaDescribedby2 = this.ariaDescribedby = [descriptionId, state === false ? invalidFeedbackId : null, state === true ? validFeedbackId : null].filter(identity2).join(" ") || null;
     var $content = h(isHorizontal2 ? BCol : "div", {
       props: isHorizontal2 ? this.contentColProps : {},
       ref: "content"
@@ -13815,7 +20239,7 @@ var FormGroupPlugin = pluginFactory({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/form-selection.js
-var formSelectionMixin = extend({
+var formSelectionMixin = extend2({
   computed: {
     selectionStart: {
       // Expose selectionStart for formatters, etc
@@ -13825,7 +20249,7 @@ var formSelectionMixin = extend({
         return this.$refs.input.selectionStart;
       },
       /* istanbul ignore next */
-      set: function set2(val) {
+      set: function set3(val) {
         this.$refs.input.selectionStart = val;
       }
     },
@@ -13837,7 +20261,7 @@ var formSelectionMixin = extend({
         return this.$refs.input.selectionEnd;
       },
       /* istanbul ignore next */
-      set: function set3(val) {
+      set: function set4(val) {
         this.$refs.input.selectionEnd = val;
       }
     },
@@ -13849,7 +20273,7 @@ var formSelectionMixin = extend({
         return this.$refs.input.selectionDirection;
       },
       /* istanbul ignore next */
-      set: function set4(val) {
+      set: function set5(val) {
         this.$refs.input.selectionDirection = val;
       }
     }
@@ -13884,16 +20308,16 @@ function ownKeys49(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread49(target) {
+function _objectSpread49(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys49(Object(source), true).forEach(function(key) {
-      _defineProperty57(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys49(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty57(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys49(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty57(obj, key, value2) {
   if (key in obj) {
@@ -13912,7 +20336,7 @@ var modelMixin9 = _makeModelMixin9.mixin;
 var modelProps9 = _makeModelMixin9.props;
 var MODEL_PROP_NAME9 = _makeModelMixin9.prop;
 var MODEL_EVENT_NAME9 = _makeModelMixin9.event;
-var props65 = makePropsConfigurable(sortKeys(_objectSpread49(_objectSpread49({}, modelProps9), {}, {
+var props66 = makePropsConfigurable(sortKeys(_objectSpread49(_objectSpread49({}, modelProps9), {}, {
   ariaInvalid: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
   autocomplete: makeProp(PROP_TYPE_STRING),
   // Debounce timeout (in ms). Not applicable with `lazy` prop
@@ -13927,13 +20351,13 @@ var props65 = makePropsConfigurable(sortKeys(_objectSpread49(_objectSpread49({},
   readonly: makeProp(PROP_TYPE_BOOLEAN, false),
   trim: makeProp(PROP_TYPE_BOOLEAN, false)
 })), "formTextControls");
-var formTextMixin = extend({
+var formTextMixin = extend2({
   mixins: [modelMixin9],
-  props: props65,
+  props: props66,
   data: function data18() {
     var value2 = this[MODEL_PROP_NAME9];
     return {
-      localValue: toString3(value2),
+      localValue: toString4(value2),
       vModelValue: this.modifyValue(value2)
     };
   },
@@ -13960,7 +20384,7 @@ var formTextMixin = extend({
     }
   },
   watch: _defineProperty57({}, MODEL_PROP_NAME9, function(newValue) {
-    var stringifyValue = toString3(newValue);
+    var stringifyValue = toString4(newValue);
     var modifiedValue = this.modifyValue(newValue);
     if (stringifyValue !== this.localValue || modifiedValue !== this.vModelValue) {
       this.clearDebounce();
@@ -13981,14 +20405,14 @@ var formTextMixin = extend({
     },
     formatValue: function formatValue(value2, event2) {
       var force = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : false;
-      value2 = toString3(value2);
+      value2 = toString4(value2);
       if (this.hasFormatter && (!this.lazyFormatter || force)) {
         value2 = this.formatter(value2, event2);
       }
       return value2;
     },
     modifyValue: function modifyValue(value2) {
-      value2 = toString3(value2);
+      value2 = toString4(value2);
       if (this.trim) {
         value2 = value2.trim();
       }
@@ -14057,7 +20481,7 @@ var formTextMixin = extend({
       var value2 = event2.target.value;
       var formattedValue = this.formatValue(value2, event2, true);
       if (formattedValue !== false) {
-        this.localValue = toString3(this.modifyValue(formattedValue));
+        this.localValue = toString4(this.modifyValue(formattedValue));
         this.updateValue(formattedValue, true);
       }
       this.$emit(EVENT_NAME_BLUR, event2);
@@ -14076,7 +20500,7 @@ var formTextMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/form-validity.js
-var formValidityMixin = extend({
+var formValidityMixin = extend2({
   computed: {
     validity: {
       // Expose validity property
@@ -14133,16 +20557,16 @@ function ownKeys50(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread50(target) {
+function _objectSpread50(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys50(Object(source), true).forEach(function(key) {
-      _defineProperty58(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys50(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty58(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys50(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty58(obj, key, value2) {
   if (key in obj) {
@@ -14153,7 +20577,7 @@ function _defineProperty58(obj, key, value2) {
   return obj;
 }
 var TYPES2 = ["text", "password", "email", "number", "url", "tel", "search", "range", "color", "date", "time", "datetime", "datetime-local", "month", "week"];
-var props66 = makePropsConfigurable(sortKeys(_objectSpread50(_objectSpread50(_objectSpread50(_objectSpread50(_objectSpread50(_objectSpread50({}, props17), props53), props55), props56), props65), {}, {
+var props67 = makePropsConfigurable(sortKeys(_objectSpread50(_objectSpread50(_objectSpread50(_objectSpread50(_objectSpread50(_objectSpread50({}, props18), props54), props56), props57), props66), {}, {
   list: makeProp(PROP_TYPE_STRING),
   max: makeProp(PROP_TYPE_NUMBER_STRING),
   min: makeProp(PROP_TYPE_NUMBER_STRING),
@@ -14164,25 +20588,25 @@ var props66 = makePropsConfigurable(sortKeys(_objectSpread50(_objectSpread50(_ob
     return arrayIncludes(TYPES2, type2);
   })
 })), NAME_FORM_INPUT);
-var BFormInput = extend({
+var BFormInput = extend2({
   name: NAME_FORM_INPUT,
   // Mixin order is important!
   mixins: [listenersMixin, idMixin, formControlMixin, formSizeMixin, formStateMixin, formTextMixin, formSelectionMixin, formValidityMixin],
-  props: props66,
+  props: props67,
   computed: {
     localType: function localType() {
       var type2 = this.type;
       return arrayIncludes(TYPES2, type2) ? type2 : "text";
     },
     computedAttrs: function computedAttrs6() {
-      var type2 = this.localType, name2 = this.name, form = this.form, disabled6 = this.disabled, placeholder = this.placeholder, required2 = this.required, min = this.min, max = this.max, step = this.step;
+      var type2 = this.localType, name2 = this.name, form = this.form, disabled6 = this.disabled, placeholder2 = this.placeholder, required2 = this.required, min = this.min, max = this.max, step = this.step;
       return {
         id: this.safeId(),
         name: name2,
         form,
         type: type2,
         disabled: disabled6,
-        placeholder,
+        placeholder: placeholder2,
         required: required2,
         autocomplete: this.autocomplete || null,
         readonly: this.readonly || this.plaintext,
@@ -14265,8 +20689,8 @@ var FormInputPlugin = pluginFactory({
 });
 
 // node_modules/bootstrap-vue/esm/components/form-radio/form-radio-group.js
-var props67 = makePropsConfigurable(props60, NAME_FORM_RADIO_GROUP);
-var BFormRadioGroup = extend({
+var props68 = makePropsConfigurable(props61, NAME_FORM_RADIO_GROUP);
+var BFormRadioGroup = extend2({
   name: NAME_FORM_RADIO_GROUP,
   mixins: [formRadioCheckGroupMixin],
   provide: function provide5() {
@@ -14277,7 +20701,7 @@ var BFormRadioGroup = extend({
       }
     };
   },
-  props: props67,
+  props: props68,
   computed: {
     isRadioGroup: function isRadioGroup2() {
       return true;
@@ -14307,16 +20731,16 @@ function ownKeys51(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread51(target) {
+function _objectSpread51(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys51(Object(source), true).forEach(function(key) {
-      _defineProperty59(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys51(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty59(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys51(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty59(obj, key, value2) {
   if (key in obj) {
@@ -14342,7 +20766,7 @@ var computeStars = function computeStars2(stars) {
 var clampValue = function clampValue2(value2, min, max) {
   return mathMax(mathMin(value2, max), min);
 };
-var BVFormRatingStar = extend({
+var BVFormRatingStar = extend2({
   name: NAME_FORM_RATING_STAR,
   mixins: [normalizeSlotMixin],
   props: {
@@ -14395,7 +20819,7 @@ var BVFormRatingStar = extend({
     }, [this.normalizeSlot(type2, slotScope6)])]);
   }
 });
-var props68 = makePropsConfigurable(sortKeys(_objectSpread51(_objectSpread51(_objectSpread51(_objectSpread51(_objectSpread51({}, props17), modelProps10), omit(props53, ["required", "autofocus"])), props55), {}, {
+var props69 = makePropsConfigurable(sortKeys(_objectSpread51(_objectSpread51(_objectSpread51(_objectSpread51(_objectSpread51({}, props18), modelProps10), omit(props54, ["required", "autofocus"])), props56), {}, {
   // CSS color string (overrides variant)
   color: makeProp(PROP_TYPE_STRING),
   iconClear: makeProp(PROP_TYPE_STRING, "x"),
@@ -14417,7 +20841,7 @@ var props68 = makePropsConfigurable(sortKeys(_objectSpread51(_objectSpread51(_ob
   }),
   variant: makeProp(PROP_TYPE_STRING)
 })), NAME_FORM_RATING);
-var BFormRating = extend({
+var BFormRating = extend2({
   name: NAME_FORM_RATING,
   components: {
     BIconStar,
@@ -14426,7 +20850,7 @@ var BFormRating = extend({
     BIconX
   },
   mixins: [idMixin, modelMixin10, formSizeMixin],
-  props: props68,
+  props: props69,
   data: function data19() {
     var value2 = toFloat(this[MODEL_PROP_NAME10], null);
     var stars = computeStars(this.stars);
@@ -14445,7 +20869,7 @@ var BFormRating = extend({
       return clampValue(toFloat(value2.toFixed(precision)), 0, this.computedStars);
     },
     computedLocale: function computedLocale2() {
-      var locales = concat(this.locale).filter(identity);
+      var locales = concat2(this.locale).filter(identity2);
       var nf = new Intl.NumberFormat(locales);
       return nf.resolvedOptions().locale;
     },
@@ -14577,8 +21001,8 @@ var BFormRating = extend({
         key: "clear"
       }, [$icon]));
     }
-    for (var index2 = 0; index2 < computedStars2; index2++) {
-      var value2 = index2 + 1;
+    for (var index3 = 0; index3 < computedStars2; index3++) {
+      var value2 = index3 + 1;
       $content.push(h(BVFormRatingStar, {
         staticClass: "flex-grow-1",
         style: color && !disabled6 ? {
@@ -14601,7 +21025,7 @@ var BFormRating = extend({
           half: $scopedSlots[SLOT_NAME_ICON_HALF] || this.iconHalfFn,
           full: $scopedSlots[SLOT_NAME_ICON_FULL] || this.iconFullFn
         },
-        key: index2
+        key: index3
       }));
     }
     if (name2) {
@@ -14622,7 +21046,7 @@ var BFormRating = extend({
           "aria-hidden": "true"
         },
         key: "value"
-      }, toString3(formattedRating2)));
+      }, toString4(formattedRating2)));
     }
     return h("output", {
       staticClass: "b-rating form-control align-items-center",
@@ -14643,8 +21067,8 @@ var BFormRating = extend({
         "aria-readonly": !disabled6 && readonly2 ? "true" : null,
         "aria-live": "off",
         "aria-valuemin": showClear ? "0" : "1",
-        "aria-valuemax": toString3(computedStars2),
-        "aria-valuenow": computedRating2 ? toString3(computedRating2) : null
+        "aria-valuemax": toString4(computedStars2),
+        "aria-valuenow": computedRating2 ? toString4(computedRating2) : null
       },
       on: {
         keydown: this.onKeydown,
@@ -14666,7 +21090,7 @@ var FormRatingPlugin = pluginFactory({
 // node_modules/bootstrap-vue/esm/mixins/model.js
 var _makeModelMixin11 = makeModelMixin("value");
 var mixin = _makeModelMixin11.mixin;
-var props69 = _makeModelMixin11.props;
+var props70 = _makeModelMixin11.props;
 var prop = _makeModelMixin11.prop;
 var event = _makeModelMixin11.event;
 
@@ -14681,16 +21105,16 @@ function ownKeys52(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread52(target) {
+function _objectSpread52(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys52(Object(source), true).forEach(function(key) {
-      _defineProperty60(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys52(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty60(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys52(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty60(obj, key, value2) {
   if (key in obj) {
@@ -14700,17 +21124,17 @@ function _defineProperty60(obj, key, value2) {
   }
   return obj;
 }
-var props70 = makePropsConfigurable(sortKeys(_objectSpread52(_objectSpread52({}, props47), {}, {
+var props71 = makePropsConfigurable(sortKeys(_objectSpread52(_objectSpread52({}, props48), {}, {
   labelField: makeProp(PROP_TYPE_STRING, "label"),
   optionsField: makeProp(PROP_TYPE_STRING, "options")
 })), "formOptions");
-var optionsMixin = extend({
+var optionsMixin = extend2({
   mixins: [formOptionsMixin],
-  props: props70,
+  props: props71,
   methods: {
     normalizeOption: function normalizeOption2(option) {
       var key = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
-      if (isPlainObject(option)) {
+      if (isPlainObject2(option)) {
         var value2 = get(option, this.valueField);
         var text = get(option, this.textField);
         var options = get(option, this.optionsField, null);
@@ -14737,18 +21161,18 @@ var optionsMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/form-select/form-select-option.js
-var props71 = makePropsConfigurable({
+var props72 = makePropsConfigurable({
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   value: makeProp(PROP_TYPE_ANY, void 0, true)
   // Required
 }, NAME_FORM_SELECT_OPTION);
-var BFormSelectOption = extend({
+var BFormSelectOption = extend2({
   name: NAME_FORM_SELECT_OPTION,
   functional: true,
-  props: props71,
+  props: props72,
   render: function render59(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var value2 = props152.value, disabled6 = props152.disabled;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var value2 = props153.value, disabled6 = props153.disabled;
     return h("option", a(data48, {
       attrs: {
         disabled: disabled6
@@ -14771,16 +21195,16 @@ function ownKeys53(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread53(target) {
+function _objectSpread53(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys53(Object(source), true).forEach(function(key) {
-      _defineProperty61(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys53(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty61(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys53(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty61(obj, key, value2) {
   if (key in obj) {
@@ -14790,17 +21214,17 @@ function _defineProperty61(obj, key, value2) {
   }
   return obj;
 }
-var props72 = makePropsConfigurable(sortKeys(_objectSpread53(_objectSpread53({}, props47), {}, {
+var props73 = makePropsConfigurable(sortKeys(_objectSpread53(_objectSpread53({}, props48), {}, {
   label: makeProp(PROP_TYPE_STRING, void 0, true)
   // Required
 })), NAME_FORM_SELECT_OPTION_GROUP);
-var BFormSelectOptionGroup = extend({
+var BFormSelectOptionGroup = extend2({
   name: NAME_FORM_SELECT_OPTION_GROUP,
   mixins: [normalizeSlotMixin, formOptionsMixin],
-  props: props72,
+  props: props73,
   render: function render60(h) {
     var label = this.label;
-    var $options = this.formOptions.map(function(option, index2) {
+    var $options = this.formOptions.map(function(option, index3) {
       var value2 = option.value, text = option.text, html = option.html, disabled6 = option.disabled;
       return h(BFormSelectOption, {
         attrs: {
@@ -14808,7 +21232,7 @@ var BFormSelectOptionGroup = extend({
           disabled: disabled6
         },
         domProps: htmlOrText(html, text),
-        key: "option_".concat(index2)
+        key: "option_".concat(index3)
       });
     });
     return h("optgroup", {
@@ -14830,16 +21254,16 @@ function ownKeys54(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread54(target) {
+function _objectSpread54(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys54(Object(source), true).forEach(function(key) {
-      _defineProperty62(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys54(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty62(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys54(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty62(obj, key, value2) {
   if (key in obj) {
@@ -14849,17 +21273,17 @@ function _defineProperty62(obj, key, value2) {
   }
   return obj;
 }
-var props73 = makePropsConfigurable(sortKeys(_objectSpread54(_objectSpread54(_objectSpread54(_objectSpread54(_objectSpread54(_objectSpread54(_objectSpread54({}, props17), props69), props53), props54), props55), props56), {}, {
+var props74 = makePropsConfigurable(sortKeys(_objectSpread54(_objectSpread54(_objectSpread54(_objectSpread54(_objectSpread54(_objectSpread54(_objectSpread54({}, props18), props70), props54), props55), props56), props57), {}, {
   ariaInvalid: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
   multiple: makeProp(PROP_TYPE_BOOLEAN, false),
   // Browsers default size to `0`, which shows 4 rows in most browsers in multiple mode
   // Size of `1` can bork out Firefox
   selectSize: makeProp(PROP_TYPE_NUMBER, 0)
 })), NAME_FORM_SELECT);
-var BFormSelect = extend({
+var BFormSelect = extend2({
   name: NAME_FORM_SELECT,
   mixins: [idMixin, mixin, formControlMixin, formSizeMixin, formStateMixin, formCustomMixin, optionsMixin, normalizeSlotMixin],
-  props: props73,
+  props: props74,
   data: function data20() {
     return {
       localValue: this[prop]
@@ -14890,13 +21314,13 @@ var BFormSelect = extend({
     },
     onChange: function onChange3(event2) {
       var _this = this;
-      var target = event2.target;
-      var selectedValue = from(target.options).filter(function(o) {
+      var target2 = event2.target;
+      var selectedValue = from(target2.options).filter(function(o) {
         return o.selected;
       }).map(function(o) {
         return "_value" in o ? o._value : o.value;
       });
-      this.localValue = target.multiple ? selectedValue : selectedValue[0];
+      this.localValue = target2.multiple ? selectedValue : selectedValue[0];
       this.$nextTick(function() {
         _this.$emit(EVENT_NAME_CHANGE, _this.localValue);
       });
@@ -14904,10 +21328,10 @@ var BFormSelect = extend({
   },
   render: function render61(h) {
     var name2 = this.name, disabled6 = this.disabled, required2 = this.required, size = this.computedSelectSize, value2 = this.localValue;
-    var $options = this.formOptions.map(function(option, index2) {
+    var $options = this.formOptions.map(function(option, index3) {
       var value3 = option.value, label = option.label, options = option.options, disabled7 = option.disabled;
-      var key = "option_".concat(index2);
-      return isArray(options) ? h(BFormSelectOptionGroup, {
+      var key = "option_".concat(index3);
+      return isArray2(options) ? h(BFormSelectOptionGroup, {
         props: {
           label,
           options
@@ -14971,16 +21395,16 @@ function ownKeys55(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread55(target) {
+function _objectSpread55(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys55(Object(source), true).forEach(function(key) {
-      _defineProperty63(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys55(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty63(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys55(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty63(obj, key, value2) {
   if (key in obj) {
@@ -15006,7 +21430,7 @@ var DEFAULT_REPEAT_INTERVAL = 100;
 var DEFAULT_REPEAT_THRESHOLD = 10;
 var DEFAULT_REPEAT_MULTIPLIER = 4;
 var KEY_CODES = [CODE_UP, CODE_DOWN, CODE_HOME, CODE_END, CODE_PAGEUP, CODE_PAGEDOWN];
-var props74 = makePropsConfigurable(sortKeys(_objectSpread55(_objectSpread55(_objectSpread55(_objectSpread55(_objectSpread55(_objectSpread55({}, props17), modelProps11), omit(props53, ["required", "autofocus"])), props55), props56), {}, {
+var props75 = makePropsConfigurable(sortKeys(_objectSpread55(_objectSpread55(_objectSpread55(_objectSpread55(_objectSpread55(_objectSpread55({}, props18), modelProps11), omit(props54, ["required", "autofocus"])), props56), props57), {}, {
   ariaControls: makeProp(PROP_TYPE_STRING),
   ariaLabel: makeProp(PROP_TYPE_STRING),
   formatterFn: makeProp(PROP_TYPE_FUNCTION),
@@ -15026,12 +21450,12 @@ var props74 = makePropsConfigurable(sortKeys(_objectSpread55(_objectSpread55(_ob
   vertical: makeProp(PROP_TYPE_BOOLEAN, false),
   wrap: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_FORM_SPINBUTTON);
-var BFormSpinbutton = extend({
+var BFormSpinbutton = extend2({
   name: NAME_FORM_SPINBUTTON,
   // Mixin order is important!
   mixins: [attrsMixin, idMixin, modelMixin11, formSizeMixin, formStateMixin, normalizeSlotMixin],
   inheritAttrs: false,
-  props: props74,
+  props: props75,
   data: function data21() {
     return {
       localValue: toFloat(this[MODEL_PROP_NAME11], null),
@@ -15092,7 +21516,7 @@ var BFormSpinbutton = extend({
       return isNull(value2) ? "" : value2.toFixed(this.computedPrecision);
     },
     computedLocale: function computedLocale3() {
-      var locales = concat(this.locale).filter(identity);
+      var locales = concat2(this.locale).filter(identity2);
       var nf = new Intl.NumberFormat(locales);
       return nf.resolvedOptions().locale;
     },
@@ -15139,8 +21563,8 @@ var BFormSpinbutton = extend({
         "aria-invalid": state === false || !hasValue && required2 ? "true" : null,
         "aria-required": required2 ? "true" : null,
         // These attrs are required for role spinbutton
-        "aria-valuemin": toString3(this.computedMin),
-        "aria-valuemax": toString3(this.computedMax),
+        "aria-valuemin": toString4(this.computedMin),
+        "aria-valuemax": toString4(this.computedMax),
         // These should be `null` if the value is out of range
         // They must also be non-existent attrs if the value is out of range or `null`
         "aria-valuenow": hasValue ? value2 : null,
@@ -15448,16 +21872,16 @@ function ownKeys56(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread56(target) {
+function _objectSpread56(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys56(Object(source), true).forEach(function(key) {
-      _defineProperty64(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys56(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty64(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys56(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty64(obj, key, value2) {
   if (key in obj) {
@@ -15467,7 +21891,7 @@ function _defineProperty64(obj, key, value2) {
   }
   return obj;
 }
-var props75 = makePropsConfigurable(sortKeys(_objectSpread56(_objectSpread56({}, props17), {}, {
+var props76 = makePropsConfigurable(sortKeys(_objectSpread56(_objectSpread56({}, props18), {}, {
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   noRemove: makeProp(PROP_TYPE_BOOLEAN, false),
   pill: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -15476,10 +21900,10 @@ var props75 = makePropsConfigurable(sortKeys(_objectSpread56(_objectSpread56({},
   title: makeProp(PROP_TYPE_STRING),
   variant: makeProp(PROP_TYPE_STRING, "secondary")
 })), NAME_FORM_TAG);
-var BFormTag = extend({
+var BFormTag = extend2({
   name: NAME_FORM_TAG,
   mixins: [idMixin, normalizeSlotMixin],
-  props: props75,
+  props: props76,
   methods: {
     onRemove: function onRemove(event2) {
       var type2 = event2.type, keyCode = event2.keyCode;
@@ -15582,16 +22006,16 @@ function ownKeys57(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread57(target) {
+function _objectSpread57(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys57(Object(source), true).forEach(function(key) {
-      _defineProperty65(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys57(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty65(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys57(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty65(obj, key, value2) {
   if (key in obj) {
@@ -15615,10 +22039,10 @@ var escapeRegExpChars = function escapeRegExpChars2(str) {
   return escapeRegExp(str).replace(RX_SPACES, "\\s");
 };
 var cleanTags = function cleanTags2(tags2) {
-  return concat(tags2).map(function(tag3) {
-    return trim(toString3(tag3));
-  }).filter(function(tag3, index2, arr) {
-    return tag3.length > 0 && arr.indexOf(tag3) === index2;
+  return concat2(tags2).map(function(tag3) {
+    return trim(toString4(tag3));
+  }).filter(function(tag3, index3, arr) {
+    return tag3.length > 0 && arr.indexOf(tag3) === index3;
   });
 };
 var processEventValue = function processEventValue2(event2) {
@@ -15632,7 +22056,7 @@ var cleanTagsState = function cleanTagsState2() {
     duplicate: []
   };
 };
-var props76 = makePropsConfigurable(sortKeys(_objectSpread57(_objectSpread57(_objectSpread57(_objectSpread57(_objectSpread57(_objectSpread57({}, props17), modelProps12), props53), props55), props56), {}, {
+var props77 = makePropsConfigurable(sortKeys(_objectSpread57(_objectSpread57(_objectSpread57(_objectSpread57(_objectSpread57(_objectSpread57({}, props18), modelProps12), props54), props56), props57), {}, {
   addButtonText: makeProp(PROP_TYPE_STRING, "Add"),
   addButtonVariant: makeProp(PROP_TYPE_STRING, "outline-secondary"),
   // Enable change event triggering tag addition
@@ -15671,10 +22095,10 @@ var props76 = makePropsConfigurable(sortKeys(_objectSpread57(_objectSpread57(_ob
   tagValidator: makeProp(PROP_TYPE_FUNCTION),
   tagVariant: makeProp(PROP_TYPE_STRING, "secondary")
 })), NAME_FORM_TAGS);
-var BFormTags = extend({
+var BFormTags = extend2({
   name: NAME_FORM_TAGS,
   mixins: [listenersMixin, idMixin, modelMixin12, formControlMixin, formSizeMixin, formStateMixin, normalizeSlotMixin],
-  props: props76,
+  props: props77,
   data: function data22() {
     return {
       hasFocus: false,
@@ -15715,7 +22139,7 @@ var BFormTags = extend({
       });
     },
     computedSeparator: function computedSeparator() {
-      return concat(this.separator).filter(isString).filter(identity).join("");
+      return concat2(this.separator).filter(isString).filter(identity2).join("");
     },
     computedSeparatorRegExp: function computedSeparatorRegExp() {
       var separator = this.computedSeparator;
@@ -15726,7 +22150,7 @@ var BFormTags = extend({
       return joiner !== " " ? "".concat(joiner, " ") : joiner;
     },
     computeIgnoreInputFocusSelector: function computeIgnoreInputFocusSelector() {
-      return concat(this.ignoreInputFocusSelector).filter(identity).join(",").trim();
+      return concat2(this.ignoreInputFocusSelector).filter(identity2).join(",").trim();
     },
     disableAddButton: function disableAddButton() {
       var _this = this;
@@ -15755,18 +22179,18 @@ var BFormTags = extend({
   watch: (_watch12 = {}, _defineProperty65(_watch12, MODEL_PROP_NAME12, function(newValue) {
     this.tags = cleanTags(newValue);
   }), _defineProperty65(_watch12, "tags", function tags(newValue, oldValue) {
-    if (!looseEqual(newValue, this[MODEL_PROP_NAME12])) {
+    if (!looseEqual2(newValue, this[MODEL_PROP_NAME12])) {
       this.$emit(MODEL_EVENT_NAME12, newValue);
     }
-    if (!looseEqual(newValue, oldValue)) {
-      newValue = concat(newValue).filter(identity);
-      oldValue = concat(oldValue).filter(identity);
+    if (!looseEqual2(newValue, oldValue)) {
+      newValue = concat2(newValue).filter(identity2);
+      oldValue = concat2(oldValue).filter(identity2);
       this.removedTags = oldValue.filter(function(old) {
         return !arrayIncludes(newValue, old);
       });
     }
   }), _defineProperty65(_watch12, "tagsState", function tagsState(newValue, oldValue) {
-    if (!looseEqual(newValue, oldValue)) {
+    if (!looseEqual2(newValue, oldValue)) {
       this.$emit(EVENT_NAME_TAG_STATE, newValue.valid, newValue.invalid, newValue.duplicate);
     }
   }), _watch12),
@@ -15793,7 +22217,7 @@ var BFormTags = extend({
       }
       var parsed = this.parseTags(newTag);
       if (parsed.valid.length > 0 || parsed.all.length === 0) {
-        if (matches(this.getInput(), "select")) {
+        if (matches2(this.getInput(), "select")) {
           this.newTag = "";
         } else {
           var invalidAndDuplicates = [].concat(_toConsumableArray3(parsed.invalid), _toConsumableArray3(parsed.duplicate));
@@ -15803,7 +22227,7 @@ var BFormTags = extend({
         }
       }
       if (parsed.valid.length > 0) {
-        this.tags = concat(this.tags, parsed.valid);
+        this.tags = concat2(this.tags, parsed.valid);
       }
       this.tagsState = parsed;
       this.focus();
@@ -15938,9 +22362,9 @@ var BFormTags = extend({
     },
     // --- Private methods ---
     splitTags: function splitTags(newTag) {
-      newTag = toString3(newTag);
+      newTag = toString4(newTag);
       var separatorRe = this.computedSeparatorRegExp;
-      return (separatorRe ? newTag.split(separatorRe) : [newTag]).map(trim).filter(identity);
+      return (separatorRe ? newTag.split(separatorRe) : [newTag]).map(trim).filter(identity2);
     },
     parseTags: function parseTags(newTag) {
       var _this7 = this;
@@ -15975,10 +22399,10 @@ var BFormTags = extend({
     },
     // Default User Interface render
     defaultRender: function defaultRender(_ref) {
-      var addButtonText = _ref.addButtonText, addButtonVariant = _ref.addButtonVariant, addTag2 = _ref.addTag, disableAddButton2 = _ref.disableAddButton, disabled6 = _ref.disabled, duplicateTagText = _ref.duplicateTagText, inputAttrs = _ref.inputAttrs, inputClass2 = _ref.inputClass, inputHandlers = _ref.inputHandlers, inputType = _ref.inputType, invalidTagText = _ref.invalidTagText, isDuplicate = _ref.isDuplicate, isInvalid = _ref.isInvalid, isLimitReached2 = _ref.isLimitReached, limitTagsText = _ref.limitTagsText, noTagRemove = _ref.noTagRemove, placeholder = _ref.placeholder, removeTag2 = _ref.removeTag, tagClass = _ref.tagClass, tagPills = _ref.tagPills, tagRemoveLabel = _ref.tagRemoveLabel, tagVariant = _ref.tagVariant, tags2 = _ref.tags;
+      var addButtonText = _ref.addButtonText, addButtonVariant = _ref.addButtonVariant, addTag2 = _ref.addTag, disableAddButton2 = _ref.disableAddButton, disabled6 = _ref.disabled, duplicateTagText = _ref.duplicateTagText, inputAttrs = _ref.inputAttrs, inputClass2 = _ref.inputClass, inputHandlers = _ref.inputHandlers, inputType = _ref.inputType, invalidTagText = _ref.invalidTagText, isDuplicate = _ref.isDuplicate, isInvalid = _ref.isInvalid, isLimitReached2 = _ref.isLimitReached, limitTagsText = _ref.limitTagsText, noTagRemove = _ref.noTagRemove, placeholder2 = _ref.placeholder, removeTag2 = _ref.removeTag, tagClass = _ref.tagClass, tagPills = _ref.tagPills, tagRemoveLabel = _ref.tagRemoveLabel, tagVariant = _ref.tagVariant, tags2 = _ref.tags;
       var h = this.$createElement;
       var $tags = tags2.map(function(tag3) {
-        tag3 = toString3(tag3);
+        tag3 = toString4(tag3);
         return h(BFormTag, {
           class: tagClass,
           // `BFormTag` will auto generate an ID
@@ -15993,7 +22417,7 @@ var BFormTags = extend({
             variant: tagVariant
           },
           on: {
-            remove: function remove() {
+            remove: function remove2() {
               return removeTag2(tag3);
             }
           },
@@ -16003,7 +22427,7 @@ var BFormTags = extend({
       var invalidFeedbackId = invalidTagText && isInvalid ? this.safeId("__invalid_feedback__") : null;
       var duplicateFeedbackId = duplicateTagText && isDuplicate ? this.safeId("__duplicate_feedback__") : null;
       var limitFeedbackId = limitTagsText && isLimitReached2 ? this.safeId("__limit_feedback__") : null;
-      var ariaDescribedby2 = [inputAttrs["aria-describedby"], invalidFeedbackId, duplicateFeedbackId, limitFeedbackId].filter(identity).join(" ");
+      var ariaDescribedby2 = [inputAttrs["aria-describedby"], invalidFeedbackId, duplicateFeedbackId, limitFeedbackId].filter(identity2).join(" ");
       var $input = h("input", {
         staticClass: "b-form-tags-input w-100 flex-grow-1 p-0 m-0 bg-transparent border-0",
         class: inputClass2,
@@ -16014,7 +22438,7 @@ var BFormTags = extend({
         attrs: _objectSpread57(_objectSpread57({}, inputAttrs), {}, {
           "aria-describedby": ariaDescribedby2 || null,
           type: inputType,
-          placeholder: placeholder || null
+          placeholder: placeholder2 || null
         }),
         domProps: {
           value: inputAttrs.value
@@ -16225,16 +22649,16 @@ function ownKeys58(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread58(target) {
+function _objectSpread58(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys58(Object(source), true).forEach(function(key) {
-      _defineProperty66(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys58(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty66(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys58(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty66(obj, key, value2) {
   if (key in obj) {
@@ -16244,7 +22668,7 @@ function _defineProperty66(obj, key, value2) {
   }
   return obj;
 }
-var props77 = makePropsConfigurable(sortKeys(_objectSpread58(_objectSpread58(_objectSpread58(_objectSpread58(_objectSpread58(_objectSpread58({}, props17), props53), props55), props56), props65), {}, {
+var props78 = makePropsConfigurable(sortKeys(_objectSpread58(_objectSpread58(_objectSpread58(_objectSpread58(_objectSpread58(_objectSpread58({}, props18), props54), props56), props57), props66), {}, {
   maxRows: makeProp(PROP_TYPE_NUMBER_STRING),
   // When in auto resize mode, disable shrinking to content height
   noAutoShrink: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -16255,14 +22679,14 @@ var props77 = makePropsConfigurable(sortKeys(_objectSpread58(_objectSpread58(_ob
   // Browser default is 'soft'
   wrap: makeProp(PROP_TYPE_STRING, "soft")
 })), NAME_FORM_TEXTAREA);
-var BFormTextarea = extend({
+var BFormTextarea = extend2({
   name: NAME_FORM_TEXTAREA,
   directives: {
     "b-visible": VBVisible
   },
   // Mixin order is important!
   mixins: [listenersMixin, idMixin, listenOnRootMixin, formControlMixin, formSizeMixin, formStateMixin, formTextMixin, formSelectionMixin, formValidityMixin],
-  props: props77,
+  props: props78,
   data: function data23() {
     return {
       heightInPx: null
@@ -16357,7 +22781,7 @@ var BFormTextarea = extend({
       var padding2 = toFloat(computedStyle2.paddingTop, 0) + toFloat(computedStyle2.paddingBottom, 0);
       var offset4 = border + padding2;
       var minHeight = lineHeight * this.computedMinRows + offset4;
-      var oldHeight = getStyle(el, "height") || computedStyle2.height;
+      var oldHeight = getStyle2(el, "height") || computedStyle2.height;
       setStyle(el, "height", "auto");
       var scrollHeight = el.scrollHeight;
       setStyle(el, "height", oldHeight);
@@ -16412,16 +22836,16 @@ function ownKeys59(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread59(target) {
+function _objectSpread59(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys59(Object(source), true).forEach(function(key) {
-      _defineProperty67(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys59(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty67(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys59(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty67(obj, key, value2) {
   if (key in obj) {
@@ -16503,7 +22927,7 @@ var padLeftZeros = function padLeftZeros2(value2) {
   return "00".concat(value2 || "").slice(-2);
 };
 var parseHMS = function parseHMS2(value2) {
-  value2 = toString3(value2);
+  value2 = toString4(value2);
   var hh = null, mm = null, ss = null;
   if (RX_TIME.test(value2)) {
     ;
@@ -16531,7 +22955,7 @@ var formatHMS = function formatHMS2(_ref) {
   var hms = [hours, minutes, requireSeconds ? seconds : 0];
   return hms.map(padLeftZeros).join(":");
 };
-var props78 = makePropsConfigurable(sortKeys(_objectSpread59(_objectSpread59(_objectSpread59(_objectSpread59({}, props17), modelProps13), pick(props74, ["labelIncrement", "labelDecrement"])), {}, {
+var props79 = makePropsConfigurable(sortKeys(_objectSpread59(_objectSpread59(_objectSpread59(_objectSpread59({}, props18), modelProps13), pick(props75, ["labelIncrement", "labelDecrement"])), {}, {
   // ID of label element
   ariaLabelledby: makeProp(PROP_TYPE_STRING),
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -16558,10 +22982,10 @@ var props78 = makePropsConfigurable(sortKeys(_objectSpread59(_objectSpread59(_ob
   // If `true`, show the second spinbutton
   showSeconds: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_TIME);
-var BTime = extend({
+var BTime = extend2({
   name: NAME_TIME,
   mixins: [idMixin, modelMixin13, normalizeSlotMixin],
-  props: props78,
+  props: props79,
   data: function data24() {
     var parsed = parseHMS(this[MODEL_PROP_NAME13] || "");
     return {
@@ -16586,7 +23010,7 @@ var BTime = extend({
       }, this.showSeconds);
     },
     resolvedOptions: function resolvedOptions() {
-      var locale = concat(this.locale).filter(identity);
+      var locale = concat2(this.locale).filter(identity2);
       var options = {
         hour: NUMERIC,
         minute: NUMERIC,
@@ -16637,7 +23061,7 @@ var BTime = extend({
       return this.safeId() || null;
     },
     computedAriaLabelledby: function computedAriaLabelledby() {
-      return [this.ariaLabelledby, this.valueId].filter(identity).join(" ") || null;
+      return [this.ariaLabelledby, this.valueId].filter(identity2).join(" ") || null;
     },
     timeFormatter: function timeFormatter() {
       var options = {
@@ -16701,7 +23125,7 @@ var BTime = extend({
     }
   },
   watch: (_watch13 = {}, _defineProperty67(_watch13, MODEL_PROP_NAME13, function(newValue, oldValue) {
-    if (newValue !== oldValue && !looseEqual(parseHMS(newValue), parseHMS(this.computedHMS))) {
+    if (newValue !== oldValue && !looseEqual2(parseHMS(newValue), parseHMS(this.computedHMS))) {
       var _parseHMS = parseHMS(newValue), hours = _parseHMS.hours, minutes = _parseHMS.minutes, seconds = _parseHMS.seconds, ampm = _parseHMS.ampm;
       this.modelHours = hours;
       this.modelMinutes = minutes;
@@ -16713,7 +23137,7 @@ var BTime = extend({
       this.$emit(MODEL_EVENT_NAME13, newValue);
     }
   }), _defineProperty67(_watch13, "context", function context4(newValue, oldValue) {
-    if (!looseEqual(newValue, oldValue)) {
+    if (!looseEqual2(newValue, oldValue)) {
       this.$emit(EVENT_NAME_CONTEXT, newValue);
     }
   }), _defineProperty67(_watch13, "modelAmpm", function modelAmpm(newValue, oldValue) {
@@ -16809,12 +23233,12 @@ var BTime = extend({
       if (!this.disabled && type2 === "keydown" && (keyCode === CODE_LEFT || keyCode === CODE_RIGHT)) {
         stopEvent(event2);
         var spinners = this.$refs.spinners || [];
-        var index2 = spinners.map(function(cmp) {
+        var index3 = spinners.map(function(cmp) {
           return !!cmp.hasFocus;
         }).indexOf(true);
-        index2 = index2 + (keyCode === CODE_LEFT ? -1 : 1);
-        index2 = index2 >= spinners.length ? 0 : index2 < 0 ? spinners.length - 1 : index2;
-        attemptFocus(spinners[index2]);
+        index3 = index3 + (keyCode === CODE_LEFT ? -1 : 1);
+        index3 = index3 >= spinners.length ? 0 : index3 < 0 ? spinners.length - 1 : index3;
+        attemptFocus(spinners[index3]);
       }
     },
     setLive: function setLive2(on) {
@@ -16953,7 +23377,7 @@ var BTime = extend({
       attrs: {
         id: valueId3,
         role: "status",
-        for: spinIds.filter(identity).join(" ") || null,
+        for: spinIds.filter(identity2).join(" ") || null,
         tabindex: disabled6 ? null : "-1",
         "aria-live": this.isLive ? "polite" : "off",
         "aria-atomic": "true"
@@ -17001,16 +23425,16 @@ function ownKeys60(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread60(target) {
+function _objectSpread60(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys60(Object(source), true).forEach(function(key) {
-      _defineProperty68(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys60(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty68(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys60(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty68(obj, key, value2) {
   if (key in obj) {
@@ -17028,9 +23452,9 @@ var modelMixin14 = _makeModelMixin15.mixin;
 var modelProps14 = _makeModelMixin15.props;
 var MODEL_PROP_NAME14 = _makeModelMixin15.prop;
 var MODEL_EVENT_NAME14 = _makeModelMixin15.event;
-var timeProps = omit(props78, ["hidden", "id", "value"]);
-var formBtnLabelControlProps2 = omit(props62, ["formattedValue", "id", "lang", "rtl", "value"]);
-var props79 = makePropsConfigurable(sortKeys(_objectSpread60(_objectSpread60(_objectSpread60(_objectSpread60(_objectSpread60({}, props17), modelProps14), timeProps), formBtnLabelControlProps2), {}, {
+var timeProps = omit(props79, ["hidden", "id", "value"]);
+var formBtnLabelControlProps2 = omit(props63, ["formattedValue", "id", "lang", "rtl", "value"]);
+var props80 = makePropsConfigurable(sortKeys(_objectSpread60(_objectSpread60(_objectSpread60(_objectSpread60(_objectSpread60({}, props18), modelProps14), timeProps), formBtnLabelControlProps2), {}, {
   closeButtonVariant: makeProp(PROP_TYPE_STRING, "outline-secondary"),
   labelCloseButton: makeProp(PROP_TYPE_STRING, "Close"),
   labelNowButton: makeProp(PROP_TYPE_STRING, "Select now"),
@@ -17042,10 +23466,10 @@ var props79 = makePropsConfigurable(sortKeys(_objectSpread60(_objectSpread60(_ob
   resetButtonVariant: makeProp(PROP_TYPE_STRING, "outline-danger"),
   resetValue: makeProp(PROP_TYPE_DATE_STRING)
 })), NAME_FORM_TIMEPICKER);
-var BFormTimepicker = extend({
+var BFormTimepicker = extend2({
   name: NAME_FORM_TIMEPICKER,
   mixins: [idMixin, modelMixin14],
-  props: props79,
+  props: props80,
   data: function data25() {
     return {
       // We always use `HH:mm:ss` value internally
@@ -17145,7 +23569,7 @@ var BFormTimepicker = extend({
   },
   render: function render67(h) {
     var localHMS2 = this.localHMS, disabled6 = this.disabled, readonly2 = this.readonly, $props = this.$props;
-    var placeholder = isUndefinedOrNull(this.placeholder) ? this.labelNoTimeSelected : this.placeholder;
+    var placeholder2 = isUndefinedOrNull(this.placeholder) ? this.labelNoTimeSelected : this.placeholder;
     var $footer = [];
     if (this.nowButton) {
       var label = this.labelNowButton;
@@ -17231,7 +23655,7 @@ var BFormTimepicker = extend({
         id: this.safeId(),
         value: localHMS2,
         formattedValue: localHMS2 ? this.formattedValue : "",
-        placeholder,
+        placeholder: placeholder2,
         rtl: this.isRTL,
         lang: this.computedLang
       }),
@@ -17263,44 +23687,44 @@ var ImagePlugin = pluginFactory({
 });
 
 // node_modules/bootstrap-vue/esm/components/input-group/input-group-text.js
-var props80 = makePropsConfigurable({
+var props81 = makePropsConfigurable({
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_INPUT_GROUP_TEXT);
-var BInputGroupText = extend({
+var BInputGroupText = extend2({
   name: NAME_INPUT_GROUP_TEXT,
   functional: true,
-  props: props80,
+  props: props81,
   render: function render68(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.tag, a(data48, {
       staticClass: "input-group-text"
     }), children2);
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/input-group/input-group-addon.js
-var props81 = makePropsConfigurable({
+var props82 = makePropsConfigurable({
   append: makeProp(PROP_TYPE_BOOLEAN, false),
   id: makeProp(PROP_TYPE_STRING),
   isText: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_INPUT_GROUP_ADDON);
-var BInputGroupAddon = extend({
+var BInputGroupAddon = extend2({
   name: NAME_INPUT_GROUP_ADDON,
   functional: true,
-  props: props81,
+  props: props82,
   render: function render69(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var append = props152.append;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var append = props153.append;
+    return h(props153.tag, a(data48, {
       class: {
         "input-group-append": append,
         "input-group-prepend": !append
       },
       attrs: {
-        id: props152.id
+        id: props153.id
       }
-    }), props152.isText ? [h(BInputGroupText, children2)] : children2);
+    }), props153.isText ? [h(BInputGroupText, children2)] : children2);
   }
 });
 
@@ -17315,16 +23739,16 @@ function ownKeys61(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread61(target) {
+function _objectSpread61(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys61(Object(source), true).forEach(function(key) {
-      _defineProperty69(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys61(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty69(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys61(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty69(obj, key, value2) {
   if (key in obj) {
@@ -17334,15 +23758,15 @@ function _defineProperty69(obj, key, value2) {
   }
   return obj;
 }
-var props82 = makePropsConfigurable(omit(props81, ["append"]), NAME_INPUT_GROUP_APPEND);
-var BInputGroupAppend = extend({
+var props83 = makePropsConfigurable(omit(props82, ["append"]), NAME_INPUT_GROUP_APPEND);
+var BInputGroupAppend = extend2({
   name: NAME_INPUT_GROUP_APPEND,
   functional: true,
-  props: props82,
+  props: props83,
   render: function render70(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
     return h(BInputGroupAddon, a(data48, {
-      props: _objectSpread61(_objectSpread61({}, props152), {}, {
+      props: _objectSpread61(_objectSpread61({}, props153), {}, {
         append: true
       })
     }), children2);
@@ -17360,16 +23784,16 @@ function ownKeys62(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread62(target) {
+function _objectSpread62(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys62(Object(source), true).forEach(function(key) {
-      _defineProperty70(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys62(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty70(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys62(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty70(obj, key, value2) {
   if (key in obj) {
@@ -17379,15 +23803,15 @@ function _defineProperty70(obj, key, value2) {
   }
   return obj;
 }
-var props83 = makePropsConfigurable(omit(props81, ["append"]), NAME_INPUT_GROUP_PREPEND);
-var BInputGroupPrepend = extend({
+var props84 = makePropsConfigurable(omit(props82, ["append"]), NAME_INPUT_GROUP_PREPEND);
+var BInputGroupPrepend = extend2({
   name: NAME_INPUT_GROUP_PREPEND,
   functional: true,
-  props: props83,
+  props: props84,
   render: function render71(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
     return h(BInputGroupAddon, a(data48, {
-      props: _objectSpread62(_objectSpread62({}, props152), {}, {
+      props: _objectSpread62(_objectSpread62({}, props153), {}, {
         append: false
       })
     }), children2);
@@ -17403,7 +23827,7 @@ function _defineProperty71(obj, key, value2) {
   }
   return obj;
 }
-var props84 = makePropsConfigurable({
+var props85 = makePropsConfigurable({
   append: makeProp(PROP_TYPE_STRING),
   appendHtml: makeProp(PROP_TYPE_STRING),
   id: makeProp(PROP_TYPE_STRING),
@@ -17412,13 +23836,13 @@ var props84 = makePropsConfigurable({
   size: makeProp(PROP_TYPE_STRING),
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_INPUT_GROUP);
-var BInputGroup = extend({
+var BInputGroup = extend2({
   name: NAME_INPUT_GROUP,
   functional: true,
-  props: props84,
+  props: props85,
   render: function render72(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
-    var prepend = props152.prepend, prependHtml = props152.prependHtml, append = props152.append, appendHtml = props152.appendHtml, size = props152.size;
+    var props153 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
+    var prepend = props153.prepend, prependHtml = props153.prependHtml, append = props153.append, appendHtml = props153.appendHtml, size = props153.size;
     var $scopedSlots = scopedSlots || {};
     var $slots = slots();
     var slotScope6 = {};
@@ -17436,11 +23860,11 @@ var BInputGroup = extend({
         domProps: htmlOrText(appendHtml, append)
       })]);
     }
-    return h(props152.tag, a(data48, {
+    return h(props153.tag, a(data48, {
       staticClass: "input-group",
       class: _defineProperty71({}, "input-group-".concat(size), size),
       attrs: {
-        id: props152.id || null,
+        id: props153.id || null,
         role: "group"
       }
     }), [$prepend, normalizeSlot(SLOT_NAME_DEFAULT, slotScope6, $scopedSlots, $slots), $append]);
@@ -17467,19 +23891,19 @@ function _defineProperty72(obj, key, value2) {
   }
   return obj;
 }
-var props85 = makePropsConfigurable({
+var props86 = makePropsConfigurable({
   // String breakpoint name new in Bootstrap v4.4.x
   fluid: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_CONTAINER);
-var BContainer = extend({
+var BContainer = extend2({
   name: NAME_CONTAINER,
   functional: true,
-  props: props85,
+  props: props86,
   render: function render73(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var fluid = props152.fluid;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var fluid = props153.fluid;
+    return h(props153.tag, a(data48, {
       class: _defineProperty72({
         container: !(fluid || fluid === ""),
         "container-fluid": fluid === true || fluid === ""
@@ -17497,7 +23921,7 @@ function _defineProperty73(obj, key, value2) {
   }
   return obj;
 }
-var props86 = makePropsConfigurable({
+var props87 = makePropsConfigurable({
   bgVariant: makeProp(PROP_TYPE_STRING),
   borderVariant: makeProp(PROP_TYPE_STRING),
   containerFluid: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
@@ -17512,22 +23936,22 @@ var props86 = makePropsConfigurable({
   tag: makeProp(PROP_TYPE_STRING, "div"),
   textVariant: makeProp(PROP_TYPE_STRING)
 }, NAME_JUMBOTRON);
-var BJumbotron = extend({
+var BJumbotron = extend2({
   name: NAME_JUMBOTRON,
   functional: true,
-  props: props86,
+  props: props87,
   render: function render74(h, _ref) {
     var _class2;
-    var props152 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
-    var header = props152.header, headerHtml = props152.headerHtml, lead = props152.lead, leadHtml = props152.leadHtml, textVariant = props152.textVariant, bgVariant = props152.bgVariant, borderVariant = props152.borderVariant;
+    var props153 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
+    var header = props153.header, headerHtml = props153.headerHtml, lead = props153.lead, leadHtml = props153.leadHtml, textVariant = props153.textVariant, bgVariant = props153.bgVariant, borderVariant = props153.borderVariant;
     var $scopedSlots = scopedSlots || {};
     var $slots = slots();
     var slotScope6 = {};
     var $header = h();
     var hasHeaderSlot = hasNormalizedSlot(SLOT_NAME_HEADER, $scopedSlots, $slots);
     if (hasHeaderSlot || header || headerHtml) {
-      var headerLevel = props152.headerLevel;
-      $header = h(props152.headerTag, {
+      var headerLevel = props153.headerLevel;
+      $header = h(props153.headerTag, {
         class: _defineProperty73({}, "display-".concat(headerLevel), headerLevel),
         domProps: hasHeaderSlot ? {} : htmlOrText(headerHtml, header)
       }, normalizeSlot(SLOT_NAME_HEADER, slotScope6, $scopedSlots, $slots));
@@ -17535,23 +23959,23 @@ var BJumbotron = extend({
     var $lead = h();
     var hasLeadSlot = hasNormalizedSlot(SLOT_NAME_LEAD, $scopedSlots, $slots);
     if (hasLeadSlot || lead || leadHtml) {
-      $lead = h(props152.leadTag, {
+      $lead = h(props153.leadTag, {
         staticClass: "lead",
         domProps: hasLeadSlot ? {} : htmlOrText(leadHtml, lead)
       }, normalizeSlot(SLOT_NAME_LEAD, slotScope6, $scopedSlots, $slots));
     }
     var $children = [$header, $lead, normalizeSlot(SLOT_NAME_DEFAULT, slotScope6, $scopedSlots, $slots)];
-    if (props152.fluid) {
+    if (props153.fluid) {
       $children = [h(BContainer, {
         props: {
-          fluid: props152.containerFluid
+          fluid: props153.containerFluid
         }
       }, $children)];
     }
-    return h(props152.tag, a(data48, {
+    return h(props153.tag, a(data48, {
       staticClass: "jumbotron",
       class: (_class2 = {
-        "jumbotron-fluid": props152.fluid
+        "jumbotron-fluid": props153.fluid
       }, _defineProperty73(_class2, "text-".concat(textVariant), textVariant), _defineProperty73(_class2, "bg-".concat(bgVariant), bgVariant), _defineProperty73(_class2, "border-".concat(borderVariant), borderVariant), _defineProperty73(_class2, "border", borderVariant), _class2)
     }), $children);
   }
@@ -17575,16 +23999,16 @@ function ownKeys63(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread63(target) {
+function _objectSpread63(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys63(Object(source), true).forEach(function(key) {
-      _defineProperty74(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys63(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty74(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys63(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty74(obj, key, value2) {
   if (key in obj) {
@@ -17596,28 +24020,28 @@ function _defineProperty74(obj, key, value2) {
 }
 var COMMON_ALIGNMENT = ["start", "end", "center"];
 var computeRowColsClass = memoize(function(breakpoint, cols) {
-  cols = trim(toString3(cols));
-  return cols ? lowerCase(["row-cols", breakpoint, cols].filter(identity).join("-")) : null;
+  cols = trim(toString4(cols));
+  return cols ? lowerCase(["row-cols", breakpoint, cols].filter(identity2).join("-")) : null;
 });
 var computeRowColsBreakpoint = memoize(function(prop2) {
   return lowerCase(prop2.replace("cols", ""));
 });
 var rowColsPropList = [];
 var generateProps5 = function generateProps6() {
-  var rowColsProps = getBreakpointsUpCached().reduce(function(props152, breakpoint) {
-    props152[suffixPropName(breakpoint, "cols")] = makeProp(PROP_TYPE_NUMBER_STRING);
-    return props152;
+  var rowColsProps = getBreakpointsUpCached().reduce(function(props153, breakpoint) {
+    props153[suffixPropName(breakpoint, "cols")] = makeProp(PROP_TYPE_NUMBER_STRING);
+    return props153;
   }, create(null));
   rowColsPropList = keys(rowColsProps);
   return makePropsConfigurable(sortKeys(_objectSpread63(_objectSpread63({}, rowColsProps), {}, {
     alignContent: makeProp(PROP_TYPE_STRING, null, function(value2) {
-      return arrayIncludes(concat(COMMON_ALIGNMENT, "between", "around", "stretch"), value2);
+      return arrayIncludes(concat2(COMMON_ALIGNMENT, "between", "around", "stretch"), value2);
     }),
     alignH: makeProp(PROP_TYPE_STRING, null, function(value2) {
-      return arrayIncludes(concat(COMMON_ALIGNMENT, "between", "around"), value2);
+      return arrayIncludes(concat2(COMMON_ALIGNMENT, "between", "around"), value2);
     }),
     alignV: makeProp(PROP_TYPE_STRING, null, function(value2) {
-      return arrayIncludes(concat(COMMON_ALIGNMENT, "baseline", "stretch"), value2);
+      return arrayIncludes(concat2(COMMON_ALIGNMENT, "baseline", "stretch"), value2);
     }),
     noGutters: makeProp(PROP_TYPE_BOOLEAN, false),
     tag: makeProp(PROP_TYPE_STRING, "div")
@@ -17633,19 +24057,19 @@ var BRow = {
   },
   render: function render75(h, _ref) {
     var _classList$push;
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var alignV = props152.alignV, alignH = props152.alignH, alignContent = props152.alignContent;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var alignV = props153.alignV, alignH = props153.alignH, alignContent = props153.alignContent;
     var classList = [];
     rowColsPropList.forEach(function(prop2) {
-      var c = computeRowColsClass(computeRowColsBreakpoint(prop2), props152[prop2]);
+      var c = computeRowColsClass(computeRowColsBreakpoint(prop2), props153[prop2]);
       if (c) {
         classList.push(c);
       }
     });
     classList.push((_classList$push = {
-      "no-gutters": props152.noGutters
+      "no-gutters": props153.noGutters
     }, _defineProperty74(_classList$push, "align-items-".concat(alignV), alignV), _defineProperty74(_classList$push, "justify-content-".concat(alignH), alignH), _defineProperty74(_classList$push, "align-content-".concat(alignContent), alignContent), _classList$push));
-    return h(props152.tag, a(data48, {
+    return h(props153.tag, a(data48, {
       staticClass: "row",
       class: classList
     }), children2);
@@ -17678,27 +24102,27 @@ function _defineProperty75(obj, key, value2) {
   }
   return obj;
 }
-var props87 = makePropsConfigurable({
+var props88 = makePropsConfigurable({
   flush: makeProp(PROP_TYPE_BOOLEAN, false),
   horizontal: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_LIST_GROUP);
-var BListGroup = extend({
+var BListGroup = extend2({
   name: NAME_LIST_GROUP,
   functional: true,
-  props: props87,
+  props: props88,
   render: function render76(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var horizontal = props152.horizontal === "" ? true : props152.horizontal;
-    horizontal = props152.flush ? false : horizontal;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var horizontal = props153.horizontal === "" ? true : props153.horizontal;
+    horizontal = props153.flush ? false : horizontal;
     var componentData = {
       staticClass: "list-group",
       class: _defineProperty75({
-        "list-group-flush": props152.flush,
+        "list-group-flush": props153.flush,
         "list-group-horizontal": horizontal === true
       }, "list-group-horizontal-".concat(horizontal), isString(horizontal))
     };
-    return h(props152.tag, a(data48, componentData), children2);
+    return h(props153.tag, a(data48, componentData), children2);
   }
 });
 
@@ -17713,16 +24137,16 @@ function ownKeys64(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread64(target) {
+function _objectSpread64(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys64(Object(source), true).forEach(function(key) {
-      _defineProperty76(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys64(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty76(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys64(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty76(obj, key, value2) {
   if (key in obj) {
@@ -17733,40 +24157,40 @@ function _defineProperty76(obj, key, value2) {
   return obj;
 }
 var actionTags = ["a", "router-link", "button", "b-link"];
-var linkProps5 = omit(props7, ["event", "routerTag"]);
+var linkProps5 = omit(props8, ["event", "routerTag"]);
 delete linkProps5.href.default;
 delete linkProps5.to.default;
-var props88 = makePropsConfigurable(sortKeys(_objectSpread64(_objectSpread64({}, linkProps5), {}, {
+var props89 = makePropsConfigurable(sortKeys(_objectSpread64(_objectSpread64({}, linkProps5), {}, {
   action: makeProp(PROP_TYPE_BOOLEAN, false),
   button: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "div"),
   variant: makeProp(PROP_TYPE_STRING)
 })), NAME_LIST_GROUP_ITEM);
-var BListGroupItem = extend({
+var BListGroupItem = extend2({
   name: NAME_LIST_GROUP_ITEM,
   functional: true,
-  props: props88,
+  props: props89,
   render: function render77(h, _ref) {
     var _class;
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var button = props152.button, variant = props152.variant, active = props152.active, disabled6 = props152.disabled;
-    var link = isLink(props152);
-    var tag3 = button ? "button" : !link ? props152.tag : BLink;
-    var action = !!(props152.action || link || button || arrayIncludes(actionTags, props152.tag));
-    var attrs = {};
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var button = props153.button, variant = props153.variant, active = props153.active, disabled6 = props153.disabled;
+    var link = isLink(props153);
+    var tag3 = button ? "button" : !link ? props153.tag : BLink;
+    var action = !!(props153.action || link || button || arrayIncludes(actionTags, props153.tag));
+    var attrs2 = {};
     var itemProps = {};
     if (isTag(tag3, "button")) {
       if (!data48.attrs || !data48.attrs.type) {
-        attrs.type = "button";
+        attrs2.type = "button";
       }
-      if (props152.disabled) {
-        attrs.disabled = true;
+      if (props153.disabled) {
+        attrs2.disabled = true;
       }
     } else {
-      itemProps = pluckProps(linkProps5, props152);
+      itemProps = pluckProps(linkProps5, props153);
     }
     return h(tag3, a(data48, {
-      attrs,
+      attrs: attrs2,
       props: itemProps,
       staticClass: "list-group-item",
       class: (_class = {}, _defineProperty76(_class, "list-group-item-".concat(variant), variant), _defineProperty76(_class, "list-group-item-action", action), _defineProperty76(_class, "active", active), _defineProperty76(_class, "disabled", disabled6), _class)
@@ -17791,61 +24215,61 @@ function _defineProperty77(obj, key, value2) {
   }
   return obj;
 }
-var props89 = makePropsConfigurable({
+var props90 = makePropsConfigurable({
   right: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "div"),
   verticalAlign: makeProp(PROP_TYPE_STRING, "top")
 }, NAME_MEDIA_ASIDE);
-var BMediaAside = extend({
+var BMediaAside = extend2({
   name: NAME_MEDIA_ASIDE,
   functional: true,
-  props: props89,
+  props: props90,
   render: function render78(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var verticalAlign = props152.verticalAlign;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var verticalAlign = props153.verticalAlign;
     var align = verticalAlign === "top" ? "start" : verticalAlign === "bottom" ? "end" : (
       /* istanbul ignore next */
       verticalAlign
     );
-    return h(props152.tag, a(data48, {
+    return h(props153.tag, a(data48, {
       staticClass: "media-aside",
       class: _defineProperty77({
-        "media-aside-right": props152.right
+        "media-aside-right": props153.right
       }, "align-self-".concat(align), align)
     }), children2);
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/media/media-body.js
-var props90 = makePropsConfigurable({
+var props91 = makePropsConfigurable({
   tag: makeProp(PROP_TYPE_STRING, "div")
 }, NAME_MEDIA_BODY);
-var BMediaBody = extend({
+var BMediaBody = extend2({
   name: NAME_MEDIA_BODY,
   functional: true,
-  props: props90,
+  props: props91,
   render: function render79(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    return h(props153.tag, a(data48, {
       staticClass: "media-body"
     }), children2);
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/media/media.js
-var props91 = makePropsConfigurable({
+var props92 = makePropsConfigurable({
   noBody: makeProp(PROP_TYPE_BOOLEAN, false),
   rightAlign: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "div"),
   verticalAlign: makeProp(PROP_TYPE_STRING, "top")
 }, NAME_MEDIA);
-var BMedia = extend({
+var BMedia = extend2({
   name: NAME_MEDIA,
   functional: true,
-  props: props91,
+  props: props92,
   render: function render80(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots, children2 = _ref.children;
-    var noBody = props152.noBody, rightAlign = props152.rightAlign, verticalAlign = props152.verticalAlign;
+    var props153 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots, children2 = _ref.children;
+    var noBody = props153.noBody, rightAlign = props153.rightAlign, verticalAlign = props153.verticalAlign;
     var $children = noBody ? children2 : [];
     if (!noBody) {
       var slotScope6 = {};
@@ -17862,7 +24286,7 @@ var BMedia = extend({
         }, $aside));
       }
     }
-    return h(props152.tag, a(data48, {
+    return h(props153.tag, a(data48, {
       staticClass: "media"
     }), $children);
   }
@@ -17879,7 +24303,7 @@ var MediaPlugin = pluginFactory({
 
 // node_modules/bootstrap-vue/esm/mixins/listen-on-document.js
 var PROP3 = "$_documentListeners";
-var listenOnDocumentMixin = extend({
+var listenOnDocumentMixin = extend2({
   created: function created13() {
     this[PROP3] = {};
   },
@@ -17928,7 +24352,7 @@ var listenOnDocumentMixin = extend({
 
 // node_modules/bootstrap-vue/esm/mixins/listen-on-window.js
 var PROP4 = "$_windowListeners";
-var listenOnWindowMixin = extend({
+var listenOnWindowMixin = extend2({
   created: function created14() {
     this[PROP4] = {};
   },
@@ -17976,7 +24400,7 @@ var listenOnWindowMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/use-parent.js
-var useParentMixin = extend({
+var useParentMixin = extend2({
   computed: {
     bvParent: function bvParent() {
       return this.$parent || this.$root === this && this.$options.bvParent;
@@ -17999,7 +24423,7 @@ function _defineProperty78(obj, key, value2) {
   }
   return obj;
 }
-var scopedStyleMixin = extend({
+var scopedStyleMixin = extend2({
   mixins: [useParentMixin],
   computed: {
     scopedStyleAttrs: function scopedStyleAttrs() {
@@ -18020,16 +24444,16 @@ function ownKeys65(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread65(target) {
+function _objectSpread65(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys65(Object(source), true).forEach(function(key) {
-      _defineProperty79(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys65(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty79(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys65(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty79(obj, key, value2) {
   if (key in obj) {
@@ -18040,9 +24464,9 @@ function _defineProperty79(obj, key, value2) {
   return obj;
 }
 var createNewChildComponent = function createNewChildComponent2(parent, Component) {
-  var config = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
+  var config2 = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
   var bvEventRoot2 = parent.$root ? parent.$root.$options.bvEventRoot || parent.$root : null;
-  return new Component(_objectSpread65(_objectSpread65({}, config), {}, {
+  return new Component(_objectSpread65(_objectSpread65({}, config2), {}, {
     parent,
     bvParent: parent,
     bvEventRoot: bvEventRoot2
@@ -18050,7 +24474,7 @@ var createNewChildComponent = function createNewChildComponent2(parent, Componen
 };
 
 // node_modules/bootstrap-vue/esm/components/transporter/transporter.js
-var BVTransporterTarget = extend({
+var BVTransporterTarget = extend2({
   // As an abstract component, it doesn't appear in the $parent chain of
   // components, which means the next parent of any component rendered inside
   // of this one will be the parent from which is was portal'd
@@ -18071,15 +24495,15 @@ var BVTransporterTarget = extend({
   },
   render: function render81(h) {
     var updatedNodes = this.updatedNodes;
-    var $nodes = isFunction(updatedNodes) ? updatedNodes({}) : updatedNodes;
-    $nodes = concat($nodes).filter(identity);
+    var $nodes = isFunction2(updatedNodes) ? updatedNodes({}) : updatedNodes;
+    $nodes = concat2($nodes).filter(identity2);
     if ($nodes && $nodes.length > 0 && !$nodes[0].text) {
       return $nodes[0];
     }
     return h();
   }
 });
-var props92 = {
+var props93 = {
   // String: CSS selector,
   // HTMLElement: Element reference
   // Mainly needed for tooltips/popovers inside modals
@@ -18088,10 +24512,10 @@ var props92 = {
   // This should be set to match the root element type
   tag: makeProp(PROP_TYPE_STRING, "div")
 };
-var BVTransporterVue2 = extend({
+var BVTransporterVue2 = extend2({
   name: NAME_TRANSPORTER,
   mixins: [normalizeSlotMixin],
-  props: props92,
+  props: props93,
   watch: {
     disabled: {
       immediate: true,
@@ -18135,7 +24559,7 @@ var BVTransporterVue2 = extend({
             el: $el,
             propsData: {
               // Initial nodes to be rendered
-              nodes: concat(this.normalizeSlot())
+              nodes: concat2(this.normalizeSlot())
             }
           });
         }
@@ -18163,7 +24587,7 @@ var BVTransporterVue2 = extend({
   },
   render: function render82(h) {
     if (this.disabled) {
-      var $nodes = concat(this.normalizeSlot()).filter(identity);
+      var $nodes = concat2(this.normalizeSlot()).filter(identity2);
       if ($nodes.length > 0 && !$nodes[0].text) {
         return $nodes[0];
       }
@@ -18171,18 +24595,18 @@ var BVTransporterVue2 = extend({
     return h();
   }
 });
-var BVTransporterVue3 = extend({
+var BVTransporterVue3 = extend2({
   name: NAME_TRANSPORTER,
   mixins: [normalizeSlotMixin],
-  props: props92,
+  props: props93,
   render: function render83(h) {
     if (this.disabled) {
-      var $nodes = concat(this.normalizeSlot()).filter(identity);
+      var $nodes = concat2(this.normalizeSlot()).filter(identity2);
       if ($nodes.length > 0) {
         return $nodes[0];
       }
     }
-    return h(Vue$1.Teleport, {
+    return h(Vue.Teleport, {
       to: this.container
     }, this.normalizeSlot());
   }
@@ -18208,16 +24632,16 @@ function ownKeys66(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread66(target) {
+function _objectSpread66(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys66(Object(source), true).forEach(function(key) {
-      _defineProperty80(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys66(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty80(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys66(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty80(obj, key, value2) {
   if (key in obj) {
@@ -18232,14 +24656,14 @@ function _classCallCheck5(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-function _defineProperties4(target, props152) {
-  for (var i = 0; i < props152.length; i++) {
-    var descriptor = props152[i];
+function _defineProperties4(target2, props153) {
+  for (var i = 0; i < props153.length; i++) {
+    var descriptor = props153[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
       descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target2, descriptor.key, descriptor);
   }
 }
 function _createClass4(Constructor, protoProps, staticProps) {
@@ -18254,13 +24678,13 @@ function _get() {
   if (typeof Reflect !== "undefined" && Reflect.get) {
     _get = Reflect.get;
   } else {
-    _get = function _get2(target, property, receiver) {
-      var base = _superPropBase(target, property);
+    _get = function _get2(target2, property, receiver) {
+      var base = _superPropBase(target2, property);
       if (!base)
         return;
       var desc = Object.getOwnPropertyDescriptor(base, property);
       if (desc.get) {
-        return desc.get.call(arguments.length < 3 ? target : receiver);
+        return desc.get.call(arguments.length < 3 ? target2 : receiver);
       }
       return desc.value;
     };
@@ -18367,7 +24791,7 @@ var DEFAULT_ZINDEX = 1040;
 var SELECTOR_FIXED_CONTENT = ".fixed-top, .fixed-bottom, .is-fixed, .sticky-top";
 var SELECTOR_STICKY_CONTENT = ".sticky-top";
 var SELECTOR_NAVBAR_TOGGLER = ".navbar-toggler";
-var ModalManager = extend({
+var ModalManager = extend2({
   data: function data27() {
     return {
       modals: [],
@@ -18391,12 +24815,12 @@ var ModalManager = extend({
         if (newCount > 0 && oldCount === 0) {
           this.checkScrollbar();
           this.setScrollbar();
-          addClass(document.body, "modal-open");
+          addClass2(document.body, "modal-open");
         } else if (newCount === 0 && oldCount > 0) {
           this.resetScrollbar();
-          removeClass(document.body, "modal-open");
+          removeClass2(document.body, "modal-open");
         }
-        setAttr(document.body, "data-modal-open-count", String(newCount));
+        setAttr2(document.body, "data-modal-open-count", String(newCount));
       }
     },
     modals: function modals(newValue) {
@@ -18415,9 +24839,9 @@ var ModalManager = extend({
       }
     },
     unregisterModal: function unregisterModal(modal) {
-      var index2 = this.modals.indexOf(modal);
-      if (index2 > -1) {
-        this.modals.splice(index2, 1);
+      var index3 = this.modals.indexOf(modal);
+      if (index3 > -1) {
+        this.modals.splice(index3, 1);
         if (!modal._isBeingDestroyed && !modal._isDestroyed) {
           this.resetModal(modal);
         }
@@ -18426,8 +24850,8 @@ var ModalManager = extend({
     getBaseZIndex: function getBaseZIndex() {
       if (IS_BROWSER && isNull(this.baseZIndex)) {
         var div = document.createElement("div");
-        addClass(div, "modal-backdrop");
-        addClass(div, "d-none");
+        addClass2(div, "modal-backdrop");
+        addClass2(div, "d-none");
         setStyle(div, "display", "none");
         document.body.appendChild(div);
         this.baseZIndex = toInteger(getCS(div).zIndex, DEFAULT_ZINDEX);
@@ -18438,7 +24862,7 @@ var ModalManager = extend({
     getScrollbarWidth: function getScrollbarWidth() {
       if (IS_BROWSER && isNull(this.scrollbarWidth)) {
         var div = document.createElement("div");
-        addClass(div, "modal-scrollbar-measure");
+        addClass2(div, "modal-scrollbar-measure");
         document.body.appendChild(div);
         this.scrollbarWidth = getBCR(div).width - div.clientWidth;
         document.body.removeChild(div);
@@ -18450,10 +24874,10 @@ var ModalManager = extend({
       var _this2 = this;
       var baseZIndex = this.getBaseZIndex();
       var scrollbarWidth = this.getScrollbarWidth();
-      modals2.forEach(function(modal, index2) {
-        modal.zIndex = baseZIndex + index2;
+      modals2.forEach(function(modal, index3) {
+        modal.zIndex = baseZIndex + index3;
         modal.scrollbarWidth = scrollbarWidth;
-        modal.isTop = index2 === _this2.modals.length - 1;
+        modal.isTop = index3 === _this2.modals.length - 1;
         modal.isBodyOverflowing = _this2.isBodyOverflowing;
       });
     },
@@ -18475,25 +24899,25 @@ var ModalManager = extend({
       if (this.isBodyOverflowing) {
         var scrollbarWidth = this.scrollbarWidth;
         selectAll(SELECTOR_FIXED_CONTENT).forEach(function(el) {
-          var actualPadding2 = getStyle(el, "paddingRight") || "";
-          setAttr(el, "data-padding-right", actualPadding2);
+          var actualPadding2 = getStyle2(el, "paddingRight") || "";
+          setAttr2(el, "data-padding-right", actualPadding2);
           setStyle(el, "paddingRight", "".concat(toFloat(getCS(el).paddingRight, 0) + scrollbarWidth, "px"));
           body._paddingChangedForModal.push(el);
         });
         selectAll(SELECTOR_STICKY_CONTENT).forEach(function(el) {
-          var actualMargin = getStyle(el, "marginRight") || "";
-          setAttr(el, "data-margin-right", actualMargin);
+          var actualMargin = getStyle2(el, "marginRight") || "";
+          setAttr2(el, "data-margin-right", actualMargin);
           setStyle(el, "marginRight", "".concat(toFloat(getCS(el).marginRight, 0) - scrollbarWidth, "px"));
           body._marginChangedForModal.push(el);
         });
         selectAll(SELECTOR_NAVBAR_TOGGLER).forEach(function(el) {
-          var actualMargin = getStyle(el, "marginRight") || "";
-          setAttr(el, "data-margin-right", actualMargin);
+          var actualMargin = getStyle2(el, "marginRight") || "";
+          setAttr2(el, "data-margin-right", actualMargin);
           setStyle(el, "marginRight", "".concat(toFloat(getCS(el).marginRight, 0) + scrollbarWidth, "px"));
           body._marginChangedForModal.push(el);
         });
-        var actualPadding = getStyle(body, "paddingRight") || "";
-        setAttr(body, "data-padding-right", actualPadding);
+        var actualPadding = getStyle2(body, "paddingRight") || "";
+        setAttr2(body, "data-padding-right", actualPadding);
         setStyle(body, "paddingRight", "".concat(toFloat(getCS(body).paddingRight, 0) + scrollbarWidth, "px"));
       }
     },
@@ -18537,16 +24961,16 @@ function ownKeys67(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread67(target) {
+function _objectSpread67(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys67(Object(source), true).forEach(function(key) {
-      _defineProperty81(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys67(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty81(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys67(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty81(obj, key, value2) {
   if (key in obj) {
@@ -18580,7 +25004,7 @@ var OBSERVER_CONFIG = {
   attributes: true,
   attributeFilter: ["style", "class"]
 };
-var props93 = makePropsConfigurable(sortKeys(_objectSpread67(_objectSpread67(_objectSpread67({}, props17), modelProps15), {}, {
+var props94 = makePropsConfigurable(sortKeys(_objectSpread67(_objectSpread67(_objectSpread67({}, props18), modelProps15), {}, {
   ariaLabel: makeProp(PROP_TYPE_STRING),
   autoFocusButton: makeProp(
     PROP_TYPE_STRING,
@@ -18647,11 +25071,11 @@ var props93 = makePropsConfigurable(sortKeys(_objectSpread67(_objectSpread67(_ob
   titleSrOnly: makeProp(PROP_TYPE_BOOLEAN, false),
   titleTag: makeProp(PROP_TYPE_STRING, "h5")
 })), NAME_MODAL);
-var BModal = extend({
+var BModal = extend2({
   name: NAME_MODAL,
   mixins: [attrsMixin, idMixin, modelMixin15, listenOnDocumentMixin, listenOnRootMixin, listenOnWindowMixin, normalizeSlotMixin, scopedStyleMixin],
   inheritAttrs: false,
-  props: props93,
+  props: props94,
   data: function data28() {
     return {
       isHidden: true,
@@ -18756,7 +25180,7 @@ var BModal = extend({
       };
     },
     computeIgnoreEnforceFocusSelector: function computeIgnoreEnforceFocusSelector() {
-      return concat(this.ignoreEnforceFocusSelector).filter(identity).join(",").trim();
+      return concat2(this.ignoreEnforceFocusSelector).filter(identity2).join(",").trim();
     },
     computedAttrs: function computedAttrs9() {
       var scopedStyleAttrs2 = !this.static ? this.scopedStyleAttrs : {};
@@ -18837,7 +25261,7 @@ var BModal = extend({
       }));
     },
     // Public method to show modal
-    show: function show3() {
+    show: function show4() {
       if (this.isVisible || this.isOpening) {
         return;
       }
@@ -18860,20 +25284,20 @@ var BModal = extend({
     },
     // Public method to hide modal
     hide: function hide3() {
-      var trigger = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "";
+      var trigger2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "";
       if (!this.isVisible || this.isClosing) {
         return;
       }
       this.isClosing = true;
       var hideEvent = this.buildEvent(EVENT_NAME_HIDE, {
-        cancelable: trigger !== TRIGGER_FORCE,
-        trigger: trigger || null
+        cancelable: trigger2 !== TRIGGER_FORCE,
+        trigger: trigger2 || null
       });
-      if (trigger === BUTTON_OK) {
+      if (trigger2 === BUTTON_OK) {
         this.$emit(EVENT_NAME_OK, hideEvent);
-      } else if (trigger === BUTTON_CANCEL) {
+      } else if (trigger2 === BUTTON_CANCEL) {
         this.$emit(EVENT_NAME_CANCEL, hideEvent);
-      } else if (trigger === BUTTON_CLOSE) {
+      } else if (trigger2 === BUTTON_CLOSE) {
         this.$emit(EVENT_NAME_CLOSE, hideEvent);
       }
       this.emitEvent(hideEvent);
@@ -19013,18 +25437,18 @@ var BModal = extend({
     // Document focusin listener
     focusHandler: function focusHandler2(event2) {
       var content = this.$refs.content;
-      var target = event2.target;
-      if (this.noEnforceFocus || !this.isTop || !this.isVisible || !content || document === target || contains(content, target) || this.computeIgnoreEnforceFocusSelector && closest(this.computeIgnoreEnforceFocusSelector, target, true)) {
+      var target2 = event2.target;
+      if (this.noEnforceFocus || !this.isTop || !this.isVisible || !content || document === target2 || contains(content, target2) || this.computeIgnoreEnforceFocusSelector && closest(this.computeIgnoreEnforceFocusSelector, target2, true)) {
         return;
       }
       var tabables = getTabables(this.$refs.content);
       var bottomTrap = this.$refs["bottom-trap"];
       var topTrap = this.$refs["top-trap"];
-      if (bottomTrap && target === bottomTrap) {
+      if (bottomTrap && target2 === bottomTrap) {
         if (attemptFocus(tabables[0])) {
           return;
         }
-      } else if (topTrap && target === topTrap) {
+      } else if (topTrap && target2 === topTrap) {
         if (attemptFocus(tabables[tabables.length - 1])) {
           return;
         }
@@ -19325,51 +25749,51 @@ var getTarget = function getTarget2(_ref) {
   return isString(value2) ? value2 : isString(arg) ? arg : keys(modifiers2).reverse()[0];
 };
 var getTriggerElement = function getTriggerElement2(el) {
-  return el && matches(el, ".dropdown-menu > li, li.nav-item") ? select("a, button", el) || el : el;
+  return el && matches2(el, ".dropdown-menu > li, li.nav-item") ? select("a, button", el) || el : el;
 };
-var setRole = function setRole2(trigger) {
-  if (trigger && trigger.tagName !== "BUTTON") {
-    if (!hasAttr(trigger, "role")) {
-      setAttr(trigger, "role", "button");
+var setRole = function setRole2(trigger2) {
+  if (trigger2 && trigger2.tagName !== "BUTTON") {
+    if (!hasAttr(trigger2, "role")) {
+      setAttr2(trigger2, "role", "button");
     }
-    if (trigger.tagName !== "A" && !hasAttr(trigger, "tabindex")) {
-      setAttr(trigger, "tabindex", "0");
+    if (trigger2.tagName !== "A" && !hasAttr(trigger2, "tabindex")) {
+      setAttr2(trigger2, "tabindex", "0");
     }
   }
 };
-var bind4 = function bind5(el, binding, vnode) {
-  var target = getTarget(binding);
-  var trigger = getTriggerElement(el);
-  if (target && trigger) {
+var bind5 = function bind6(el, binding, vnode) {
+  var target2 = getTarget(binding);
+  var trigger2 = getTriggerElement(el);
+  if (target2 && trigger2) {
     var handler3 = function handler4(event2) {
       var currentTarget = event2.currentTarget;
       if (!isDisabled(currentTarget)) {
         var type2 = event2.type;
         var key = event2.keyCode;
         if (type2 === "click" || type2 === "keydown" && (key === CODE_ENTER || key === CODE_SPACE)) {
-          getEventRoot(getInstanceFromDirective(vnode, binding)).$emit(ROOT_ACTION_EVENT_NAME_SHOW, target, currentTarget);
+          getEventRoot(getInstanceFromDirective(vnode, binding)).$emit(ROOT_ACTION_EVENT_NAME_SHOW, target2, currentTarget);
         }
       }
     };
     el[PROPERTY] = {
       handler: handler3,
-      target,
-      trigger
+      target: target2,
+      trigger: trigger2
     };
-    setRole(trigger);
-    eventOn(trigger, "click", handler3, EVENT_OPTIONS_PASSIVE);
-    if (trigger.tagName !== "BUTTON" && getAttr(trigger, "role") === "button") {
-      eventOn(trigger, "keydown", handler3, EVENT_OPTIONS_PASSIVE);
+    setRole(trigger2);
+    eventOn(trigger2, "click", handler3, EVENT_OPTIONS_PASSIVE);
+    if (trigger2.tagName !== "BUTTON" && getAttr(trigger2, "role") === "button") {
+      eventOn(trigger2, "keydown", handler3, EVENT_OPTIONS_PASSIVE);
     }
   }
 };
 var unbind5 = function unbind6(el) {
   var oldProp = el[PROPERTY] || {};
-  var trigger = oldProp.trigger;
+  var trigger2 = oldProp.trigger;
   var handler3 = oldProp.handler;
-  if (trigger && handler3) {
-    eventOff(trigger, "click", handler3, EVENT_OPTIONS_PASSIVE);
-    eventOff(trigger, "keydown", handler3, EVENT_OPTIONS_PASSIVE);
+  if (trigger2 && handler3) {
+    eventOff(trigger2, "click", handler3, EVENT_OPTIONS_PASSIVE);
+    eventOff(trigger2, "keydown", handler3, EVENT_OPTIONS_PASSIVE);
     eventOff(el, "click", handler3, EVENT_OPTIONS_PASSIVE);
     eventOff(el, "keydown", handler3, EVENT_OPTIONS_PASSIVE);
   }
@@ -19377,13 +25801,13 @@ var unbind5 = function unbind6(el) {
 };
 var componentUpdated3 = function componentUpdated4(el, binding, vnode) {
   var oldProp = el[PROPERTY] || {};
-  var target = getTarget(binding);
-  var trigger = getTriggerElement(el);
-  if (target !== oldProp.target || trigger !== oldProp.trigger) {
+  var target2 = getTarget(binding);
+  var trigger2 = getTriggerElement(el);
+  if (target2 !== oldProp.target || trigger2 !== oldProp.trigger) {
     unbind5(el, binding, vnode);
-    bind4(el, binding, vnode);
+    bind5(el, binding, vnode);
   }
-  setRole(trigger);
+  setRole(trigger2);
 };
 var updated3 = function updated4() {
 };
@@ -19400,14 +25824,14 @@ function _classCallCheck6(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-function _defineProperties5(target, props152) {
-  for (var i = 0; i < props152.length; i++) {
-    var descriptor = props152[i];
+function _defineProperties5(target2, props153) {
+  for (var i = 0; i < props153.length; i++) {
+    var descriptor = props153[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
       descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target2, descriptor.key, descriptor);
   }
 }
 function _createClass5(Constructor, protoProps, staticProps) {
@@ -19428,16 +25852,16 @@ function ownKeys68(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread68(target) {
+function _objectSpread68(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys68(Object(source), true).forEach(function(key) {
-      _defineProperty82(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys68(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty82(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys68(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty82(obj, key, value2) {
   if (key in obj) {
@@ -19484,7 +25908,7 @@ function _arrayLikeToArray7(arr, len) {
 }
 var PROP_NAME2 = "$bvModal";
 var PROP_NAME_PRIV = "_bv__modal";
-var BASE_PROPS = ["id"].concat(_toConsumableArray4(keys(omit(props93, ["busy", "lazy", "noStacking", "static", "visible"]))));
+var BASE_PROPS = ["id"].concat(_toConsumableArray4(keys(omit(props94, ["busy", "lazy", "noStacking", "static", "visible"]))));
 var defaultResolver = function defaultResolver2() {
 };
 var propsToSlots = {
@@ -19501,8 +25925,8 @@ var filterOptions = function filterOptions2(options) {
     return memo;
   }, {});
 };
-var plugin = function plugin2(Vue) {
-  var BMsgBox = Vue.extend({
+var plugin = function plugin2(Vue2) {
+  var BMsgBox = Vue2.extend({
     name: NAME_MSG_BOX,
     extends: BModal,
     mixins: [useParentMixin],
@@ -19528,7 +25952,7 @@ var plugin = function plugin2(Vue) {
       this.show();
     }
   });
-  var asyncMsgBox = function asyncMsgBox2(parent, props152) {
+  var asyncMsgBox = function asyncMsgBox2(parent, props153) {
     var resolver = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : defaultResolver;
     if (warnNotClient(PROP_NAME2) || warnNoPromiseSupport(PROP_NAME2)) {
       return;
@@ -19538,8 +25962,8 @@ var plugin = function plugin2(Vue) {
       propsData: _objectSpread68(_objectSpread68(_objectSpread68({}, filterOptions(getComponentConfig(NAME_MODAL))), {}, {
         // Defaults that user can override
         hideHeaderClose: true,
-        hideHeader: !(props152.title || props152.titleHtml)
-      }, omit(props152, keys(propsToSlots))), {}, {
+        hideHeader: !(props153.title || props153.titleHtml)
+      }, omit(props153, keys(propsToSlots))), {}, {
         // Props that can't be overridden
         lazy: false,
         busy: false,
@@ -19549,8 +25973,8 @@ var plugin = function plugin2(Vue) {
       })
     });
     keys(propsToSlots).forEach(function(prop2) {
-      if (!isUndefined(props152[prop2])) {
-        msgBox.$slots[propsToSlots[prop2]] = concat(props152[prop2]);
+      if (!isUndefined(props153[prop2])) {
+        msgBox.$slots[propsToSlots[prop2]] = concat2(props153[prop2]);
       }
     });
     return new Promise(function(resolve, reject) {
@@ -19577,7 +26001,7 @@ var plugin = function plugin2(Vue) {
   var makeMsgBox = function makeMsgBox2(parent, content) {
     var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
     var resolver = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : null;
-    if (!content || warnNoPromiseSupport(PROP_NAME2) || warnNotClient(PROP_NAME2) || !isFunction(resolver)) {
+    if (!content || warnNoPromiseSupport(PROP_NAME2) || warnNotClient(PROP_NAME2) || !isFunction2(resolver)) {
       return;
     }
     return asyncMsgBox(parent, _objectSpread68(_objectSpread68({}, filterOptions(options)), {}, {
@@ -19598,7 +26022,7 @@ var plugin = function plugin2(Vue) {
     }
     _createClass5(BvModal2, [{
       key: "show",
-      value: function show6(id) {
+      value: function show7(id) {
         if (id && this._root) {
           var _this$_root;
           for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -19627,14 +26051,14 @@ var plugin = function plugin2(Vue) {
       key: "msgBoxOk",
       value: function msgBoxOk(message) {
         var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-        var props152 = _objectSpread68(_objectSpread68({}, options), {}, {
+        var props153 = _objectSpread68(_objectSpread68({}, options), {}, {
           // Add in overrides and our content prop
           okOnly: true,
           okDisabled: false,
           hideFooter: false,
           msgBoxContent: message
         });
-        return makeMsgBox(this._vm, message, props152, function() {
+        return makeMsgBox(this._vm, message, props153, function() {
           return true;
         });
       }
@@ -19644,31 +26068,31 @@ var plugin = function plugin2(Vue) {
       key: "msgBoxConfirm",
       value: function msgBoxConfirm(message) {
         var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-        var props152 = _objectSpread68(_objectSpread68({}, options), {}, {
+        var props153 = _objectSpread68(_objectSpread68({}, options), {}, {
           // Add in overrides and our content prop
           okOnly: false,
           okDisabled: false,
           cancelDisabled: false,
           hideFooter: false
         });
-        return makeMsgBox(this._vm, message, props152, function(bvModalEvent) {
-          var trigger = bvModalEvent.trigger;
-          return trigger === "ok" ? true : trigger === "cancel" ? false : null;
+        return makeMsgBox(this._vm, message, props153, function(bvModalEvent) {
+          var trigger2 = bvModalEvent.trigger;
+          return trigger2 === "ok" ? true : trigger2 === "cancel" ? false : null;
         });
       }
     }]);
     return BvModal2;
   }();
-  Vue.mixin({
+  Vue2.mixin({
     beforeCreate: function beforeCreate3() {
       this[PROP_NAME_PRIV] = new BvModal(this);
     }
   });
-  if (!hasOwnProperty(Vue.prototype, PROP_NAME2)) {
-    defineProperty(Vue.prototype, PROP_NAME2, {
+  if (!hasOwnProperty2(Vue2.prototype, PROP_NAME2)) {
+    defineProperty(Vue2.prototype, PROP_NAME2, {
       get: function get10() {
         if (!this || !this[PROP_NAME_PRIV]) {
-          warn('"'.concat(PROP_NAME2, '" must be accessed from a Vue instance "this" context.'), NAME_MODAL);
+          warn2('"'.concat(PROP_NAME2, '" must be accessed from a Vue instance "this" context.'), NAME_MODAL);
         }
         return this[PROP_NAME_PRIV];
       }
@@ -19708,7 +26132,7 @@ var computeJustifyContent = function computeJustifyContent2(value2) {
   value2 = value2 === "left" ? "start" : value2 === "right" ? "end" : value2;
   return "justify-content-".concat(value2);
 };
-var props94 = makePropsConfigurable({
+var props95 = makePropsConfigurable({
   align: makeProp(PROP_TYPE_STRING),
   // Set to `true` if placing in a card header
   cardHeader: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -19720,15 +26144,15 @@ var props94 = makePropsConfigurable({
   tag: makeProp(PROP_TYPE_STRING, "ul"),
   vertical: makeProp(PROP_TYPE_BOOLEAN, false)
 }, NAME_NAV);
-var BNav = extend({
+var BNav = extend2({
   name: NAME_NAV,
   functional: true,
-  props: props94,
+  props: props95,
   render: function render85(h, _ref) {
     var _class;
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var tabs2 = props152.tabs, pills = props152.pills, vertical = props152.vertical, align = props152.align, cardHeader = props152.cardHeader;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var tabs2 = props153.tabs, pills = props153.pills, vertical = props153.vertical, align = props153.align, cardHeader = props153.cardHeader;
+    return h(props153.tag, a(data48, {
       staticClass: "nav",
       class: (_class = {
         "nav-tabs": tabs2,
@@ -19736,9 +26160,9 @@ var BNav = extend({
         "card-header-tabs": !vertical && cardHeader && tabs2,
         "card-header-pills": !vertical && cardHeader && pills && !tabs2,
         "flex-column": vertical,
-        "nav-fill": !vertical && props152.fill,
-        "nav-justified": !vertical && props152.justified
-      }, _defineProperty83(_class, computeJustifyContent(align), !vertical && align), _defineProperty83(_class, "small", props152.small), _class)
+        "nav-fill": !vertical && props153.fill,
+        "nav-justified": !vertical && props153.justified
+      }, _defineProperty83(_class, computeJustifyContent(align), !vertical && align), _defineProperty83(_class, "small", props153.small), _class)
     }), children2);
   }
 });
@@ -19754,16 +26178,16 @@ function ownKeys69(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread69(target) {
+function _objectSpread69(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys69(Object(source), true).forEach(function(key) {
-      _defineProperty84(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys69(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty84(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys69(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty84(obj, key, value2) {
   if (key in obj) {
@@ -19773,35 +26197,35 @@ function _defineProperty84(obj, key, value2) {
   }
   return obj;
 }
-var linkProps6 = omit(props7, ["event", "routerTag"]);
-var props95 = makePropsConfigurable(sortKeys(_objectSpread69(_objectSpread69({}, linkProps6), {}, {
+var linkProps6 = omit(props8, ["event", "routerTag"]);
+var props96 = makePropsConfigurable(sortKeys(_objectSpread69(_objectSpread69({}, linkProps6), {}, {
   linkAttrs: makeProp(PROP_TYPE_OBJECT, {}),
   linkClasses: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)
 })), NAME_NAV_ITEM);
-var BNavItem = extend({
+var BNavItem = extend2({
   name: NAME_NAV_ITEM,
   functional: true,
-  props: props95,
+  props: props96,
   render: function render86(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, listeners = _ref.listeners, children2 = _ref.children;
+    var props153 = _ref.props, data48 = _ref.data, listeners = _ref.listeners, children2 = _ref.children;
     return h("li", a(omit(data48, ["on"]), {
       staticClass: "nav-item"
     }), [h(BLink, {
       staticClass: "nav-link",
-      class: props152.linkClasses,
-      attrs: props152.linkAttrs,
-      props: pluckProps(linkProps6, props152),
+      class: props153.linkClasses,
+      attrs: props153.linkAttrs,
+      props: pluckProps(linkProps6, props153),
       on: listeners
     }, children2)]);
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/nav/nav-text.js
-var props96 = {};
-var BNavText = extend({
+var props97 = {};
+var BNavText = extend2({
   name: NAME_NAV_TEXT,
   functional: true,
-  props: props96,
+  props: props97,
   render: function render87(h, _ref) {
     var data48 = _ref.data, children2 = _ref.children;
     return h("li", a(data48, {
@@ -19821,16 +26245,16 @@ function ownKeys70(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread70(target) {
+function _objectSpread70(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys70(Object(source), true).forEach(function(key) {
-      _defineProperty85(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys70(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty85(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys70(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty85(obj, key, value2) {
   if (key in obj) {
@@ -19840,19 +26264,19 @@ function _defineProperty85(obj, key, value2) {
   }
   return obj;
 }
-var formProps = omit(props42, ["inline"]);
-var props97 = makePropsConfigurable(sortKeys(_objectSpread70(_objectSpread70({}, formProps), {}, {
+var formProps = omit(props43, ["inline"]);
+var props98 = makePropsConfigurable(sortKeys(_objectSpread70(_objectSpread70({}, formProps), {}, {
   formClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)
 })), NAME_NAV_FORM);
-var BNavForm = extend({
+var BNavForm = extend2({
   name: NAME_NAV_FORM,
   functional: true,
-  props: props97,
+  props: props98,
   render: function render88(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children, listeners = _ref.listeners;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children, listeners = _ref.listeners;
     var $form = h(BForm, {
-      class: props152.formClass,
-      props: _objectSpread70(_objectSpread70({}, pluckProps(formProps, props152)), {}, {
+      class: props153.formClass,
+      props: _objectSpread70(_objectSpread70({}, pluckProps(formProps, props153)), {}, {
         inline: true
       }),
       attrs: data48.attrs,
@@ -19910,16 +26334,16 @@ function ownKeys71(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread71(target) {
+function _objectSpread71(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys71(Object(source), true).forEach(function(key) {
-      _defineProperty86(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys71(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty86(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys71(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty86(obj, key, value2) {
   if (key in obj) {
@@ -19929,11 +26353,11 @@ function _defineProperty86(obj, key, value2) {
   }
   return obj;
 }
-var props98 = makePropsConfigurable(sortKeys(_objectSpread71(_objectSpread71({}, props17), pick(props37, [].concat(_toConsumableArray5(keys(props36)), ["html", "lazy", "menuClass", "noCaret", "role", "text", "toggleClass"])))), NAME_NAV_ITEM_DROPDOWN);
-var BNavItemDropdown = extend({
+var props99 = makePropsConfigurable(sortKeys(_objectSpread71(_objectSpread71({}, props18), pick(props38, [].concat(_toConsumableArray5(keys(props37)), ["html", "lazy", "menuClass", "noCaret", "role", "text", "toggleClass"])))), NAME_NAV_ITEM_DROPDOWN);
+var BNavItemDropdown = extend2({
   name: NAME_NAV_ITEM_DROPDOWN,
   mixins: [idMixin, dropdownMixin, normalizeSlotMixin],
-  props: props98,
+  props: props99,
   computed: {
     toggleId: function toggleId() {
       return this.safeId("_BV_toggle_");
@@ -20039,7 +26463,7 @@ function _defineProperty87(obj, key, value2) {
   }
   return obj;
 }
-var props99 = makePropsConfigurable({
+var props100 = makePropsConfigurable({
   fixed: makeProp(PROP_TYPE_STRING),
   print: makeProp(PROP_TYPE_BOOLEAN, false),
   sticky: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -20048,7 +26472,7 @@ var props99 = makePropsConfigurable({
   type: makeProp(PROP_TYPE_STRING, "light"),
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_NAVBAR);
-var BNavbar = extend({
+var BNavbar = extend2({
   name: NAME_NAVBAR,
   mixins: [normalizeSlotMixin],
   provide: function provide6() {
@@ -20059,7 +26483,7 @@ var BNavbar = extend({
       }
     };
   },
-  props: props99,
+  props: props100,
   computed: {
     breakpointClass: function breakpointClass() {
       var toggleable = this.toggleable;
@@ -20102,21 +26526,21 @@ var computeJustifyContent3 = function computeJustifyContent4(value2) {
   value2 = value2 === "left" ? "start" : value2 === "right" ? "end" : value2;
   return "justify-content-".concat(value2);
 };
-var props100 = makePropsConfigurable(pick(props94, ["tag", "fill", "justified", "align", "small"]), NAME_NAVBAR_NAV);
-var BNavbarNav = extend({
+var props101 = makePropsConfigurable(pick(props95, ["tag", "fill", "justified", "align", "small"]), NAME_NAVBAR_NAV);
+var BNavbarNav = extend2({
   name: NAME_NAVBAR_NAV,
   functional: true,
-  props: props100,
+  props: props101,
   render: function render91(h, _ref) {
     var _class;
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var align = props152.align;
-    return h(props152.tag, a(data48, {
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var align = props153.align;
+    return h(props153.tag, a(data48, {
       staticClass: "navbar-nav",
       class: (_class = {
-        "nav-fill": props152.fill,
-        "nav-justified": props152.justified
-      }, _defineProperty88(_class, computeJustifyContent3(align), align), _defineProperty88(_class, "small", props152.small), _class)
+        "nav-fill": props153.fill,
+        "nav-justified": props153.justified
+      }, _defineProperty88(_class, computeJustifyContent3(align), align), _defineProperty88(_class, "small", props153.small), _class)
     }), children2);
   }
 });
@@ -20132,16 +26556,16 @@ function ownKeys72(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread72(target) {
+function _objectSpread72(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys72(Object(source), true).forEach(function(key) {
-      _defineProperty89(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys72(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty89(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys72(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty89(obj, key, value2) {
   if (key in obj) {
@@ -20151,23 +26575,23 @@ function _defineProperty89(obj, key, value2) {
   }
   return obj;
 }
-var linkProps7 = omit(props7, ["event", "routerTag"]);
+var linkProps7 = omit(props8, ["event", "routerTag"]);
 linkProps7.href.default = void 0;
 linkProps7.to.default = void 0;
-var props101 = makePropsConfigurable(sortKeys(_objectSpread72(_objectSpread72({}, linkProps7), {}, {
+var props102 = makePropsConfigurable(sortKeys(_objectSpread72(_objectSpread72({}, linkProps7), {}, {
   tag: makeProp(PROP_TYPE_STRING, "div")
 })), NAME_NAVBAR_BRAND);
-var BNavbarBrand = extend({
+var BNavbarBrand = extend2({
   name: NAME_NAVBAR_BRAND,
   functional: true,
-  props: props101,
+  props: props102,
   render: function render92(h, _ref) {
-    var props152 = _ref.props, data48 = _ref.data, children2 = _ref.children;
-    var isLink5 = props152.to || props152.href;
-    var tag3 = isLink5 ? BLink : props152.tag;
+    var props153 = _ref.props, data48 = _ref.data, children2 = _ref.children;
+    var isLink5 = props153.to || props153.href;
+    var tag3 = isLink5 ? BLink : props153.tag;
     return h(tag3, a(data48, {
       staticClass: "navbar-brand",
-      props: isLink5 ? pluckProps(linkProps7, props152) : {}
+      props: isLink5 ? pluckProps(linkProps7, props153) : {}
     }), children2);
   }
 });
@@ -20176,19 +26600,19 @@ var BNavbarBrand = extend({
 var CLASS_NAME3 = "navbar-toggler";
 var ROOT_EVENT_NAME_STATE3 = getRootEventName(NAME_COLLAPSE, "state");
 var ROOT_EVENT_NAME_SYNC_STATE3 = getRootEventName(NAME_COLLAPSE, "sync-state");
-var props102 = makePropsConfigurable({
+var props103 = makePropsConfigurable({
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
   label: makeProp(PROP_TYPE_STRING, "Toggle navigation"),
   target: makeProp(PROP_TYPE_ARRAY_STRING, void 0, true)
   // Required
 }, NAME_NAVBAR_TOGGLE);
-var BNavbarToggle = extend({
+var BNavbarToggle = extend2({
   name: NAME_NAVBAR_TOGGLE,
   directives: {
     VBToggle
   },
   mixins: [listenOnRootMixin, normalizeSlotMixin],
-  props: props102,
+  props: props103,
   data: function data29() {
     return {
       toggleState: false
@@ -20262,7 +26686,7 @@ function _defineProperty90(obj, key, value2) {
   }
   return obj;
 }
-var props103 = makePropsConfigurable({
+var props104 = makePropsConfigurable({
   label: makeProp(PROP_TYPE_STRING),
   role: makeProp(PROP_TYPE_STRING, "status"),
   small: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -20270,27 +26694,27 @@ var props103 = makePropsConfigurable({
   type: makeProp(PROP_TYPE_STRING, "border"),
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_SPINNER);
-var BSpinner = extend({
+var BSpinner = extend2({
   name: NAME_SPINNER,
   functional: true,
-  props: props103,
+  props: props104,
   render: function render94(h, _ref) {
     var _class;
-    var props152 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
+    var props153 = _ref.props, data48 = _ref.data, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
     var $slots = slots();
     var $scopedSlots = scopedSlots || {};
-    var $label = normalizeSlot(SLOT_NAME_LABEL, {}, $scopedSlots, $slots) || props152.label;
+    var $label = normalizeSlot(SLOT_NAME_LABEL, {}, $scopedSlots, $slots) || props153.label;
     if ($label) {
       $label = h("span", {
         staticClass: "sr-only"
       }, $label);
     }
-    return h(props152.tag, a(data48, {
+    return h(props153.tag, a(data48, {
       attrs: {
-        role: $label ? props152.role || "status" : null,
+        role: $label ? props153.role || "status" : null,
         "aria-hidden": $label ? null : "true"
       },
-      class: (_class = {}, _defineProperty90(_class, "spinner-".concat(props152.type), props152.type), _defineProperty90(_class, "spinner-".concat(props152.type, "-sm"), props152.small), _defineProperty90(_class, "text-".concat(props152.variant), props152.variant), _class)
+      class: (_class = {}, _defineProperty90(_class, "spinner-".concat(props153.type), props153.type), _defineProperty90(_class, "spinner-".concat(props153.type, "-sm"), props153.small), _defineProperty90(_class, "text-".concat(props153.variant), props153.variant), _class)
     }), [$label || h()]);
   }
 });
@@ -20306,16 +26730,16 @@ function ownKeys73(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread73(target) {
+function _objectSpread73(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys73(Object(source), true).forEach(function(key) {
-      _defineProperty91(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys73(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty91(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys73(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty91(obj, key, value2) {
   if (key in obj) {
@@ -20331,7 +26755,7 @@ var POSITION_COVER = {
   bottom: 0,
   right: 0
 };
-var props104 = makePropsConfigurable({
+var props105 = makePropsConfigurable({
   // Alternative to variant, allowing a specific
   // CSS color to be applied to the overlay
   bgColor: makeProp(PROP_TYPE_STRING),
@@ -20356,10 +26780,10 @@ var props104 = makePropsConfigurable({
   wrapTag: makeProp(PROP_TYPE_STRING, "div"),
   zIndex: makeProp(PROP_TYPE_NUMBER_STRING, 10)
 }, NAME_OVERLAY);
-var BOverlay = extend({
+var BOverlay = extend2({
   name: NAME_OVERLAY,
   mixins: [normalizeSlotMixin],
-  props: props104,
+  props: props105,
   computed: {
     computedRounded: function computedRounded2() {
       var rounded = this.rounded;
@@ -20391,9 +26815,9 @@ var BOverlay = extend({
   },
   render: function render95(h) {
     var _this = this;
-    var show6 = this.show, fixed = this.fixed, noFade = this.noFade, noWrap = this.noWrap, slotScope6 = this.slotScope;
+    var show7 = this.show, fixed = this.fixed, noFade = this.noFade, noWrap = this.noWrap, slotScope6 = this.slotScope;
     var $overlay = h();
-    if (show6) {
+    if (show7) {
       var $background = h("div", {
         staticClass: "position-absolute",
         class: [this.computedVariant, this.computedRounded],
@@ -20451,7 +26875,7 @@ var BOverlay = extend({
     return h(this.wrapTag, {
       staticClass: "b-overlay-wrap position-relative",
       attrs: {
-        "aria-busy": show6 ? "true" : null
+        "aria-busy": show7 ? "true" : null
       }
     }, noWrap ? [$overlay] : [this.normalizeSlot(), $overlay]);
   }
@@ -20476,16 +26900,16 @@ function ownKeys74(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread74(target) {
+function _objectSpread74(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys74(Object(source), true).forEach(function(key) {
-      _defineProperty92(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys74(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty92(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys74(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty92(obj, key, value2) {
   if (key in obj) {
@@ -20501,7 +26925,7 @@ var _makeModelMixin17 = makeModelMixin("value", {
   /* istanbul ignore next */
   validator: function validator2(value2) {
     if (!isNull(value2) && toInteger(value2, 0) < 1) {
-      warn('"v-model" value must be a number greater than "0"', NAME_PAGINATION);
+      warn2('"v-model" value must be a number greater than "0"', NAME_PAGINATION);
       return false;
     }
     return true;
@@ -20538,7 +26962,7 @@ var onSpaceKey = function onSpaceKey2(event2) {
     return false;
   }
 };
-var props105 = makePropsConfigurable(sortKeys(_objectSpread74(_objectSpread74({}, modelProps16), {}, {
+var props106 = makePropsConfigurable(sortKeys(_objectSpread74(_objectSpread74({}, modelProps16), {}, {
   align: makeProp(PROP_TYPE_STRING, "left"),
   ariaLabel: makeProp(PROP_TYPE_STRING, "Pagination"),
   disabled: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -20566,7 +26990,7 @@ var props105 = makePropsConfigurable(sortKeys(_objectSpread74(_objectSpread74({}
     /* istanbul ignore next */
     function(value2) {
       if (toInteger(value2, 0) < 1) {
-        warn('Prop "limit" must be a number greater than "0"', NAME_PAGINATION);
+        warn2('Prop "limit" must be a number greater than "0"', NAME_PAGINATION);
         return false;
       }
       return true;
@@ -20582,9 +27006,9 @@ var props105 = makePropsConfigurable(sortKeys(_objectSpread74(_objectSpread74({}
   // '‹'
   size: makeProp(PROP_TYPE_STRING)
 })), "pagination");
-var paginationMixin = extend({
+var paginationMixin = extend2({
   mixins: [modelMixin16, normalizeSlotMixin],
-  props: props105,
+  props: props106,
   data: function data30() {
     var currentPage2 = toInteger(this[MODEL_PROP_NAME16], 0);
     currentPage2 = currentPage2 > 0 ? currentPage2 : -1;
@@ -20780,9 +27204,9 @@ var paginationMixin = extend({
       var _this5 = this;
       this.$nextTick(function() {
         var buttons = _this5.getButtons();
-        var index2 = buttons.indexOf(getActiveElement());
-        if (index2 > 0 && !isDisabled(buttons[index2 - 1])) {
-          attemptFocus(buttons[index2 - 1]);
+        var index3 = buttons.indexOf(getActiveElement());
+        if (index3 > 0 && !isDisabled(buttons[index3 - 1])) {
+          attemptFocus(buttons[index3 - 1]);
         }
       });
     },
@@ -20790,9 +27214,9 @@ var paginationMixin = extend({
       var _this6 = this;
       this.$nextTick(function() {
         var buttons = _this6.getButtons();
-        var index2 = buttons.indexOf(getActiveElement());
-        if (index2 < buttons.length - 1 && !isDisabled(buttons[index2 + 1])) {
-          attemptFocus(buttons[index2 + 1]);
+        var index3 = buttons.indexOf(getActiveElement());
+        if (index3 < buttons.length - 1 && !isDisabled(buttons[index3 + 1])) {
+          attemptFocus(buttons[index3 + 1]);
         }
       });
     }
@@ -20818,7 +27242,7 @@ var paginationMixin = extend({
         page: pageNumber,
         index: pageNumber - 1
       };
-      var $btnContent = _this7.normalizeSlot(btnSlot, scope) || toString3(btnText) || h();
+      var $btnContent = _this7.normalizeSlot(btnSlot, scope) || toString4(btnText) || h();
       var $inner = h(isDisabled4 ? "span" : isNav2 ? BLink : "button", {
         staticClass: "page-link",
         class: {
@@ -20864,13 +27288,13 @@ var paginationMixin = extend({
         key: "ellipsis-".concat(isLast ? "last" : "first")
       }, [h("span", {
         staticClass: "page-link"
-      }, [_this7.normalizeSlot(SLOT_NAME_ELLIPSIS_TEXT) || toString3(_this7.ellipsisText) || h()])]);
+      }, [_this7.normalizeSlot(SLOT_NAME_ELLIPSIS_TEXT) || toString4(_this7.ellipsisText) || h()])]);
     };
     var makePageButton = function makePageButton2(page, idx) {
       var pageNumber = page.number;
       var active = isActivePage(pageNumber) && !noCurrentPage;
       var tabIndex = disabled6 ? null : active || noCurrentPage && idx === 0 ? "0" : "-1";
-      var attrs = {
+      var attrs2 = {
         role: isNav2 ? null : "menuitemradio",
         type: isNav2 || disabled6 ? null : "button",
         "aria-disabled": disabled6 ? "true" : null,
@@ -20878,7 +27302,7 @@ var paginationMixin = extend({
         "aria-label": hasPropFunction(labelPage) ? (
           /* istanbul ignore next */
           labelPage(pageNumber)
-        ) : "".concat(isFunction(labelPage) ? labelPage() : labelPage, " ").concat(pageNumber),
+        ) : "".concat(isFunction2(labelPage) ? labelPage() : labelPage, " ").concat(pageNumber),
         "aria-checked": isNav2 ? null : active ? "true" : "false",
         "aria-current": isNav2 && active ? "page" : null,
         "aria-posinset": isNav2 ? null : pageNumber,
@@ -20886,7 +27310,7 @@ var paginationMixin = extend({
         // ARIA "roving tabindex" method (except in `isNav` mode)
         tabindex: isNav2 ? null : tabIndex
       };
-      var btnContent = toString3(_this7.makePage(pageNumber));
+      var btnContent = toString4(_this7.makePage(pageNumber));
       var scope = {
         page: pageNumber,
         index: pageNumber - 1,
@@ -20900,7 +27324,7 @@ var paginationMixin = extend({
         class: {
           "flex-grow-1": !isNav2 && !disabled6 && fill
         },
-        attrs,
+        attrs: attrs2,
         on: disabled6 ? {} : {
           "!click": function click2(event2) {
             _this7.onClick(event2, pageNumber);
@@ -20984,16 +27408,16 @@ function ownKeys75(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread75(target) {
+function _objectSpread75(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys75(Object(source), true).forEach(function(key) {
-      _defineProperty93(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys75(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty93(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys75(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty93(obj, key, value2) {
   if (key in obj) {
@@ -21011,16 +27435,16 @@ var sanitizePerPage = function sanitizePerPage2(value2) {
 var sanitizeTotalRows = function sanitizeTotalRows2(value2) {
   return mathMax(toInteger(value2) || DEFAULT_TOTAL_ROWS, 0);
 };
-var props106 = makePropsConfigurable(sortKeys(_objectSpread75(_objectSpread75({}, props105), {}, {
+var props107 = makePropsConfigurable(sortKeys(_objectSpread75(_objectSpread75({}, props106), {}, {
   ariaControls: makeProp(PROP_TYPE_STRING),
   perPage: makeProp(PROP_TYPE_NUMBER_STRING, DEFAULT_PER_PAGE),
   totalRows: makeProp(PROP_TYPE_NUMBER_STRING, DEFAULT_TOTAL_ROWS)
 })), NAME_PAGINATION);
-var BPagination = extend({
+var BPagination = extend2({
   name: NAME_PAGINATION,
   // The render function is brought in via the `paginationMixin`
   mixins: [paginationMixin],
-  props: props106,
+  props: props107,
   computed: {
     numberOfPages: function numberOfPages() {
       var result = mathCeil(sanitizeTotalRows(this.totalRows) / sanitizePerPage(this.perPage));
@@ -21066,11 +27490,11 @@ var BPagination = extend({
       if (pageNumber === this.currentPage) {
         return;
       }
-      var target = event2.target;
+      var target2 = event2.target;
       var clickEvent = new BvEvent(EVENT_NAME_PAGE_CLICK, {
         cancelable: true,
         vueTarget: this,
-        target
+        target: target2
       });
       this.$emit(clickEvent.type, clickEvent, pageNumber);
       if (clickEvent.defaultPrevented) {
@@ -21079,8 +27503,8 @@ var BPagination = extend({
       this.currentPage = pageNumber;
       this.$emit(EVENT_NAME_CHANGE, this.currentPage);
       this.$nextTick(function() {
-        if (isVisible(target) && _this2.$el.contains(target)) {
-          attemptFocus(target);
+        if (isVisible(target2) && _this2.$el.contains(target2)) {
+          attemptFocus(target2);
         } else {
           _this2.focusCurrent();
         }
@@ -21114,16 +27538,16 @@ function ownKeys76(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread76(target) {
+function _objectSpread76(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys76(Object(source), true).forEach(function(key) {
-      _defineProperty94(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys76(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty94(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys76(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty94(obj, key, value2) {
   if (key in obj) {
@@ -21136,8 +27560,8 @@ function _defineProperty94(obj, key, value2) {
 var sanitizeNumberOfPages = function sanitizeNumberOfPages2(value2) {
   return mathMax(toInteger(value2, 0), 1);
 };
-var _linkProps = omit(props7, ["event", "routerTag"]);
-var props107 = makePropsConfigurable(sortKeys(_objectSpread76(_objectSpread76(_objectSpread76({}, props105), _linkProps), {}, {
+var _linkProps = omit(props8, ["event", "routerTag"]);
+var props108 = makePropsConfigurable(sortKeys(_objectSpread76(_objectSpread76(_objectSpread76({}, props106), _linkProps), {}, {
   baseUrl: makeProp(PROP_TYPE_STRING, "/"),
   linkGen: makeProp(PROP_TYPE_FUNCTION),
   // Disable auto page number detection if `true`
@@ -21149,7 +27573,7 @@ var props107 = makePropsConfigurable(sortKeys(_objectSpread76(_objectSpread76(_o
     function(value2) {
       var number = toInteger(value2, 0);
       if (number < 1) {
-        warn('Prop "number-of-pages" must be a number greater than "0"', NAME_PAGINATION_NAV);
+        warn2('Prop "number-of-pages" must be a number greater than "0"', NAME_PAGINATION_NAV);
         return false;
       }
       return true;
@@ -21160,11 +27584,11 @@ var props107 = makePropsConfigurable(sortKeys(_objectSpread76(_objectSpread76(_o
   pages: makeProp(PROP_TYPE_ARRAY),
   useRouter: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_PAGINATION_NAV);
-var BPaginationNav = extend({
+var BPaginationNav = extend2({
   name: NAME_PAGINATION_NAV,
   // The render function is brought in via the pagination mixin
   mixins: [paginationMixin],
-  props: props107,
+  props: props108,
   computed: {
     // Used by render function to trigger wrapping in '<nav>' element
     isNav: function isNav() {
@@ -21207,7 +27631,7 @@ var BPaginationNav = extend({
   methods: {
     setNumberOfPages: function setNumberOfPages() {
       var _this4 = this;
-      if (isArray(this.pages) && this.pages.length > 0) {
+      if (isArray2(this.pages) && this.pages.length > 0) {
         this.localNumberOfPages = this.pages.length;
       } else {
         this.localNumberOfPages = sanitizeNumberOfPages(this.numberOfPages);
@@ -21221,11 +27645,11 @@ var BPaginationNav = extend({
       if (pageNumber === this.currentPage) {
         return;
       }
-      var target = event2.currentTarget || event2.target;
+      var target2 = event2.currentTarget || event2.target;
       var clickEvent = new BvEvent(EVENT_NAME_PAGE_CLICK, {
         cancelable: true,
         vueTarget: this,
-        target
+        target: target2
       });
       this.$emit(clickEvent.type, clickEvent, pageNumber);
       if (clickEvent.defaultPrevented) {
@@ -21236,34 +27660,34 @@ var BPaginationNav = extend({
         _this5.$emit(EVENT_NAME_CHANGE, pageNumber);
       });
       this.$nextTick(function() {
-        attemptBlur(target);
+        attemptBlur(target2);
       });
     },
     getPageInfo: function getPageInfo(pageNumber) {
-      if (!isArray(this.pages) || this.pages.length === 0 || isUndefined(this.pages[pageNumber - 1])) {
+      if (!isArray2(this.pages) || this.pages.length === 0 || isUndefined(this.pages[pageNumber - 1])) {
         var link = "".concat(this.baseUrl).concat(pageNumber);
         return {
           link: this.useRouter ? {
             path: link
           } : link,
-          text: toString3(pageNumber)
+          text: toString4(pageNumber)
         };
       }
       var info = this.pages[pageNumber - 1];
-      if (isObject(info)) {
+      if (isObject2(info)) {
         var _link = info.link;
         return {
           // Normalize link for router use
-          link: isObject(_link) ? _link : this.useRouter ? {
+          link: isObject2(_link) ? _link : this.useRouter ? {
             path: _link
           } : _link,
           // Make sure text has a value
-          text: toString3(info.text || pageNumber)
+          text: toString4(info.text || pageNumber)
         };
       } else {
         return {
-          link: toString3(info),
-          text: toString3(pageNumber)
+          link: toString4(info),
+          text: toString4(pageNumber)
         };
       }
     },
@@ -21284,14 +27708,14 @@ var BPaginationNav = extend({
       return info.link;
     },
     linkProps: function linkProps9(pageNumber) {
-      var props152 = pluckProps(_linkProps, this);
+      var props153 = pluckProps(_linkProps, this);
       var link = this.makeLink(pageNumber);
-      if (this.useRouter || isObject(link)) {
-        props152.to = link;
+      if (this.useRouter || isObject2(link)) {
+        props153.to = link;
       } else {
-        props152.href = link;
+        props153.href = link;
       }
-      return props152;
+      return props153;
     },
     resolveLink: function resolveLink() {
       var to2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "";
@@ -21350,10 +27774,10 @@ var BPaginationNav = extend({
         );
         for (var pageNumber = 1; !guess && pageNumber <= this.localNumberOfPages; pageNumber++) {
           var to2 = this.makeLink(pageNumber);
-          if ($router && (isObject(to2) || this.useRouter)) {
-            guess = looseEqual(this.resolveRoute(to2), currentRoute) ? pageNumber : null;
+          if ($router && (isObject2(to2) || this.useRouter)) {
+            guess = looseEqual2(this.resolveRoute(to2), currentRoute) ? pageNumber : null;
           } else if (IS_BROWSER) {
-            guess = looseEqual(this.resolveLink(to2), currentLink) ? pageNumber : null;
+            guess = looseEqual2(this.resolveLink(to2), currentLink) ? pageNumber : null;
           } else {
             guess = -1;
           }
@@ -21402,7 +27826,7 @@ var OffsetMap = {
   LEFT: 0,
   LEFTBOTTOM: 1
 };
-var props108 = {
+var props109 = {
   // The minimum distance (in `px`) from the edge of the
   // tooltip/popover that the arrow can be positioned
   arrowPadding: makeProp(PROP_TYPE_NUMBER_STRING, 6),
@@ -21417,10 +27841,10 @@ var props108 = {
   // Element that the tooltip/popover is positioned relative to
   target: makeProp([HTMLElement, SVGElement])
 };
-var BVPopper = extend({
+var BVPopper = extend2({
   name: NAME_POPPER,
   mixins: [useParentMixin],
-  props: props108,
+  props: props109,
   data: function data31() {
     return {
       // reactive props set by parent
@@ -21580,16 +28004,16 @@ function ownKeys77(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread77(target) {
+function _objectSpread77(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys77(Object(source), true).forEach(function(key) {
-      _defineProperty95(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys77(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty95(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys77(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty95(obj, key, value2) {
   if (key in obj) {
@@ -21599,17 +28023,17 @@ function _defineProperty95(obj, key, value2) {
   }
   return obj;
 }
-var props109 = {
+var props110 = {
   // Used only by the directive versions
   html: makeProp(PROP_TYPE_BOOLEAN, false),
   // Other non-reactive (while open) props are pulled in from BVPopper
   id: makeProp(PROP_TYPE_STRING)
 };
-var BVTooltipTemplate = extend({
+var BVTooltipTemplate = extend2({
   name: NAME_TOOLTIP_TEMPLATE,
   extends: BVPopper,
   mixins: [scopedStyleMixin],
-  props: props109,
+  props: props110,
   data: function data32() {
     return {
       title: "",
@@ -21673,8 +28097,8 @@ var BVTooltipTemplate = extend({
   methods: {
     renderTemplate: function renderTemplate2(h) {
       var title2 = this.title;
-      var $title = isFunction(title2) ? title2({}) : title2;
-      var domProps = this.html && !isFunction(title2) ? {
+      var $title = isFunction2(title2) ? title2({}) : title2;
+      var domProps2 = this.html && !isFunction2(title2) ? {
         innerHTML: title2
       } : {};
       return h("div", {
@@ -21687,7 +28111,7 @@ var BVTooltipTemplate = extend({
         ref: "arrow"
       }), h("div", {
         staticClass: "tooltip-inner",
-        domProps
+        domProps: domProps2
       }, [$title])]);
     }
   }
@@ -21704,16 +28128,16 @@ function ownKeys78(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread78(target) {
+function _objectSpread78(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys78(Object(source), true).forEach(function(key) {
-      _defineProperty96(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys78(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty96(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys78(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty96(obj, key, value2) {
   if (key in obj) {
@@ -21775,7 +28199,7 @@ var templateData = {
   // Flag used by directives only, for HTML content
   html: false
 };
-var BVTooltip = extend({
+var BVTooltip = extend2({
   name: NAME_TOOLTIP_HELPER,
   mixins: [listenOnRootMixin, useParentMixin],
   data: function data33() {
@@ -21802,7 +28226,7 @@ var BVTooltip = extend({
         show: 0,
         hide: 0
       };
-      if (isPlainObject(this.delay)) {
+      if (isPlainObject2(this.delay)) {
         delay.show = mathMax(toInteger(this.delay.show, 0), 0);
         delay.hide = mathMax(toInteger(this.delay.hide, 0), 0);
       } else if (isNumber(this.delay) || isString(this.delay)) {
@@ -21811,11 +28235,11 @@ var BVTooltip = extend({
       return delay;
     },
     computedTriggers: function computedTriggers() {
-      return concat(this.triggers).filter(identity).join(" ").trim().toLowerCase().split(/\s+/).sort();
+      return concat2(this.triggers).filter(identity2).join(" ").trim().toLowerCase().split(/\s+/).sort();
     },
     isWithActiveTrigger: function isWithActiveTrigger() {
-      for (var trigger in this.activeTrigger) {
-        if (this.activeTrigger[trigger]) {
+      for (var trigger2 in this.activeTrigger) {
+        if (this.activeTrigger[trigger2]) {
           return true;
         }
       }
@@ -21836,13 +28260,13 @@ var BVTooltip = extend({
   watch: {
     computedTriggers: function computedTriggers2(newTriggers, oldTriggers) {
       var _this = this;
-      if (!looseEqual(newTriggers, oldTriggers)) {
+      if (!looseEqual2(newTriggers, oldTriggers)) {
         this.$nextTick(function() {
           _this.unListen();
-          oldTriggers.forEach(function(trigger) {
-            if (!arrayIncludes(newTriggers, trigger)) {
-              if (_this.activeTrigger[trigger]) {
-                _this.activeTrigger[trigger] = false;
+          oldTriggers.forEach(function(trigger2) {
+            if (!arrayIncludes(newTriggers, trigger2)) {
+              if (_this.activeTrigger[trigger2]) {
+                _this.activeTrigger[trigger2] = false;
               }
             }
           });
@@ -21873,7 +28297,7 @@ var BVTooltip = extend({
     this.$_hoverState = "";
     this.$_visibleInterval = null;
     this.$_enabled = !this.disabled;
-    this.$_noop = noop.bind(this);
+    this.$_noop = noop2.bind(this);
     if (this.bvParent) {
       this.bvParent.$once(HOOK_EVENT_NAME_BEFORE_DESTROY, function() {
         _this2.$nextTick(function() {
@@ -21884,12 +28308,12 @@ var BVTooltip = extend({
       });
     }
     this.$nextTick(function() {
-      var target = _this2.getTarget();
-      if (target && contains(document.body, target)) {
+      var target2 = _this2.getTarget();
+      if (target2 && contains(document.body, target2)) {
         _this2.scopeId = getScopeId(_this2.bvParent);
         _this2.listen();
       } else {
-        warn(isString(_this2.target) ? 'Unable to find target element by ID "#'.concat(_this2.target, '" in document.') : "The provided target is no valid HTML element.", _this2.templateType);
+        warn2(isString(_this2.target) ? 'Unable to find target element by ID "#'.concat(_this2.target, '" in document.') : "The provided target is no valid HTML element.", _this2.templateType);
       }
     });
   },
@@ -21989,8 +28413,8 @@ var BVTooltip = extend({
       var _this4 = this;
       var $tip = this.$_tip;
       if ($tip) {
-        var props152 = ["title", "content", "variant", "customClass", "noFade", "interactive"];
-        props152.forEach(function(prop2) {
+        var props153 = ["title", "content", "variant", "customClass", "noFade", "interactive"];
+        props153.forEach(function(prop2) {
           if ($tip[prop2] !== _this4[prop2]) {
             $tip[prop2] = _this4[prop2];
           }
@@ -21999,9 +28423,9 @@ var BVTooltip = extend({
     },
     // --- Show/Hide handlers ---
     // Show the tooltip
-    show: function show4() {
-      var target = this.getTarget();
-      if (!target || !contains(document.body, target) || !isVisible(target) || this.dropdownOpen() || (isUndefinedOrNull(this.title) || this.title === "") && (isUndefinedOrNull(this.content) || this.content === "")) {
+    show: function show5() {
+      var target2 = this.getTarget();
+      if (!target2 || !contains(document.body, target2) || !isVisible(target2) || this.dropdownOpen() || (isUndefinedOrNull(this.title) || this.title === "") && (isUndefinedOrNull(this.content) || this.content === "")) {
         return;
       }
       if (this.$_tip || this.localShow) {
@@ -22022,8 +28446,8 @@ var BVTooltip = extend({
     },
     hide: function hide5() {
       var force = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : false;
-      var tip = this.getTemplateElement();
-      if (!tip || !this.localShow) {
+      var tip2 = this.getTemplateElement();
+      if (!tip2 || !this.localShow) {
         this.restoreTitle();
         return;
       }
@@ -22037,8 +28461,8 @@ var BVTooltip = extend({
       this.hideTemplate();
     },
     forceHide: function forceHide() {
-      var tip = this.getTemplateElement();
-      if (!tip || !this.localShow) {
+      var tip2 = this.getTemplateElement();
+      if (!tip2 || !this.localShow) {
         return;
       }
       this.setWhileOpenListeners(false);
@@ -22083,28 +28507,28 @@ var BVTooltip = extend({
     },
     // --- Helper methods ---
     getTarget: function getTarget3() {
-      var target = this.target;
-      if (isString(target)) {
-        target = getById(target.replace(/^#/, ""));
-      } else if (isFunction(target)) {
-        target = target();
-      } else if (target) {
-        target = target.$el || target;
+      var target2 = this.target;
+      if (isString(target2)) {
+        target2 = getById(target2.replace(/^#/, ""));
+      } else if (isFunction2(target2)) {
+        target2 = target2();
+      } else if (target2) {
+        target2 = target2.$el || target2;
       }
-      return isElement(target) ? target : null;
+      return isElement(target2) ? target2 : null;
     },
     getPlacementTarget: function getPlacementTarget() {
       return this.getTarget();
     },
     getTargetId: function getTargetId() {
-      var target = this.getTarget();
-      return target && target.id ? target.id : null;
+      var target2 = this.getTarget();
+      return target2 && target2.id ? target2.id : null;
     },
     getContainer: function getContainer2() {
       var container = this.container ? this.container.$el || this.container : false;
       var body = document.body;
-      var target = this.getTarget();
-      return container === false ? closest(CONTAINER_SELECTOR, target) || body : (
+      var target2 = this.getTarget();
+      return container === false ? closest(CONTAINER_SELECTOR, target2) || body : (
         /*istanbul ignore next */
         isString(container) ? (
           /*istanbul ignore next */
@@ -22119,16 +28543,16 @@ var BVTooltip = extend({
       return this.boundary ? this.boundary.$el || this.boundary : "scrollParent";
     },
     isInModal: function isInModal() {
-      var target = this.getTarget();
-      return target && closest(MODAL_SELECTOR, target);
+      var target2 = this.getTarget();
+      return target2 && closest(MODAL_SELECTOR, target2);
     },
     isDropdown: function isDropdown() {
-      var target = this.getTarget();
-      return target && hasClass(target, DROPDOWN_CLASS);
+      var target2 = this.getTarget();
+      return target2 && hasClass(target2, DROPDOWN_CLASS);
     },
     dropdownOpen: function dropdownOpen() {
-      var target = this.getTarget();
-      return this.isDropdown() && target && select(DROPDOWN_OPEN_SELECTOR, target);
+      var target2 = this.getTarget();
+      return this.isDropdown() && target2 && select(DROPDOWN_OPEN_SELECTOR, target2);
     },
     clearHoverTimeout: function clearHoverTimeout() {
       clearTimeout(this.$_hoverTimeout);
@@ -22139,46 +28563,46 @@ var BVTooltip = extend({
       this.$_visibleInterval = null;
     },
     clearActiveTriggers: function clearActiveTriggers() {
-      for (var trigger in this.activeTrigger) {
-        this.activeTrigger[trigger] = false;
+      for (var trigger2 in this.activeTrigger) {
+        this.activeTrigger[trigger2] = false;
       }
     },
     addAriaDescribedby: function addAriaDescribedby() {
-      var target = this.getTarget();
-      var desc = getAttr(target, "aria-describedby") || "";
+      var target2 = this.getTarget();
+      var desc = getAttr(target2, "aria-describedby") || "";
       desc = desc.split(/\s+/).concat(this.computedId).join(" ").trim();
-      setAttr(target, "aria-describedby", desc);
+      setAttr2(target2, "aria-describedby", desc);
     },
     removeAriaDescribedby: function removeAriaDescribedby() {
       var _this5 = this;
-      var target = this.getTarget();
-      var desc = getAttr(target, "aria-describedby") || "";
+      var target2 = this.getTarget();
+      var desc = getAttr(target2, "aria-describedby") || "";
       desc = desc.split(/\s+/).filter(function(d) {
         return d !== _this5.computedId;
       }).join(" ").trim();
       if (desc) {
-        setAttr(target, "aria-describedby", desc);
+        setAttr2(target2, "aria-describedby", desc);
       } else {
-        removeAttr(target, "aria-describedby");
+        removeAttr(target2, "aria-describedby");
       }
     },
     fixTitle: function fixTitle() {
-      var target = this.getTarget();
-      if (hasAttr(target, "title")) {
-        var title2 = getAttr(target, "title");
-        setAttr(target, "title", "");
+      var target2 = this.getTarget();
+      if (hasAttr(target2, "title")) {
+        var title2 = getAttr(target2, "title");
+        setAttr2(target2, "title", "");
         if (title2) {
-          setAttr(target, DATA_TITLE_ATTR, title2);
+          setAttr2(target2, DATA_TITLE_ATTR, title2);
         }
       }
     },
     restoreTitle: function restoreTitle() {
-      var target = this.getTarget();
-      if (hasAttr(target, DATA_TITLE_ATTR)) {
-        var title2 = getAttr(target, DATA_TITLE_ATTR);
-        removeAttr(target, DATA_TITLE_ATTR);
+      var target2 = this.getTarget();
+      if (hasAttr(target2, DATA_TITLE_ATTR)) {
+        var title2 = getAttr(target2, DATA_TITLE_ATTR);
+        removeAttr(target2, DATA_TITLE_ATTR);
         if (title2) {
-          setAttr(target, "title", title2);
+          setAttr2(target2, "title", title2);
         }
       }
     },
@@ -22206,15 +28630,15 @@ var BVTooltip = extend({
         return;
       }
       this.setRootListener(true);
-      this.computedTriggers.forEach(function(trigger) {
-        if (trigger === "click") {
+      this.computedTriggers.forEach(function(trigger2) {
+        if (trigger2 === "click") {
           eventOn(el, "click", _this6.handleEvent, EVENT_OPTIONS_NO_CAPTURE);
-        } else if (trigger === "focus") {
+        } else if (trigger2 === "focus") {
           eventOn(el, "focusin", _this6.handleEvent, EVENT_OPTIONS_NO_CAPTURE);
           eventOn(el, "focusout", _this6.handleEvent, EVENT_OPTIONS_NO_CAPTURE);
-        } else if (trigger === "blur") {
+        } else if (trigger2 === "blur") {
           eventOn(el, "focusout", _this6.handleEvent, EVENT_OPTIONS_NO_CAPTURE);
-        } else if (trigger === "hover") {
+        } else if (trigger2 === "hover") {
           eventOn(el, "mouseenter", _this6.handleEvent, EVENT_OPTIONS_NO_CAPTURE);
           eventOn(el, "mouseleave", _this6.handleEvent, EVENT_OPTIONS_NO_CAPTURE);
         }
@@ -22223,11 +28647,11 @@ var BVTooltip = extend({
     /* istanbul ignore next */
     unListen: function unListen() {
       var _this7 = this;
-      var events = ["click", "focusin", "focusout", "mouseenter", "mouseleave"];
-      var target = this.getTarget();
+      var events2 = ["click", "focusin", "focusout", "mouseenter", "mouseleave"];
+      var target2 = this.getTarget();
       this.setRootListener(false);
-      events.forEach(function(event2) {
-        target && eventOff(target, event2, _this7.handleEvent, EVENT_OPTIONS_NO_CAPTURE);
+      events2.forEach(function(event2) {
+        target2 && eventOff(target2, event2, _this7.handleEvent, EVENT_OPTIONS_NO_CAPTURE);
       }, this);
     },
     setRootListener: function setRootListener(on) {
@@ -22248,11 +28672,11 @@ var BVTooltip = extend({
     visibleCheck: function visibleCheck(on) {
       var _this8 = this;
       this.clearVisibilityInterval();
-      var target = this.getTarget();
+      var target2 = this.getTarget();
       if (on) {
         this.$_visibleInterval = setInterval(function() {
-          var tip = _this8.getTemplateElement();
-          if (tip && _this8.localShow && (!target.parentNode || !isVisible(target))) {
+          var tip2 = _this8.getTemplateElement();
+          if (tip2 && _this8.localShow && (!target2.parentNode || !isVisible(target2))) {
             _this8.forceHide();
           }
         }, 100);
@@ -22273,19 +28697,19 @@ var BVTooltip = extend({
       }
     },
     setDropdownListener: function setDropdownListener(on) {
-      var target = this.getTarget();
-      if (!target || !this.bvEventRoot || !this.isDropdown) {
+      var target2 = this.getTarget();
+      if (!target2 || !this.bvEventRoot || !this.isDropdown) {
         return;
       }
-      var instance = getInstanceFromElement(target);
+      var instance = getInstanceFromElement(target2);
       if (instance) {
         instance[on ? "$on" : "$off"](EVENT_NAME_SHOWN, this.forceHide);
       }
     },
     // --- Event handlers ---
     handleEvent: function handleEvent(event2) {
-      var target = this.getTarget();
-      if (!target || isDisabled(target) || !this.$_enabled || this.dropdownOpen()) {
+      var target2 = this.getTarget();
+      if (!target2 || isDisabled(target2) || !this.$_enabled || this.dropdownOpen()) {
         return;
       }
       var type2 = event2.type;
@@ -22297,15 +28721,15 @@ var BVTooltip = extend({
       } else if (type2 === "focusin" && arrayIncludes(triggers, "focus")) {
         this.enter(event2);
       } else if (type2 === "focusout" && (arrayIncludes(triggers, "focus") || arrayIncludes(triggers, "blur")) || type2 === "mouseleave" && arrayIncludes(triggers, "hover")) {
-        var tip = this.getTemplateElement();
+        var tip2 = this.getTemplateElement();
         var eventTarget = event2.target;
         var relatedTarget = event2.relatedTarget;
         if (
           // From tip to target
-          tip && contains(tip, eventTarget) && contains(target, relatedTarget) || // From target to tip
-          tip && contains(target, eventTarget) && contains(tip, relatedTarget) || // Within tip
-          tip && contains(tip, eventTarget) && contains(tip, relatedTarget) || // Within target
-          contains(target, eventTarget) && contains(target, relatedTarget)
+          tip2 && contains(tip2, eventTarget) && contains(target2, relatedTarget) || // From target to tip
+          tip2 && contains(target2, eventTarget) && contains(tip2, relatedTarget) || // Within tip
+          tip2 && contains(tip2, eventTarget) && contains(tip2, relatedTarget) || // Within target
+          contains(target2, eventTarget) && contains(target2, relatedTarget)
         ) {
           return;
         }
@@ -22357,7 +28781,7 @@ var BVTooltip = extend({
         this.enter(null);
       }
     },
-    enter: function enter() {
+    enter: function enter2() {
       var _this10 = this;
       var event2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null;
       if (event2) {
@@ -22382,7 +28806,7 @@ var BVTooltip = extend({
         }, this.computedDelay.show);
       }
     },
-    leave: function leave() {
+    leave: function leave2() {
       var _this11 = this;
       var event2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null;
       if (event2) {
@@ -22423,16 +28847,16 @@ function ownKeys79(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread79(target) {
+function _objectSpread79(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys79(Object(source), true).forEach(function(key) {
-      _defineProperty97(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys79(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty97(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys79(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty97(obj, key, value2) {
   if (key in obj) {
@@ -22446,7 +28870,7 @@ var MODEL_PROP_NAME_ENABLED = "disabled";
 var MODEL_EVENT_NAME_ENABLED = MODEL_EVENT_NAME_PREFIX + MODEL_PROP_NAME_ENABLED;
 var MODEL_PROP_NAME_SHOW2 = "show";
 var MODEL_EVENT_NAME_SHOW2 = MODEL_EVENT_NAME_PREFIX + MODEL_PROP_NAME_SHOW2;
-var props110 = makePropsConfigurable((_makePropsConfigurabl = {
+var props111 = makePropsConfigurable((_makePropsConfigurabl = {
   // String: scrollParent, window, or viewport
   // Element: element reference
   // Object: Vue component
@@ -22459,11 +28883,11 @@ var props110 = makePropsConfigurable((_makePropsConfigurabl = {
   customClass: makeProp(PROP_TYPE_STRING),
   delay: makeProp(PROP_TYPE_NUMBER_OBJECT_STRING, 50)
 }, _defineProperty97(_makePropsConfigurabl, MODEL_PROP_NAME_ENABLED, makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty97(_makePropsConfigurabl, "fallbackPlacement", makeProp(PROP_TYPE_ARRAY_STRING, "flip")), _defineProperty97(_makePropsConfigurabl, "id", makeProp(PROP_TYPE_STRING)), _defineProperty97(_makePropsConfigurabl, "noFade", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty97(_makePropsConfigurabl, "noninteractive", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty97(_makePropsConfigurabl, "offset", makeProp(PROP_TYPE_NUMBER_STRING, 0)), _defineProperty97(_makePropsConfigurabl, "placement", makeProp(PROP_TYPE_STRING, "top")), _defineProperty97(_makePropsConfigurabl, MODEL_PROP_NAME_SHOW2, makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty97(_makePropsConfigurabl, "target", makeProp([HTMLElement, SVGElement, PROP_TYPE_FUNCTION, PROP_TYPE_OBJECT, PROP_TYPE_STRING], void 0, true)), _defineProperty97(_makePropsConfigurabl, "title", makeProp(PROP_TYPE_STRING)), _defineProperty97(_makePropsConfigurabl, "triggers", makeProp(PROP_TYPE_ARRAY_STRING, "hover focus")), _defineProperty97(_makePropsConfigurabl, "variant", makeProp(PROP_TYPE_STRING)), _makePropsConfigurabl), NAME_TOOLTIP);
-var BTooltip = extend({
+var BTooltip = extend2({
   name: NAME_TOOLTIP,
   mixins: [normalizeSlotMixin, useParentMixin],
   inheritAttrs: false,
-  props: props110,
+  props: props111,
   data: function data34() {
     return {
       localShow: this[MODEL_PROP_NAME_SHOW2],
@@ -22630,7 +29054,7 @@ var BTooltip = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/popover/helpers/bv-popover-template.js
-var BVPopoverTemplate = extend({
+var BVPopoverTemplate = extend2({
   name: NAME_POPOVER_TEMPLATE,
   extends: BVTooltipTemplate,
   computed: {
@@ -22641,12 +29065,12 @@ var BVPopoverTemplate = extend({
   methods: {
     renderTemplate: function renderTemplate3(h) {
       var title2 = this.title, content = this.content;
-      var $title = isFunction(title2) ? title2({}) : title2;
-      var $content = isFunction(content) ? content({}) : content;
-      var titleDomProps = this.html && !isFunction(title2) ? {
+      var $title = isFunction2(title2) ? title2({}) : title2;
+      var $content = isFunction2(content) ? content({}) : content;
+      var titleDomProps = this.html && !isFunction2(title2) ? {
         innerHTML: title2
       } : {};
-      var contentDomProps = this.html && !isFunction(content) ? {
+      var contentDomProps = this.html && !isFunction2(content) ? {
         innerHTML: content
       } : {};
       return h("div", {
@@ -22675,7 +29099,7 @@ var BVPopoverTemplate = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/popover/helpers/bv-popover.js
-var BVPopover = extend({
+var BVPopover = extend2({
   name: NAME_POPOVER_HELPER,
   extends: BVTooltip,
   computed: {
@@ -22702,16 +29126,16 @@ function ownKeys80(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread80(target) {
+function _objectSpread80(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys80(Object(source), true).forEach(function(key) {
-      _defineProperty98(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys80(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty98(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys80(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty98(obj, key, value2) {
   if (key in obj) {
@@ -22721,16 +29145,16 @@ function _defineProperty98(obj, key, value2) {
   }
   return obj;
 }
-var props111 = makePropsConfigurable(sortKeys(_objectSpread80(_objectSpread80({}, props110), {}, {
+var props112 = makePropsConfigurable(sortKeys(_objectSpread80(_objectSpread80({}, props111), {}, {
   content: makeProp(PROP_TYPE_STRING),
   placement: makeProp(PROP_TYPE_STRING, "right"),
   triggers: makeProp(PROP_TYPE_ARRAY_STRING, EVENT_NAME_CLICK)
 })), NAME_POPOVER);
-var BPopover = extend({
+var BPopover = extend2({
   name: NAME_POPOVER,
   extends: BTooltip,
   inheritAttrs: false,
-  props: props111,
+  props: props112,
   methods: {
     getComponent: function getComponent2() {
       return BVPopover;
@@ -22754,16 +29178,16 @@ function ownKeys81(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread81(target) {
+function _objectSpread81(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys81(Object(source), true).forEach(function(key) {
-      _defineProperty99(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys81(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty99(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys81(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty99(obj, key, value2) {
   if (key in obj) {
@@ -22793,7 +29217,7 @@ var offsetRE = /^o-?\d+$/i;
 var variantRE = /^v-.+$/i;
 var spacesRE = /\s+/;
 var parseBindings = function parseBindings2(bindings, vnode) {
-  var config = {
+  var config2 = {
     title: void 0,
     content: void 0,
     trigger: "",
@@ -22814,53 +29238,53 @@ var parseBindings = function parseBindings2(bindings, vnode) {
     customClass: getComponentConfig(NAME_POPOVER, "customClass")
   };
   if (isString(bindings.value) || isNumber(bindings.value)) {
-    config.content = bindings.value;
-  } else if (isFunction(bindings.value)) {
-    config.content = bindings.value;
-  } else if (isPlainObject(bindings.value)) {
-    config = _objectSpread81(_objectSpread81({}, config), bindings.value);
+    config2.content = bindings.value;
+  } else if (isFunction2(bindings.value)) {
+    config2.content = bindings.value;
+  } else if (isPlainObject2(bindings.value)) {
+    config2 = _objectSpread81(_objectSpread81({}, config2), bindings.value);
   }
   if (bindings.arg) {
-    config.container = "#".concat(bindings.arg);
+    config2.container = "#".concat(bindings.arg);
   }
-  if (isUndefined(config.title)) {
+  if (isUndefined(config2.title)) {
     var data48 = vnode.data || {};
-    config.title = data48.attrs && !isUndefinedOrNull(data48.attrs.title) ? data48.attrs.title : void 0;
+    config2.title = data48.attrs && !isUndefinedOrNull(data48.attrs.title) ? data48.attrs.title : void 0;
   }
-  if (!isPlainObject(config.delay)) {
-    config.delay = {
-      show: toInteger(config.delay, 0),
-      hide: toInteger(config.delay, 0)
+  if (!isPlainObject2(config2.delay)) {
+    config2.delay = {
+      show: toInteger(config2.delay, 0),
+      hide: toInteger(config2.delay, 0)
     };
   }
   keys(bindings.modifiers).forEach(function(mod) {
     if (htmlRE.test(mod)) {
-      config.html = true;
+      config2.html = true;
     } else if (noFadeRE.test(mod)) {
-      config.animation = false;
+      config2.animation = false;
     } else if (placementRE.test(mod)) {
-      config.placement = mod;
+      config2.placement = mod;
     } else if (boundaryRE.test(mod)) {
       mod = mod === "scrollparent" ? "scrollParent" : mod;
-      config.boundary = mod;
+      config2.boundary = mod;
     } else if (delayRE.test(mod)) {
       var delay = toInteger(mod.slice(1), 0);
-      config.delay.show = delay;
-      config.delay.hide = delay;
+      config2.delay.show = delay;
+      config2.delay.hide = delay;
     } else if (delayShowRE.test(mod)) {
-      config.delay.show = toInteger(mod.slice(2), 0);
+      config2.delay.show = toInteger(mod.slice(2), 0);
     } else if (delayHideRE.test(mod)) {
-      config.delay.hide = toInteger(mod.slice(2), 0);
+      config2.delay.hide = toInteger(mod.slice(2), 0);
     } else if (offsetRE.test(mod)) {
-      config.offset = toInteger(mod.slice(1), 0);
+      config2.offset = toInteger(mod.slice(1), 0);
     } else if (variantRE.test(mod)) {
-      config.variant = mod.slice(2) || null;
+      config2.variant = mod.slice(2) || null;
     }
   });
   var selectedTriggers = {};
-  concat(config.trigger || "").filter(identity).join(" ").trim().toLowerCase().split(spacesRE).forEach(function(trigger) {
-    if (validTriggers[trigger]) {
-      selectedTriggers[trigger] = true;
+  concat2(config2.trigger || "").filter(identity2).join(" ").trim().toLowerCase().split(spacesRE).forEach(function(trigger2) {
+    if (validTriggers[trigger2]) {
+      selectedTriggers[trigger2] = true;
     }
   });
   keys(bindings.modifiers).forEach(function(mod) {
@@ -22869,20 +29293,20 @@ var parseBindings = function parseBindings2(bindings, vnode) {
       selectedTriggers[mod] = true;
     }
   });
-  config.trigger = keys(selectedTriggers).join(" ");
-  if (config.trigger === "blur") {
-    config.trigger = "focus";
+  config2.trigger = keys(selectedTriggers).join(" ");
+  if (config2.trigger === "blur") {
+    config2.trigger = "focus";
   }
-  if (!config.trigger) {
-    config.trigger = DefaultTrigger;
+  if (!config2.trigger) {
+    config2.trigger = DefaultTrigger;
   }
-  return config;
+  return config2;
 };
 var applyPopover = function applyPopover2(el, bindings, vnode) {
   if (!IS_BROWSER) {
     return;
   }
-  var config = parseBindings(bindings, vnode);
+  var config2 = parseBindings(bindings, vnode);
   if (!el[BV_POPOVER]) {
     var parent = getInstanceFromDirective(vnode, bindings);
     el[BV_POPOVER] = createNewChildComponent(parent, BVPopover, {
@@ -22892,11 +29316,11 @@ var applyPopover = function applyPopover2(el, bindings, vnode) {
     el[BV_POPOVER].__bv_prev_data__ = {};
     el[BV_POPOVER].$on(EVENT_NAME_SHOW, function() {
       var data49 = {};
-      if (isFunction(config.title)) {
-        data49.title = config.title(el);
+      if (isFunction2(config2.title)) {
+        data49.title = config2.title(el);
       }
-      if (isFunction(config.content)) {
-        data49.content = config.content(el);
+      if (isFunction2(config2.content)) {
+        data49.content = config2.content(el);
       }
       if (keys(data49).length > 0) {
         el[BV_POPOVER].updateData(data49);
@@ -22904,31 +29328,31 @@ var applyPopover = function applyPopover2(el, bindings, vnode) {
     });
   }
   var data48 = {
-    title: config.title,
-    content: config.content,
-    triggers: config.trigger,
-    placement: config.placement,
-    fallbackPlacement: config.fallbackPlacement,
-    variant: config.variant,
-    customClass: config.customClass,
-    container: config.container,
-    boundary: config.boundary,
-    delay: config.delay,
-    offset: config.offset,
-    noFade: !config.animation,
-    id: config.id,
-    disabled: config.disabled,
-    html: config.html
+    title: config2.title,
+    content: config2.content,
+    triggers: config2.trigger,
+    placement: config2.placement,
+    fallbackPlacement: config2.fallbackPlacement,
+    variant: config2.variant,
+    customClass: config2.customClass,
+    container: config2.container,
+    boundary: config2.boundary,
+    delay: config2.delay,
+    offset: config2.offset,
+    noFade: !config2.animation,
+    id: config2.id,
+    disabled: config2.disabled,
+    html: config2.html
   };
   var oldData = el[BV_POPOVER].__bv_prev_data__;
   el[BV_POPOVER].__bv_prev_data__ = data48;
-  if (!looseEqual(data48, oldData)) {
+  if (!looseEqual2(data48, oldData)) {
     var newData = {
       target: el
     };
     keys(data48).forEach(function(prop2) {
       if (data48[prop2] !== oldData[prop2]) {
-        newData[prop2] = (prop2 === "title" || prop2 === "content") && isFunction(data48[prop2]) ? (
+        newData[prop2] = (prop2 === "title" || prop2 === "content") && isFunction2(data48[prop2]) ? (
           /* istanbul ignore next */
           data48[prop2](el)
         ) : data48[prop2];
@@ -22945,13 +29369,13 @@ var removePopover = function removePopover2(el) {
   delete el[BV_POPOVER];
 };
 var VBPopover = {
-  bind: function bind6(el, bindings, vnode) {
+  bind: function bind7(el, bindings, vnode) {
     applyPopover(el, bindings, vnode);
   },
   // We use `componentUpdated` here instead of `update`, as the former
   // waits until the containing component and children have finished updating
   componentUpdated: function componentUpdated5(el, bindings, vnode) {
-    nextTick(function() {
+    nextTick2(function() {
       applyPopover(el, bindings, vnode);
     });
   },
@@ -22978,7 +29402,7 @@ var PopoverPlugin = pluginFactory({
 });
 
 // node_modules/bootstrap-vue/esm/components/progress/progress-bar.js
-var props112 = makePropsConfigurable({
+var props113 = makePropsConfigurable({
   animated: makeProp(PROP_TYPE_BOOLEAN, null),
   label: makeProp(PROP_TYPE_STRING),
   labelHtml: makeProp(PROP_TYPE_STRING),
@@ -22990,7 +29414,7 @@ var props112 = makePropsConfigurable({
   value: makeProp(PROP_TYPE_NUMBER_STRING, 0),
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_PROGRESS_BAR);
-var BProgressBar = extend({
+var BProgressBar = extend2({
   name: NAME_PROGRESS_BAR,
   mixins: [normalizeSlotMixin],
   inject: {
@@ -23005,7 +29429,7 @@ var BProgressBar = extend({
       )
     }
   },
-  props: props112,
+  props: props113,
   computed: {
     bvProgress: function bvProgress() {
       return this.getBvProgress();
@@ -23038,26 +29462,26 @@ var BProgressBar = extend({
       return this.variant || this.bvProgress.variant;
     },
     computedStriped: function computedStriped() {
-      return isBoolean(this.striped) ? this.striped : this.bvProgress.striped || false;
+      return isBoolean2(this.striped) ? this.striped : this.bvProgress.striped || false;
     },
     computedAnimated: function computedAnimated() {
-      return isBoolean(this.animated) ? this.animated : this.bvProgress.animated || false;
+      return isBoolean2(this.animated) ? this.animated : this.bvProgress.animated || false;
     },
     computedShowProgress: function computedShowProgress() {
-      return isBoolean(this.showProgress) ? this.showProgress : this.bvProgress.showProgress || false;
+      return isBoolean2(this.showProgress) ? this.showProgress : this.bvProgress.showProgress || false;
     },
     computedShowValue: function computedShowValue() {
-      return isBoolean(this.showValue) ? this.showValue : this.bvProgress.showValue || false;
+      return isBoolean2(this.showValue) ? this.showValue : this.bvProgress.showValue || false;
     }
   },
   render: function render99(h) {
     var label = this.label, labelHtml = this.labelHtml, computedValue3 = this.computedValue, computedPrecision3 = this.computedPrecision;
     var $children;
-    var domProps = {};
+    var domProps2 = {};
     if (this.hasNormalizedSlot()) {
       $children = this.normalizeSlot();
     } else if (label || labelHtml) {
-      domProps = htmlOrText(labelHtml, label);
+      domProps2 = htmlOrText(labelHtml, label);
     } else if (this.computedShowProgress) {
       $children = this.computedProgress;
     } else if (this.computedShowValue) {
@@ -23070,10 +29494,10 @@ var BProgressBar = extend({
       attrs: {
         role: "progressbar",
         "aria-valuemin": "0",
-        "aria-valuemax": toString3(this.computedMax),
+        "aria-valuemax": toString4(this.computedMax),
         "aria-valuenow": toFixed(computedValue3, computedPrecision3)
       },
-      domProps
+      domProps: domProps2
     }, $children);
   }
 });
@@ -23089,16 +29513,16 @@ function ownKeys82(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread82(target) {
+function _objectSpread82(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys82(Object(source), true).forEach(function(key) {
-      _defineProperty100(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys82(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty100(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys82(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty100(obj, key, value2) {
   if (key in obj) {
@@ -23108,8 +29532,8 @@ function _defineProperty100(obj, key, value2) {
   }
   return obj;
 }
-var progressBarProps = omit(props112, ["label", "labelHtml"]);
-var props113 = makePropsConfigurable(sortKeys(_objectSpread82(_objectSpread82({}, progressBarProps), {}, {
+var progressBarProps = omit(props113, ["label", "labelHtml"]);
+var props114 = makePropsConfigurable(sortKeys(_objectSpread82(_objectSpread82({}, progressBarProps), {}, {
   animated: makeProp(PROP_TYPE_BOOLEAN, false),
   height: makeProp(PROP_TYPE_STRING),
   max: makeProp(PROP_TYPE_NUMBER_STRING, 100),
@@ -23118,7 +29542,7 @@ var props113 = makePropsConfigurable(sortKeys(_objectSpread82(_objectSpread82({}
   showValue: makeProp(PROP_TYPE_BOOLEAN, false),
   striped: makeProp(PROP_TYPE_BOOLEAN, false)
 })), NAME_PROGRESS);
-var BProgress = extend({
+var BProgress = extend2({
   name: NAME_PROGRESS,
   mixins: [normalizeSlotMixin],
   provide: function provide7() {
@@ -23129,7 +29553,7 @@ var BProgress = extend({
       }
     };
   },
-  props: props113,
+  props: props114,
   computed: {
     progressHeight: function progressHeight() {
       return {
@@ -23171,16 +29595,16 @@ function ownKeys83(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread83(target) {
+function _objectSpread83(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys83(Object(source), true).forEach(function(key) {
-      _defineProperty101(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys83(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty101(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys83(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty101(obj, key, value2) {
   if (key in obj) {
@@ -23204,7 +29628,7 @@ var modelMixin17 = _makeModelMixin18.mixin;
 var modelProps17 = _makeModelMixin18.props;
 var MODEL_PROP_NAME17 = _makeModelMixin18.prop;
 var MODEL_EVENT_NAME17 = _makeModelMixin18.event;
-var props114 = makePropsConfigurable(sortKeys(_objectSpread83(_objectSpread83(_objectSpread83({}, props17), modelProps17), {}, {
+var props115 = makePropsConfigurable(sortKeys(_objectSpread83(_objectSpread83(_objectSpread83({}, props18), modelProps17), {}, {
   ariaLabel: makeProp(PROP_TYPE_STRING),
   ariaLabelledby: makeProp(PROP_TYPE_STRING),
   // If `true`, shows a basic backdrop
@@ -23320,11 +29744,11 @@ var renderBackdrop = function renderBackdrop2(h, ctx) {
     }
   });
 };
-var BSidebar = extend({
+var BSidebar = extend2({
   name: NAME_SIDEBAR,
   mixins: [attrsMixin, idMixin, modelMixin17, listenOnRootMixin, normalizeSlotMixin],
   inheritAttrs: false,
-  props: props114,
+  props: props115,
   data: function data35() {
     var visible2 = !!this[MODEL_PROP_NAME17];
     return {
@@ -23335,7 +29759,7 @@ var BSidebar = extend({
     };
   },
   computed: {
-    transitionProps: function transitionProps() {
+    transitionProps: function transitionProps2() {
       return this.noSlide ? (
         /* istanbul ignore next */
         {
@@ -23567,7 +29991,7 @@ function _defineProperty102(obj, key, value2) {
   }
   return obj;
 }
-var props115 = makePropsConfigurable({
+var props116 = makePropsConfigurable({
   animation: makeProp(PROP_TYPE_STRING, "wave"),
   height: makeProp(PROP_TYPE_STRING),
   size: makeProp(PROP_TYPE_STRING),
@@ -23575,36 +29999,36 @@ var props115 = makePropsConfigurable({
   variant: makeProp(PROP_TYPE_STRING),
   width: makeProp(PROP_TYPE_STRING)
 }, NAME_SKELETON);
-var BSkeleton = extend({
+var BSkeleton = extend2({
   name: NAME_SKELETON,
   functional: true,
-  props: props115,
+  props: props116,
   render: function render102(h, _ref) {
     var _class;
-    var data48 = _ref.data, props152 = _ref.props;
-    var size = props152.size, animation = props152.animation, variant = props152.variant;
+    var data48 = _ref.data, props153 = _ref.props;
+    var size = props153.size, animation = props153.animation, variant = props153.variant;
     return h("div", a(data48, {
       staticClass: "b-skeleton",
       style: {
-        width: size || props152.width,
-        height: size || props152.height
+        width: size || props153.width,
+        height: size || props153.height
       },
-      class: (_class = {}, _defineProperty102(_class, "b-skeleton-".concat(props152.type), true), _defineProperty102(_class, "b-skeleton-animate-".concat(animation), animation), _defineProperty102(_class, "bg-".concat(variant), variant), _class)
+      class: (_class = {}, _defineProperty102(_class, "b-skeleton-".concat(props153.type), true), _defineProperty102(_class, "b-skeleton-animate-".concat(animation), animation), _defineProperty102(_class, "bg-".concat(variant), variant), _class)
     }));
   }
 });
 
 // node_modules/bootstrap-vue/esm/icons/iconstack.js
-var props116 = makePropsConfigurable(omit(props5, ["content", "stacked"]), NAME_ICONSTACK);
-var BIconstack = extend({
+var props117 = makePropsConfigurable(omit(props6, ["content", "stacked"]), NAME_ICONSTACK);
+var BIconstack = extend2({
   name: NAME_ICONSTACK,
   functional: true,
-  props: props116,
+  props: props117,
   render: function render103(h, _ref) {
-    var data48 = _ref.data, props152 = _ref.props, children2 = _ref.children;
+    var data48 = _ref.data, props153 = _ref.props, children2 = _ref.children;
     return h(BVIconBase, a(data48, {
       staticClass: "b-iconstack",
-      props: props152
+      props: props153
     }), children2);
   }
 });
@@ -25010,16 +31434,16 @@ function ownKeys84(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread84(target) {
+function _objectSpread84(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys84(Object(source), true).forEach(function(key) {
-      _defineProperty103(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys84(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty103(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys84(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty103(obj, key, value2) {
   if (key in obj) {
@@ -25029,21 +31453,21 @@ function _defineProperty103(obj, key, value2) {
   }
   return obj;
 }
-var props117 = makePropsConfigurable({
+var props118 = makePropsConfigurable({
   animation: makeProp(PROP_TYPE_STRING, "wave"),
   icon: makeProp(PROP_TYPE_STRING),
   iconProps: makeProp(PROP_TYPE_OBJECT, {})
 }, NAME_SKELETON_ICON);
-var BSkeletonIcon = extend({
+var BSkeletonIcon = extend2({
   name: NAME_SKELETON_ICON,
   functional: true,
-  props: props117,
+  props: props118,
   render: function render104(h, _ref) {
-    var data48 = _ref.data, props152 = _ref.props;
-    var icon = props152.icon, animation = props152.animation;
+    var data48 = _ref.data, props153 = _ref.props;
+    var icon = props153.icon, animation = props153.animation;
     var $icon = h(BIcon, {
       staticClass: "b-skeleton-icon",
-      props: _objectSpread84(_objectSpread84({}, props152.iconProps), {}, {
+      props: _objectSpread84(_objectSpread84({}, props153.iconProps), {}, {
         icon
       })
     });
@@ -25063,7 +31487,7 @@ function _defineProperty104(obj, key, value2) {
   }
   return obj;
 }
-var props118 = makePropsConfigurable({
+var props119 = makePropsConfigurable({
   animation: makeProp(PROP_TYPE_STRING),
   aspect: makeProp(PROP_TYPE_STRING, "16:9"),
   cardImg: makeProp(PROP_TYPE_STRING),
@@ -25072,13 +31496,13 @@ var props118 = makePropsConfigurable({
   variant: makeProp(PROP_TYPE_STRING),
   width: makeProp(PROP_TYPE_STRING)
 }, NAME_SKELETON_IMG);
-var BSkeletonImg = extend({
+var BSkeletonImg = extend2({
   name: NAME_SKELETON_IMG,
   functional: true,
-  props: props118,
+  props: props119,
   render: function render105(h, _ref) {
-    var data48 = _ref.data, props152 = _ref.props;
-    var aspect = props152.aspect, width = props152.width, height = props152.height, animation = props152.animation, variant = props152.variant, cardImg = props152.cardImg;
+    var data48 = _ref.data, props153 = _ref.props;
+    var aspect = props153.aspect, width = props153.width, height = props153.height, animation = props153.animation, variant = props153.variant, cardImg = props153.cardImg;
     var $img = h(BSkeleton, a(data48, {
       props: {
         type: "img",
@@ -25089,7 +31513,7 @@ var BSkeletonImg = extend({
       },
       class: _defineProperty104({}, "card-img-".concat(cardImg), cardImg)
     }));
-    return props152.noAspect ? $img : h(BAspect, {
+    return props153.noAspect ? $img : h(BAspect, {
       props: {
         aspect
       }
@@ -25098,7 +31522,7 @@ var BSkeletonImg = extend({
 });
 
 // node_modules/bootstrap-vue/esm/mixins/has-listener.js
-var hasListenerMixin = extend({
+var hasListenerMixin = extend2({
   methods: {
     hasListener: function hasListener(name2) {
       if (isVue3) {
@@ -25106,7 +31530,7 @@ var hasListenerMixin = extend({
       }
       var $listeners = this.$listeners || {};
       var $events = this._events || {};
-      return !isUndefined($listeners[name2]) || isArray($events[name2]) && $events[name2].length > 0;
+      return !isUndefined($listeners[name2]) || isArray2($events[name2]) && $events[name2].length > 0;
     }
   }
 });
@@ -25122,16 +31546,16 @@ function ownKeys85(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread85(target) {
+function _objectSpread85(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys85(Object(source), true).forEach(function(key) {
-      _defineProperty105(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys85(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty105(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys85(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty105(obj, key, value2) {
   if (key in obj) {
@@ -25143,10 +31567,10 @@ function _defineProperty105(obj, key, value2) {
 }
 var LIGHT = "light";
 var DARK = "dark";
-var props119 = makePropsConfigurable({
+var props120 = makePropsConfigurable({
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_TR);
-var BTr = extend({
+var BTr = extend2({
   name: NAME_TR,
   mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
   provide: function provide8() {
@@ -25170,7 +31594,7 @@ var BTr = extend({
     }
   },
   inheritAttrs: false,
-  props: props119,
+  props: props120,
   computed: {
     bvTableRowGroup: function bvTableRowGroup() {
       return this.getBvTableRowGroup();
@@ -25252,9 +31676,9 @@ var BTr = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/mixin-bottom-row.js
-var props120 = {};
-var bottomRowMixin = extend({
-  props: props120,
+var props121 = {};
+var bottomRowMixin = extend2({
+  props: props121,
   methods: {
     renderBottomRow: function renderBottomRow() {
       var fields = this.computedFields, stacked = this.stacked, tbodyTrClass = this.tbodyTrClass, tbodyTrAttr = this.tbodyTrAttr;
@@ -25264,11 +31688,11 @@ var bottomRowMixin = extend({
       }
       return h(BTr, {
         staticClass: "b-table-bottom-row",
-        class: [isFunction(tbodyTrClass) ? (
+        class: [isFunction2(tbodyTrClass) ? (
           /* istanbul ignore next */
           tbodyTrClass(null, "row-bottom")
         ) : tbodyTrClass],
-        attrs: isFunction(tbodyTrAttr) ? (
+        attrs: isFunction2(tbodyTrAttr) ? (
           /* istanbul ignore next */
           tbodyTrAttr(null, "row-bottom")
         ) : tbodyTrAttr,
@@ -25292,16 +31716,16 @@ function ownKeys86(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread86(target) {
+function _objectSpread86(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys86(Object(source), true).forEach(function(key) {
-      _defineProperty106(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys86(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty106(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys86(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty106(obj, key, value2) {
   if (key in obj) {
@@ -25318,14 +31742,14 @@ var parseSpan = function parseSpan2(value2) {
 var spanValidator = function spanValidator2(value2) {
   return isUndefinedOrNull(value2) || parseSpan(value2) > 0;
 };
-var props121 = makePropsConfigurable({
+var props122 = makePropsConfigurable({
   colspan: makeProp(PROP_TYPE_NUMBER_STRING, null, spanValidator),
   rowspan: makeProp(PROP_TYPE_NUMBER_STRING, null, spanValidator),
   stackedHeading: makeProp(PROP_TYPE_STRING),
   stickyColumn: makeProp(PROP_TYPE_BOOLEAN, false),
   variant: makeProp(PROP_TYPE_STRING)
 }, NAME_TABLE_CELL);
-var BTd = extend({
+var BTd = extend2({
   name: NAME_TABLE_CELL,
   // Mixin order is important!
   mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
@@ -25342,7 +31766,7 @@ var BTd = extend({
     }
   },
   inheritAttrs: false,
-  props: props121,
+  props: props122,
   computed: {
     bvTableTr: function bvTableTr() {
       return this.getBvTableTr();
@@ -25443,7 +31867,7 @@ var BTd = extend({
         // stacked mode (if a stacked heading label is provided)
         "data-label": this.isStackedCell && !isUndefinedOrNull(stackedHeading) ? (
           /* istanbul ignore next */
-          toString3(stackedHeading)
+          toString4(stackedHeading)
         ) : null
       });
     }
@@ -25470,9 +31894,9 @@ function _defineProperty107(obj, key, value2) {
 }
 var MODEL_PROP_NAME_BUSY = "busy";
 var MODEL_EVENT_NAME_BUSY = MODEL_EVENT_NAME_PREFIX + MODEL_PROP_NAME_BUSY;
-var props122 = _defineProperty107({}, MODEL_PROP_NAME_BUSY, makeProp(PROP_TYPE_BOOLEAN, false));
-var busyMixin = extend({
-  props: props122,
+var props123 = _defineProperty107({}, MODEL_PROP_NAME_BUSY, makeProp(PROP_TYPE_BOOLEAN, false));
+var busyMixin = extend2({
+  props: props123,
   data: function data36() {
     return {
       localBusy: false
@@ -25506,11 +31930,11 @@ var busyMixin = extend({
       if (this.computedBusy && this.hasNormalizedSlot(SLOT_NAME_TABLE_BUSY)) {
         return h(BTr, {
           staticClass: "b-table-busy-slot",
-          class: [isFunction(tbodyTrClass) ? (
+          class: [isFunction2(tbodyTrClass) ? (
             /* istanbul ignore next */
             tbodyTrClass(null, SLOT_NAME_TABLE_BUSY)
           ) : tbodyTrClass],
-          attrs: isFunction(tbodyTrAttr) ? (
+          attrs: isFunction2(tbodyTrAttr) ? (
             /* istanbul ignore next */
             tbodyTrAttr(null, SLOT_NAME_TABLE_BUSY)
           ) : tbodyTrAttr,
@@ -25527,14 +31951,14 @@ var busyMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/mixin-caption.js
-var props123 = {
+var props124 = {
   caption: makeProp(PROP_TYPE_STRING),
   captionHtml: makeProp(PROP_TYPE_STRING)
   // `caption-top` is part of table-render mixin (styling)
   // captionTop: makeProp(PROP_TYPE_BOOLEAN, false)
 };
-var captionMixin = extend({
-  props: props123,
+var captionMixin = extend2({
+  props: props124,
   computed: {
     captionId: function captionId() {
       return this.isStacked ? this.safeId("_caption_") : null;
@@ -25562,8 +31986,8 @@ var captionMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/mixin-colgroup.js
-var props124 = {};
-var colgroupMixin = extend({
+var props125 = {};
+var colgroupMixin = extend2({
   methods: {
     renderColgroup: function renderColgroup() {
       var fields = this.computedFields;
@@ -25583,15 +32007,15 @@ var colgroupMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/mixin-empty.js
-var props125 = {
+var props126 = {
   emptyFilteredHtml: makeProp(PROP_TYPE_STRING),
   emptyFilteredText: makeProp(PROP_TYPE_STRING, "There are no records matching your request"),
   emptyHtml: makeProp(PROP_TYPE_STRING),
   emptyText: makeProp(PROP_TYPE_STRING, "There are no records to show"),
   showEmpty: makeProp(PROP_TYPE_BOOLEAN, false)
 };
-var emptyMixin = extend({
-  props: props125,
+var emptyMixin = extend2({
+  props: props126,
   methods: {
     renderEmpty: function renderEmpty() {
       var _safeVueInstance = safeVueInstance(this), items3 = _safeVueInstance.computedItems, computedBusy2 = _safeVueInstance.computedBusy;
@@ -25626,11 +32050,11 @@ var emptyMixin = extend({
         }, [$empty])]);
         $empty = h(BTr, {
           staticClass: "b-table-empty-row",
-          class: [isFunction(tbodyTrClass) ? (
+          class: [isFunction2(tbodyTrClass) ? (
             /* istanbul ignore next */
             tbodyTrClass(null, "row-empty")
           ) : tbodyTrClass],
-          attrs: isFunction(tbodyTrAttr) ? (
+          attrs: isFunction2(tbodyTrAttr) ? (
             /* istanbul ignore next */
             tbodyTrAttr(null, "row-empty")
           ) : tbodyTrAttr,
@@ -25647,14 +32071,14 @@ var stringifyObjectValues = function stringifyObjectValues2(value2) {
   if (isUndefinedOrNull(value2)) {
     return "";
   }
-  if (isObject(value2) && !isDate(value2)) {
+  if (isObject2(value2) && !isDate(value2)) {
     return keys(value2).sort().map(function(k) {
       return stringifyObjectValues2(value2[k]);
     }).filter(function(v) {
       return !!v;
     }).join(" ");
   }
-  return toString3(value2);
+  return toString4(value2);
 };
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/constants.js
@@ -25668,16 +32092,16 @@ function ownKeys87(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread87(target) {
+function _objectSpread87(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys87(Object(source), true).forEach(function(key) {
-      _defineProperty108(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys87(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty108(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys87(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty108(obj, key, value2) {
   if (key in obj) {
@@ -25716,27 +32140,27 @@ var sanitizeRow = function sanitizeRow2(row, ignoreFields, includeFields) {
   var formattedRow = keys(fieldsObj).reduce(function(result, key) {
     var field = fieldsObj[key];
     var filterByFormatted = field.filterByFormatted;
-    var formatter = isFunction(filterByFormatted) ? (
+    var formatter = isFunction2(filterByFormatted) ? (
       /* istanbul ignore next */
       filterByFormatted
     ) : filterByFormatted ? (
       /* istanbul ignore next */
       field.formatter
     ) : null;
-    if (isFunction(formatter)) {
+    if (isFunction2(formatter)) {
       result[key] = formatter(row[key], key, row);
     }
     return result;
   }, clone(row));
   var allowedKeys = keys(formattedRow).filter(function(key) {
-    return !IGNORED_FIELD_KEYS[key] && !(isArray(ignoreFields) && ignoreFields.length > 0 && arrayIncludes(ignoreFields, key)) && !(isArray(includeFields) && includeFields.length > 0 && !arrayIncludes(includeFields, key));
+    return !IGNORED_FIELD_KEYS[key] && !(isArray2(ignoreFields) && ignoreFields.length > 0 && arrayIncludes(ignoreFields, key)) && !(isArray2(includeFields) && includeFields.length > 0 && !arrayIncludes(includeFields, key));
   });
   return pick(formattedRow, allowedKeys);
 };
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/stringify-record-values.js
 var stringifyRecordValues = function stringifyRecordValues2(row, ignoreFields, includeFields, fieldsObj) {
-  return isObject(row) ? stringifyObjectValues(sanitizeRow(row, ignoreFields, includeFields, fieldsObj)) : (
+  return isObject2(row) ? stringifyObjectValues(sanitizeRow(row, ignoreFields, includeFields, fieldsObj)) : (
     /* istanbul ignore next */
     ""
   );
@@ -25779,7 +32203,7 @@ function _arrayLikeToArray9(arr, len) {
   return arr2;
 }
 var DEBOUNCE_DEPRECATED_MSG = 'Prop "filter-debounce" is deprecated. Use the debounce feature of "<b-form-input>" instead.';
-var props126 = {
+var props127 = {
   filter: makeProp([].concat(_toConsumableArray6(PROP_TYPE_ARRAY_OBJECT_STRING), [PROP_TYPE_REG_EXP])),
   filterDebounce: makeProp(PROP_TYPE_NUMBER_STRING, 0, function(value2) {
     return RX_DIGITS.test(String(value2));
@@ -25788,8 +32212,8 @@ var props126 = {
   filterIgnoredFields: makeProp(PROP_TYPE_ARRAY, []),
   filterIncludedFields: makeProp(PROP_TYPE_ARRAY, [])
 };
-var filteringMixin = extend({
-  props: props126,
+var filteringMixin = extend2({
+  props: props127,
   data: function data37() {
     return {
       // Flag for displaying which empty slot to show and some event triggering
@@ -25801,15 +32225,15 @@ var filteringMixin = extend({
   },
   computed: {
     computedFilterIgnored: function computedFilterIgnored() {
-      return concat(this.filterIgnoredFields || []).filter(identity);
+      return concat2(this.filterIgnoredFields || []).filter(identity2);
     },
     computedFilterIncluded: function computedFilterIncluded() {
-      return concat(this.filterIncludedFields || []).filter(identity);
+      return concat2(this.filterIncludedFields || []).filter(identity2);
     },
     computedFilterDebounce: function computedFilterDebounce() {
       var ms = toInteger(this.filterDebounce, 0);
       if (ms > 0) {
-        warn(DEBOUNCE_DEPRECATED_MSG, NAME_TABLE);
+        warn2(DEBOUNCE_DEPRECATED_MSG, NAME_TABLE);
       }
       return ms;
     },
@@ -25871,7 +32295,7 @@ var filteringMixin = extend({
       var isFiltered2 = false;
       if (!localFilter) {
         isFiltered2 = false;
-      } else if (looseEqual(localFilter, []) || looseEqual(localFilter, {})) {
+      } else if (looseEqual2(localFilter, []) || looseEqual2(localFilter, {})) {
         isFiltered2 = false;
       } else if (localFilter) {
         isFiltered2 = true;
@@ -25904,14 +32328,14 @@ var filteringMixin = extend({
       this.$_filterTimer = null;
     },
     filterSanitize: function filterSanitize(criteria) {
-      if (this.localFiltering && !this.localFilterFn && !(isString(criteria) || isRegExp(criteria))) {
+      if (this.localFiltering && !this.localFilterFn && !(isString(criteria) || isRegExp2(criteria))) {
         return "";
       }
       return cloneDeep(criteria);
     },
     // Filter Function factories
     filterFnFactory: function filterFnFactory(filterFn, criteria) {
-      if (!filterFn || !isFunction(filterFn) || !criteria || looseEqual(criteria, []) || looseEqual(criteria, {})) {
+      if (!filterFn || !isFunction2(filterFn) || !criteria || looseEqual2(criteria, []) || looseEqual2(criteria, {})) {
         return null;
       }
       var fn = function fn2(item) {
@@ -25921,7 +32345,7 @@ var filteringMixin = extend({
     },
     defaultFilterFnFactory: function defaultFilterFnFactory(criteria) {
       var _this3 = this;
-      if (!criteria || !(isString(criteria) || isRegExp(criteria))) {
+      if (!criteria || !(isString(criteria) || isRegExp2(criteria))) {
         return null;
       }
       var regExp = criteria;
@@ -25946,12 +32370,12 @@ var processField = function processField2(key, value2) {
       key,
       label: value2
     };
-  } else if (isFunction(value2)) {
+  } else if (isFunction2(value2)) {
     field = {
       key,
       formatter: value2
     };
-  } else if (isObject(value2)) {
+  } else if (isObject2(value2)) {
     field = clone(value2);
     field.key = field.key || key;
   } else if (value2 !== false) {
@@ -25963,16 +32387,16 @@ var processField = function processField2(key, value2) {
 };
 var normalizeFields = function normalizeFields2(origFields, items3) {
   var fields = [];
-  if (isArray(origFields)) {
-    origFields.filter(identity).forEach(function(f) {
+  if (isArray2(origFields)) {
+    origFields.filter(identity2).forEach(function(f) {
       if (isString(f)) {
         fields.push({
           key: f,
           label: startCase(f)
         });
-      } else if (isObject(f) && f.key && isString(f.key)) {
+      } else if (isObject2(f) && f.key && isString(f.key)) {
         fields.push(clone(f));
-      } else if (isObject(f) && keys(f).length === 1) {
+      } else if (isObject2(f) && keys(f).length === 1) {
         var key = keys(f)[0];
         var field = processField(key, f[key]);
         if (field) {
@@ -25981,7 +32405,7 @@ var normalizeFields = function normalizeFields2(origFields, items3) {
       }
     });
   }
-  if (fields.length === 0 && isArray(items3) && items3.length > 0) {
+  if (fields.length === 0 && isArray2(items3) && items3.length > 0) {
     var sample = items3[0];
     keys(sample).forEach(function(k) {
       if (!IGNORED_FIELD_KEYS[k]) {
@@ -26014,16 +32438,16 @@ function ownKeys88(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread88(target) {
+function _objectSpread88(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys88(Object(source), true).forEach(function(key) {
-      _defineProperty109(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys88(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty109(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys88(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty109(obj, key, value2) {
   if (key in obj) {
@@ -26041,7 +32465,7 @@ var modelMixin18 = _makeModelMixin19.mixin;
 var modelProps18 = _makeModelMixin19.props;
 var MODEL_PROP_NAME18 = _makeModelMixin19.prop;
 var MODEL_EVENT_NAME18 = _makeModelMixin19.event;
-var props127 = sortKeys(_objectSpread88(_objectSpread88({}, modelProps18), {}, _defineProperty109({
+var props128 = sortKeys(_objectSpread88(_objectSpread88({}, modelProps18), {}, _defineProperty109({
   fields: makeProp(PROP_TYPE_ARRAY, null),
   // Provider mixin adds in `Function` type
   items: makeProp(PROP_TYPE_ARRAY, []),
@@ -26049,15 +32473,15 @@ var props127 = sortKeys(_objectSpread88(_objectSpread88({}, modelProps18), {}, _
   // If provided the value in each row must be unique!
   primaryKey: makeProp(PROP_TYPE_STRING)
 }, MODEL_PROP_NAME18, makeProp(PROP_TYPE_ARRAY, []))));
-var itemsMixin = extend({
+var itemsMixin = extend2({
   mixins: [modelMixin18, useParentMixin],
-  props: props127,
+  props: props128,
   data: function data38() {
     var items3 = this.items;
     return {
       // Our local copy of the items
       // Must be an array
-      localItems: isArray(items3) ? items3.slice() : []
+      localItems: isArray2(items3) ? items3.slice() : []
     };
   },
   computed: {
@@ -26070,9 +32494,9 @@ var itemsMixin = extend({
         obj[f.key] = clone(f);
         if (f.formatter) {
           var formatter = f.formatter;
-          if (isString(formatter) && isFunction(bvParent2[formatter])) {
+          if (isString(formatter) && isFunction2(bvParent2[formatter])) {
             formatter = bvParent2[formatter];
-          } else if (!isFunction(formatter)) {
+          } else if (!isFunction2(formatter)) {
             formatter = void 0;
           }
           obj[f.key].formatter = formatter;
@@ -26099,17 +32523,17 @@ var itemsMixin = extend({
   },
   watch: {
     items: function items(newValue) {
-      this.localItems = isArray(newValue) ? newValue.slice() : [];
+      this.localItems = isArray2(newValue) ? newValue.slice() : [];
     },
     // Watch for changes on `computedItems` and update the `v-model`
     computedItems: function computedItems2(newValue, oldValue) {
-      if (!looseEqual(newValue, oldValue)) {
+      if (!looseEqual2(newValue, oldValue)) {
         this.$emit(MODEL_EVENT_NAME18, newValue);
       }
     },
     // Watch for context changes
     context: function context6(newValue, oldValue) {
-      if (!looseEqual(newValue, oldValue)) {
+      if (!looseEqual2(newValue, oldValue)) {
         this.$emit(EVENT_NAME_CONTEXT_CHANGED, newValue);
       }
     }
@@ -26127,12 +32551,12 @@ var itemsMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/mixin-pagination.js
-var props128 = {
+var props129 = {
   currentPage: makeProp(PROP_TYPE_NUMBER_STRING, 1),
   perPage: makeProp(PROP_TYPE_NUMBER_STRING, 0)
 };
-var paginationMixin2 = extend({
-  props: props128,
+var paginationMixin2 = extend2({
+  props: props129,
   computed: {
     localPaging: function localPaging() {
       return this.hasProvider ? !!this.noProviderPaging : true;
@@ -26153,7 +32577,7 @@ var paginationMixin2 = extend({
 // node_modules/bootstrap-vue/esm/components/table/helpers/mixin-provider.js
 var ROOT_EVENT_NAME_REFRESHED = getRootEventName(NAME_TABLE, EVENT_NAME_REFRESHED);
 var ROOT_ACTION_EVENT_NAME_REFRESH = getRootActionEventName(NAME_TABLE, EVENT_NAME_REFRESH);
-var props129 = {
+var props130 = {
   // Passed to the context object
   // Not used by `<b-table>` directly
   apiUrl: makeProp(PROP_TYPE_STRING),
@@ -26163,12 +32587,12 @@ var props129 = {
   noProviderPaging: makeProp(PROP_TYPE_BOOLEAN, false),
   noProviderSorting: makeProp(PROP_TYPE_BOOLEAN, false)
 };
-var providerMixin = extend({
+var providerMixin = extend2({
   mixins: [listenOnRootMixin],
-  props: props129,
+  props: props130,
   computed: {
     hasProvider: function hasProvider() {
-      return isFunction(this.items);
+      return isFunction2(this.items);
     },
     providerTriggerContext: function providerTriggerContext() {
       var ctx = {
@@ -26196,12 +32620,12 @@ var providerMixin = extend({
   watch: {
     // Provider update triggering
     items: function items2(newValue) {
-      if (this.hasProvider || isFunction(newValue)) {
+      if (this.hasProvider || isFunction2(newValue)) {
         this.$nextTick(this._providerUpdate);
       }
     },
     providerTriggerContext: function providerTriggerContext2(newValue, oldValue) {
-      if (!looseEqual(newValue, oldValue)) {
+      if (!looseEqual2(newValue, oldValue)) {
         this.$nextTick(this._providerUpdate);
       }
     }
@@ -26230,13 +32654,13 @@ var providerMixin = extend({
         if (this.hasProvider) {
           this.$nextTick(this._providerUpdate);
         } else {
-          this.localItems = isArray(items3) ? items3.slice() : [];
+          this.localItems = isArray2(items3) ? items3.slice() : [];
         }
       }
     },
     // Provider related methods
     _providerSetLocal: function _providerSetLocal(items3) {
-      this.localItems = isArray(items3) ? items3.slice() : [];
+      this.localItems = isArray2(items3) ? items3.slice() : [];
       this.localBusy = false;
       this.$emit(EVENT_NAME_REFRESHED);
       if (this.id) {
@@ -26256,20 +32680,20 @@ var providerMixin = extend({
       this.$nextTick(function() {
         try {
           var data48 = _this2.items(_this2.context, _this2._providerSetLocal);
-          if (isPromise(data48)) {
+          if (isPromise2(data48)) {
             data48.then(function(items3) {
               _this2._providerSetLocal(items3);
             });
-          } else if (isArray(data48)) {
+          } else if (isArray2(data48)) {
             _this2._providerSetLocal(data48);
           } else {
             if (_this2.items.length !== 2) {
-              warn("Provider function didn't request callback and did not return a promise or data.", NAME_TABLE);
+              warn2("Provider function didn't request callback and did not return a promise or data.", NAME_TABLE);
               _this2.localBusy = false;
             }
           }
         } catch (e2) {
-          warn("Provider function error [".concat(e2.name, "] ").concat(e2.message, "."), NAME_TABLE);
+          warn2("Provider function error [".concat(e2.name, "] ").concat(e2.message, "."), NAME_TABLE);
           _this2.localBusy = false;
           _this2.$off(EVENT_NAME_REFRESHED, _this2.refresh);
         }
@@ -26289,7 +32713,7 @@ function _defineProperty110(obj, key, value2) {
 }
 var SELECT_MODES = ["range", "multi", "single"];
 var ROLE_GRID = "grid";
-var props130 = {
+var props131 = {
   // Disable use of click handlers for row selection
   noSelectOnClick: makeProp(PROP_TYPE_BOOLEAN, false),
   selectMode: makeProp(PROP_TYPE_STRING, "multi", function(value2) {
@@ -26298,8 +32722,8 @@ var props130 = {
   selectable: makeProp(PROP_TYPE_BOOLEAN, false),
   selectedVariant: makeProp(PROP_TYPE_STRING, "active")
 };
-var selectableMixin = extend({
-  props: props130,
+var selectableMixin = extend2({
+  props: props131,
   data: function data39() {
     return {
       selectedRows: [],
@@ -26318,7 +32742,7 @@ var selectableMixin = extend({
     },
     selectableHasSelection: function selectableHasSelection() {
       var selectedRows2 = this.selectedRows;
-      return this.isSelectable && selectedRows2 && selectedRows2.length > 0 && selectedRows2.some(identity);
+      return this.isSelectable && selectedRows2 && selectedRows2.length > 0 && selectedRows2.some(identity2);
     },
     selectableIsMultiSelect: function selectableIsMultiSelect() {
       return this.isSelectable && arrayIncludes(["range", "multi"], this.selectMode);
@@ -26340,7 +32764,7 @@ var selectableMixin = extend({
         // TODO:
         //   Should this attribute not be included when `no-select-on-click` is set
         //   since this attribute implies keyboard navigation?
-        "aria-multiselectable": role === ROLE_GRID ? toString3(this.selectableIsMultiSelect) : null
+        "aria-multiselectable": role === ROLE_GRID ? toString4(this.selectableIsMultiSelect) : null
       };
     }
   },
@@ -26348,9 +32772,9 @@ var selectableMixin = extend({
     computedItems: function computedItems3(newValue, oldValue) {
       var equal = false;
       if (this.isSelectable && this.selectedRows.length > 0) {
-        equal = isArray(newValue) && isArray(oldValue) && newValue.length === oldValue.length;
+        equal = isArray2(newValue) && isArray2(oldValue) && newValue.length === oldValue.length;
         for (var i = 0; equal && i < newValue.length; i++) {
-          equal = looseEqual(sanitizeRow(newValue[i]), sanitizeRow(oldValue[i]));
+          equal = looseEqual2(sanitizeRow(newValue[i]), sanitizeRow(oldValue[i]));
         }
       }
       if (!equal) {
@@ -26370,7 +32794,7 @@ var selectableMixin = extend({
     },
     selectedRows: function selectedRows(_selectedRows, oldValue) {
       var _this = this;
-      if (this.isSelectable && !looseEqual(_selectedRows, oldValue)) {
+      if (this.isSelectable && !looseEqual2(_selectedRows, oldValue)) {
         var items3 = [];
         _selectedRows.forEach(function(v, idx) {
           if (v) {
@@ -26388,18 +32812,18 @@ var selectableMixin = extend({
   },
   methods: {
     // Public methods
-    selectRow: function selectRow(index2) {
-      if (this.isSelectable && isNumber(index2) && index2 >= 0 && index2 < this.computedItems.length && !this.isRowSelected(index2)) {
+    selectRow: function selectRow(index3) {
+      if (this.isSelectable && isNumber(index3) && index3 >= 0 && index3 < this.computedItems.length && !this.isRowSelected(index3)) {
         var selectedRows2 = this.selectableIsMultiSelect ? this.selectedRows.slice() : [];
-        selectedRows2[index2] = true;
+        selectedRows2[index3] = true;
         this.selectedLastClicked = -1;
         this.selectedRows = selectedRows2;
       }
     },
-    unselectRow: function unselectRow(index2) {
-      if (this.isSelectable && isNumber(index2) && this.isRowSelected(index2)) {
+    unselectRow: function unselectRow(index3) {
+      if (this.isSelectable && isNumber(index3) && this.isRowSelected(index3)) {
         var selectedRows2 = this.selectedRows.slice();
-        selectedRows2[index2] = false;
+        selectedRows2[index3] = false;
         this.selectedLastClicked = -1;
         this.selectedRows = selectedRows2;
       }
@@ -26411,16 +32835,16 @@ var selectableMixin = extend({
         this.selectedRows = this.selectableIsMultiSelect ? createArray(length, true) : [true];
       }
     },
-    isRowSelected: function isRowSelected(index2) {
-      return !!(isNumber(index2) && this.selectedRows[index2]);
+    isRowSelected: function isRowSelected(index3) {
+      return !!(isNumber(index3) && this.selectedRows[index3]);
     },
     clearSelected: function clearSelected() {
       this.selectedLastClicked = -1;
       this.selectedRows = [];
     },
     // Internal private methods
-    selectableRowClasses: function selectableRowClasses(index2) {
-      if (this.isSelectable && this.isRowSelected(index2)) {
+    selectableRowClasses: function selectableRowClasses(index3) {
+      if (this.isSelectable && this.isRowSelected(index3)) {
         var variant = this.selectedVariant;
         return _defineProperty110({
           "b-table-row-selected": true
@@ -26428,9 +32852,9 @@ var selectableMixin = extend({
       }
       return {};
     },
-    selectableRowAttrs: function selectableRowAttrs(index2) {
+    selectableRowAttrs: function selectableRowAttrs(index3) {
       return {
-        "aria-selected": !this.isSelectable ? null : this.isRowSelected(index2) ? "true" : "false"
+        "aria-selected": !this.isSelectable ? null : this.isRowSelected(index3) ? "true" : "false"
       };
     },
     setSelectionHandlers: function setSelectionHandlers(on) {
@@ -26439,19 +32863,19 @@ var selectableMixin = extend({
       this[method](EVENT_NAME_FILTERED, this.clearSelected);
       this[method](EVENT_NAME_CONTEXT_CHANGED, this.clearSelected);
     },
-    selectionHandler: function selectionHandler(item, index2, event2) {
+    selectionHandler: function selectionHandler(item, index3, event2) {
       if (!this.isSelectable || this.noSelectOnClick) {
         this.clearSelected();
         return;
       }
       var selectMode2 = this.selectMode, selectedLastRow = this.selectedLastRow;
       var selectedRows2 = this.selectedRows.slice();
-      var selected = !selectedRows2[index2];
+      var selected = !selectedRows2[index3];
       if (selectMode2 === "single") {
         selectedRows2 = [];
       } else if (selectMode2 === "range") {
         if (selectedLastRow > -1 && event2.shiftKey) {
-          for (var idx = mathMin(selectedLastRow, index2); idx <= mathMax(selectedLastRow, index2); idx++) {
+          for (var idx = mathMin(selectedLastRow, index3); idx <= mathMax(selectedLastRow, index3); idx++) {
             selectedRows2[idx] = true;
           }
           selected = true;
@@ -26461,10 +32885,10 @@ var selectableMixin = extend({
             selected = true;
           }
           if (selected)
-            this.selectedLastRow = index2;
+            this.selectedLastRow = index3;
         }
       }
-      selectedRows2[index2] = selected;
+      selectedRows2[index3] = selected;
       this.selectedRows = selectedRows2;
     }
   }
@@ -26472,8 +32896,8 @@ var selectableMixin = extend({
 
 // node_modules/bootstrap-vue/esm/utils/stable-sort.js
 var stableSort = function stableSort2(array, compareFn) {
-  return array.map(function(a2, index2) {
-    return [index2, a2];
+  return array.map(function(a2, index3) {
+    return [index3, a2];
   }).sort((function(a2, b) {
     return this(a2[1], b[1]) || a2[0] - b[0];
   }).bind(compareFn)).map(function(e2) {
@@ -26495,7 +32919,7 @@ var defaultSortCompare = function defaultSortCompare2(a2, b) {
   var _ref = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {}, _ref$sortBy = _ref.sortBy, sortBy = _ref$sortBy === void 0 ? null : _ref$sortBy, _ref$formatter = _ref.formatter, formatter = _ref$formatter === void 0 ? null : _ref$formatter, _ref$locale = _ref.locale, locale = _ref$locale === void 0 ? void 0 : _ref$locale, _ref$localeOptions = _ref.localeOptions, localeOptions = _ref$localeOptions === void 0 ? {} : _ref$localeOptions, _ref$nullLast = _ref.nullLast, nullLast = _ref$nullLast === void 0 ? false : _ref$nullLast;
   var aa = get(a2, sortBy, null);
   var bb = get(b, sortBy, null);
-  if (isFunction(formatter)) {
+  if (isFunction2(formatter)) {
     aa = formatter(aa, sortBy, a2);
     bb = formatter(bb, sortBy, b);
   }
@@ -26524,16 +32948,16 @@ function ownKeys89(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread89(target) {
+function _objectSpread89(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys89(Object(source), true).forEach(function(key) {
-      _defineProperty111(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys89(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty111(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys89(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty111(obj, key, value2) {
   if (key in obj) {
@@ -26551,7 +32975,7 @@ var SORT_DIRECTION_ASC = "asc";
 var SORT_DIRECTION_DESC = "desc";
 var SORT_DIRECTION_LAST = "last";
 var SORT_DIRECTIONS = [SORT_DIRECTION_ASC, SORT_DIRECTION_DESC, SORT_DIRECTION_LAST];
-var props131 = (_props = {
+var props132 = (_props = {
   labelSortAsc: makeProp(PROP_TYPE_STRING, "Click to sort ascending"),
   labelSortClear: makeProp(PROP_TYPE_STRING, "Click to clear sorting"),
   labelSortDesc: makeProp(PROP_TYPE_STRING, "Click to sort descending"),
@@ -26567,8 +32991,8 @@ var props131 = (_props = {
 })), _defineProperty111(_props, MODEL_PROP_NAME_SORT_DESC, makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty111(_props, "sortDirection", makeProp(PROP_TYPE_STRING, SORT_DIRECTION_ASC, function(value2) {
   return arrayIncludes(SORT_DIRECTIONS, value2);
 })), _defineProperty111(_props, "sortIconLeft", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty111(_props, "sortNullLast", makeProp(PROP_TYPE_BOOLEAN, false)), _props);
-var sortingMixin = extend({
-  props: props131,
+var sortingMixin = extend2({
+  props: props132,
   data: function data40() {
     return {
       localSortBy: this[MODEL_PROP_NAME_SORT_BY] || "",
@@ -26595,13 +33019,13 @@ var sortingMixin = extend({
       if (sortBy && localSorting2) {
         var field = this.computedFieldsObj[sortBy] || {};
         var sortByFormatted = field.sortByFormatted;
-        var formatter = isFunction(sortByFormatted) ? (
+        var formatter = isFunction2(sortByFormatted) ? (
           /* istanbul ignore next */
           sortByFormatted
         ) : sortByFormatted ? this.getFieldFormatter(sortBy) : void 0;
         return stableSort(items3, function(a2, b) {
           var result = null;
-          if (isFunction(sortCompare)) {
+          if (isFunction2(sortCompare)) {
             result = sortCompare(a2, b, sortBy, sortDesc, formatter, localeOptions, locale);
           }
           if (isUndefinedOrNull(result) || result === false) {
@@ -26750,11 +33174,11 @@ function _defineProperty112(obj, key, value2) {
   }
   return obj;
 }
-var props132 = {
+var props133 = {
   stacked: makeProp(PROP_TYPE_BOOLEAN_STRING, false)
 };
-var stackedMixin = extend({
-  props: props132,
+var stackedMixin = extend2({
+  props: props133,
   computed: {
     isStacked: function isStacked3() {
       var stacked = this.stacked;
@@ -26783,16 +33207,16 @@ function ownKeys90(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread90(target) {
+function _objectSpread90(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys90(Object(source), true).forEach(function(key) {
-      _defineProperty113(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys90(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty113(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys90(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty113(obj, key, value2) {
   if (key in obj) {
@@ -26802,7 +33226,7 @@ function _defineProperty113(obj, key, value2) {
   }
   return obj;
 }
-var props133 = {
+var props134 = {
   bordered: makeProp(PROP_TYPE_BOOLEAN, false),
   borderless: makeProp(PROP_TYPE_BOOLEAN, false),
   captionTop: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -26819,7 +33243,7 @@ var props133 = {
   tableClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   tableVariant: makeProp(PROP_TYPE_STRING)
 };
-var tableRendererMixin = extend({
+var tableRendererMixin = extend2({
   mixins: [attrsMixin],
   provide: function provide9() {
     var _this = this;
@@ -26832,7 +33256,7 @@ var tableRendererMixin = extend({
   // Don't place attributes on root element automatically,
   // as table could be wrapped in responsive `<div>`
   inheritAttrs: false,
-  props: props133,
+  props: props134,
   computed: {
     isTableSimple: function isTableSimple() {
       return false;
@@ -26849,11 +33273,11 @@ var tableRendererMixin = extend({
     },
     wrapperClasses: function wrapperClasses() {
       var isResponsive7 = this.isResponsive;
-      return [this.isStickyHeader ? "b-table-sticky-header" : "", isResponsive7 === true ? "table-responsive" : isResponsive7 ? "table-responsive-".concat(this.responsive) : ""].filter(identity);
+      return [this.isStickyHeader ? "b-table-sticky-header" : "", isResponsive7 === true ? "table-responsive" : isResponsive7 ? "table-responsive-".concat(this.responsive) : ""].filter(identity2);
     },
     wrapperStyles: function wrapperStyles() {
       var isStickyHeader7 = this.isStickyHeader;
-      return isStickyHeader7 && !isBoolean(isStickyHeader7) ? {
+      return isStickyHeader7 && !isBoolean2(isStickyHeader7) ? {
         maxHeight: isStickyHeader7
       } : {};
     },
@@ -26887,12 +33311,12 @@ var tableRendererMixin = extend({
     tableAttrs: function tableAttrs() {
       var _safeVueInstance2 = safeVueInstance(this), items3 = _safeVueInstance2.computedItems, filteredItems2 = _safeVueInstance2.filteredItems, fields = _safeVueInstance2.computedFields, selectableTableAttrs2 = _safeVueInstance2.selectableTableAttrs, computedBusy2 = _safeVueInstance2.computedBusy;
       var ariaAttrs = this.isTableSimple ? {} : {
-        "aria-busy": toString3(computedBusy2),
-        "aria-colcount": toString3(fields.length),
+        "aria-busy": toString4(computedBusy2),
+        "aria-colcount": toString4(fields.length),
         // Preserve user supplied `aria-describedby`, if provided
         "aria-describedby": this.bvAttrs["aria-describedby"] || this.$refs.caption ? this.captionId : null
       };
-      var rowCount = items3 && filteredItems2 && filteredItems2.length > items3.length ? toString3(filteredItems2.length) : null;
+      var rowCount = items3 && filteredItems2 && filteredItems2.length > items3.length ? toString4(filteredItems2.length) : null;
       return _objectSpread90(_objectSpread90(_objectSpread90({
         // We set `aria-rowcount` before merging in `$attrs`,
         // in case user has supplied their own
@@ -26921,7 +33345,7 @@ var tableRendererMixin = extend({
       class: this.tableClasses,
       attrs: this.tableAttrs,
       key: "b-table"
-    }, $content.filter(identity));
+    }, $content.filter(identity2));
     return wrapperClasses2.length > 0 ? h("div", {
       class: wrapperClasses2,
       style: this.wrapperStyles,
@@ -26941,16 +33365,16 @@ function ownKeys91(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread91(target) {
+function _objectSpread91(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys91(Object(source), true).forEach(function(key) {
-      _defineProperty114(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys91(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty114(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys91(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty114(obj, key, value2) {
   if (key in obj) {
@@ -26960,11 +33384,11 @@ function _defineProperty114(obj, key, value2) {
   }
   return obj;
 }
-var props134 = makePropsConfigurable({
+var props135 = makePropsConfigurable({
   tbodyTransitionHandlers: makeProp(PROP_TYPE_OBJECT),
   tbodyTransitionProps: makeProp(PROP_TYPE_OBJECT)
 }, NAME_TBODY);
-var BTbody = extend({
+var BTbody = extend2({
   name: NAME_TBODY,
   mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
   provide: function provide10() {
@@ -26989,7 +33413,7 @@ var BTbody = extend({
     }
   },
   inheritAttrs: false,
-  props: props134,
+  props: props135,
   computed: {
     bvTable: function bvTable() {
       return this.getBvTable();
@@ -27076,7 +33500,7 @@ var filterEvent = function filterEvent2(event2) {
       return true;
     }
   }
-  return matches(el, EVENT_FILTER);
+  return matches2(el, EVENT_FILTER);
 };
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/text-selection-active.js
@@ -27090,11 +33514,11 @@ var textSelectionActive = function textSelectionActive2() {
 };
 
 // node_modules/bootstrap-vue/esm/components/table/th.js
-var props135 = makePropsConfigurable(props121, NAME_TH);
-var BTh = extend({
+var props136 = makePropsConfigurable(props122, NAME_TH);
+var BTh = extend2({
   name: NAME_TH,
   extends: BTd,
-  props: props135,
+  props: props136,
   computed: {
     tag: function tag2() {
       return "th";
@@ -27113,16 +33537,16 @@ function ownKeys92(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread92(target) {
+function _objectSpread92(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys92(Object(source), true).forEach(function(key) {
-      _defineProperty115(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys92(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty115(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys92(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty115(obj, key, value2) {
   if (key in obj) {
@@ -27167,23 +33591,23 @@ function _arrayLikeToArray10(arr, len) {
   }
   return arr2;
 }
-var props136 = {
+var props137 = {
   detailsTdClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   tbodyTrAttr: makeProp(PROP_TYPE_OBJECT_FUNCTION),
   tbodyTrClass: makeProp([].concat(_toConsumableArray7(PROP_TYPE_ARRAY_OBJECT_STRING), [PROP_TYPE_FUNCTION]))
 };
-var tbodyRowMixin = extend({
+var tbodyRowMixin = extend2({
   mixins: [useParentMixin],
-  props: props136,
+  props: props137,
   methods: {
     // Methods for computing classes, attributes and styles for table cells
     getTdValues: function getTdValues(item, key, tdValue, defaultValue) {
       var bvParent2 = this.bvParent;
       if (tdValue) {
         var value2 = get(item, key, "");
-        if (isFunction(tdValue)) {
+        if (isFunction2(tdValue)) {
           return tdValue(value2, key, item);
-        } else if (isString(tdValue) && isFunction(bvParent2[tdValue])) {
+        } else if (isString(tdValue) && isFunction2(bvParent2[tdValue])) {
           return bvParent2[tdValue](value2, key, item);
         }
         return tdValue;
@@ -27194,9 +33618,9 @@ var tbodyRowMixin = extend({
       var bvParent2 = this.bvParent;
       if (thValue) {
         var value2 = get(item, key, "");
-        if (isFunction(thValue)) {
+        if (isFunction2(thValue)) {
           return thValue(value2, key, item, type2);
-        } else if (isString(thValue) && isFunction(bvParent2[thValue])) {
+        } else if (isString(thValue) && isFunction2(bvParent2[thValue])) {
           return bvParent2[thValue](value2, key, item, type2);
         }
         return thValue;
@@ -27208,7 +33632,7 @@ var tbodyRowMixin = extend({
       var key = field.key;
       var formatter = this.getFieldFormatter(key);
       var value2 = get(item, key, null);
-      if (isFunction(formatter)) {
+      if (isFunction2(formatter)) {
         value2 = formatter(value2, key, item);
       }
       return isUndefinedOrNull(value2) ? "" : value2;
@@ -27263,7 +33687,7 @@ var tbodyRowMixin = extend({
           variant: cellVariant
         };
       } else {
-        data48.attrs["data-label"] = isStacked7 && !isUndefinedOrNull(label) ? toString3(label) : null;
+        data48.attrs["data-label"] = isStacked7 && !isUndefinedOrNull(label) ? toString4(label) : null;
         data48.attrs.role = isRowHeader ? "rowheader" : "cell";
         data48.attrs.scope = isRowHeader ? "row" : null;
         if (cellVariant) {
@@ -27289,7 +33713,7 @@ var tbodyRowMixin = extend({
         };
       }
       var slotName = this.$_bodyFieldSlotNameCache[key];
-      var $childNodes = slotName ? this.normalizeSlot(slotName, slotScope6) : toString3(formatted);
+      var $childNodes = slotName ? this.normalizeSlot(slotName, slotScope6) : toString4(formatted);
       if (this.isStacked) {
         $childNodes = [h("div", [$childNodes])];
       }
@@ -27312,13 +33736,13 @@ var tbodyRowMixin = extend({
       if (currentPage2 && perPage && perPage > 0) {
         ariaRowIndex = String((currentPage2 - 1) * perPage + rowIndex + 1);
       }
-      var primaryKeyValue = toString3(get(item, primaryKey)) || null;
-      var rowKey = primaryKeyValue || toString3(rowIndex);
+      var primaryKeyValue = toString4(get(item, primaryKey)) || null;
+      var rowKey = primaryKeyValue || toString4(rowIndex);
       var rowId = primaryKeyValue ? this.safeId("_row_".concat(primaryKeyValue)) : null;
       var selectableClasses = safeVueInstance(this).selectableRowClasses ? this.selectableRowClasses(rowIndex) : {};
       var selectableAttrs = safeVueInstance(this).selectableRowAttrs ? this.selectableRowAttrs(rowIndex) : {};
-      var userTrClasses = isFunction(tbodyTrClass) ? tbodyTrClass(item, "row") : tbodyTrClass;
-      var userTrAttrs = isFunction(tbodyTrAttr) ? (
+      var userTrClasses = isFunction2(tbodyTrClass) ? tbodyTrClass(item, "row") : tbodyTrClass;
+      var userTrAttrs = isFunction2(tbodyTrAttr) ? (
         /* istanbul ignore next */
         tbodyTrAttr(item, "row")
       ) : tbodyTrAttr;
@@ -27380,11 +33804,11 @@ var tbodyRowMixin = extend({
             })
           );
         }
-        var userDetailsTrClasses = isFunction(this.tbodyTrClass) ? (
+        var userDetailsTrClasses = isFunction2(this.tbodyTrClass) ? (
           /* istanbul ignore next */
           this.tbodyTrClass(item, SLOT_NAME_ROW_DETAILS)
         ) : this.tbodyTrClass;
-        var userDetailsTrAttrs = isFunction(this.tbodyTrAttr) ? (
+        var userDetailsTrAttrs = isFunction2(this.tbodyTrAttr) ? (
           /* istanbul ignore next */
           this.tbodyTrAttr(item, SLOT_NAME_ROW_DETAILS)
         ) : this.tbodyTrAttr;
@@ -27423,16 +33847,16 @@ function ownKeys93(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread93(target) {
+function _objectSpread93(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys93(Object(source), true).forEach(function(key) {
-      _defineProperty116(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys93(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty116(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys93(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty116(obj, key, value2) {
   if (key in obj) {
@@ -27445,12 +33869,12 @@ function _defineProperty116(obj, key, value2) {
 var getCellSlotName = function getCellSlotName2(value2) {
   return "cell(".concat(value2 || "", ")");
 };
-var props137 = sortKeys(_objectSpread93(_objectSpread93(_objectSpread93({}, props134), props136), {}, {
+var props138 = sortKeys(_objectSpread93(_objectSpread93(_objectSpread93({}, props135), props137), {}, {
   tbodyClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)
 }));
-var tbodyMixin = extend({
+var tbodyMixin = extend2({
   mixins: [tbodyRowMixin],
-  props: props137,
+  props: props138,
   beforeDestroy: function beforeDestroy24() {
     this.$_bodyFieldSlotNameCache = null;
   },
@@ -27496,15 +33920,15 @@ var tbodyMixin = extend({
     },
     // Delegated row event handlers
     onTbodyRowKeydown: function onTbodyRowKeydown(event2) {
-      var target = event2.target, keyCode = event2.keyCode;
-      if (this.tbodyRowEventStopped(event2) || target.tagName !== "TR" || !isActiveElement(target) || target.tabIndex !== 0) {
+      var target2 = event2.target, keyCode = event2.keyCode;
+      if (this.tbodyRowEventStopped(event2) || target2.tagName !== "TR" || !isActiveElement(target2) || target2.tabIndex !== 0) {
         return;
       }
       if (arrayIncludes([CODE_ENTER, CODE_SPACE], keyCode)) {
         stopEvent(event2);
         this.onTBodyRowClicked(event2);
       } else if (arrayIncludes([CODE_UP, CODE_DOWN, CODE_HOME, CODE_END], keyCode)) {
-        var rowIndex = this.getTbodyTrIndex(target);
+        var rowIndex = this.getTbodyTrIndex(target2);
         if (rowIndex > -1) {
           stopEvent(event2);
           var trs = this.getTbodyTrs();
@@ -27595,7 +34019,7 @@ var tbodyMixin = extend({
       }
       var $tbody = h(BTbody, {
         class: this.tbodyClass || null,
-        props: pluckProps(props134, this.$props),
+        props: pluckProps(props135, this.$props),
         // BTbody transfers all native event listeners to the root element
         // TODO: Only set the handlers if the table is not busy
         on: handlers,
@@ -27617,16 +34041,16 @@ function ownKeys94(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread94(target) {
+function _objectSpread94(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys94(Object(source), true).forEach(function(key) {
-      _defineProperty117(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys94(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty117(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys94(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty117(obj, key, value2) {
   if (key in obj) {
@@ -27636,11 +34060,11 @@ function _defineProperty117(obj, key, value2) {
   }
   return obj;
 }
-var props138 = makePropsConfigurable({
+var props139 = makePropsConfigurable({
   // Supported values: 'lite', 'dark', or null
   footVariant: makeProp(PROP_TYPE_STRING)
 }, NAME_TFOOT);
-var BTfoot = extend({
+var BTfoot = extend2({
   name: NAME_TFOOT,
   mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
   provide: function provide11() {
@@ -27665,7 +34089,7 @@ var BTfoot = extend({
     }
   },
   inheritAttrs: false,
-  props: props138,
+  props: props139,
   computed: {
     bvTable: function bvTable2() {
       return this.getBvTable();
@@ -27721,7 +34145,7 @@ var BTfoot = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/mixin-tfoot.js
-var props139 = {
+var props140 = {
   footClone: makeProp(PROP_TYPE_BOOLEAN, false),
   // Any Bootstrap theme variant (or custom)
   // Falls back to `headRowVariant`
@@ -27731,8 +34155,8 @@ var props139 = {
   tfootClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   tfootTrClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)
 };
-var tfootMixin = extend({
-  props: props139,
+var tfootMixin = extend2({
+  props: props140,
   methods: {
     renderTFootCustom: function renderTFootCustom() {
       var h = this.$createElement;
@@ -27768,16 +34192,16 @@ function ownKeys95(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread95(target) {
+function _objectSpread95(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys95(Object(source), true).forEach(function(key) {
-      _defineProperty118(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys95(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty118(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys95(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty118(obj, key, value2) {
   if (key in obj) {
@@ -27787,12 +34211,12 @@ function _defineProperty118(obj, key, value2) {
   }
   return obj;
 }
-var props140 = makePropsConfigurable({
+var props141 = makePropsConfigurable({
   // Also sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
   // Supported values: 'lite', 'dark', or `null`
   headVariant: makeProp(PROP_TYPE_STRING)
 }, NAME_THEAD);
-var BThead = extend({
+var BThead = extend2({
   name: NAME_THEAD,
   mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
   provide: function provide12() {
@@ -27817,7 +34241,7 @@ var BThead = extend({
     }
   },
   inheritAttrs: false,
-  props: props140,
+  props: props141,
   computed: {
     bvTable: function bvTable3() {
       return this.getBvTable();
@@ -27920,16 +34344,16 @@ function ownKeys96(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread96(target) {
+function _objectSpread96(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys96(Object(source), true).forEach(function(key) {
-      _defineProperty119(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys96(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty119(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys96(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty119(obj, key, value2) {
   if (key in obj) {
@@ -27945,7 +34369,7 @@ var getHeadSlotName = function getHeadSlotName2(value2) {
 var getFootSlotName = function getFootSlotName2(value2) {
   return "foot(".concat(value2 || "", ")");
 };
-var props141 = {
+var props142 = {
   // Any Bootstrap theme variant (or custom)
   headRowVariant: makeProp(PROP_TYPE_STRING),
   // 'light', 'dark' or `null` (or custom)
@@ -27953,8 +34377,8 @@ var props141 = {
   theadClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   theadTrClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)
 };
-var theadMixin = extend({
-  props: props141,
+var theadMixin = extend2({
+  props: props142,
   methods: {
     fieldClasses: function fieldClasses(field) {
       return [field.class ? field.class : "", field.thClass ? field.thClass : ""];
@@ -27979,8 +34403,8 @@ var theadMixin = extend({
         return h();
       }
       var hasHeadClickListener = isSortable3 || this.hasListener(EVENT_NAME_HEAD_CLICKED);
-      var selectAllRows2 = isSelectable2 ? this.selectAllRows : noop;
-      var clearSelected2 = isSelectable2 ? this.clearSelected : noop;
+      var selectAllRows2 = isSelectable2 ? this.selectAllRows : noop2;
+      var clearSelected2 = isSelectable2 ? this.clearSelected : noop2;
       var makeCell = function makeCell2(field, colIndex) {
         var label = field.label, labelHtml = field.labelHtml, variant = field.variant, stickyColumn = field.stickyColumn, key = field.key;
         var ariaLabel = null;
@@ -28044,9 +34468,9 @@ var theadMixin = extend({
         var $srLabel = sortLabel ? h("span", {
           staticClass: "sr-only"
         }, " (".concat(sortLabel, ")")) : null;
-        return h(BTh, data48, [$content, $srLabel].filter(identity));
+        return h(BTh, data48, [$content, $srLabel].filter(identity2));
       };
-      var $cells = fields.map(makeCell).filter(identity);
+      var $cells = fields.map(makeCell).filter(identity2);
       var $trs = [];
       if (isFoot) {
         $trs.push(h(BTr, {
@@ -28088,8 +34512,8 @@ var theadMixin = extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/table/helpers/mixin-top-row.js
-var props142 = {};
-var topRowMixin = extend({
+var props143 = {};
+var topRowMixin = extend2({
   methods: {
     renderTopRow: function renderTopRow() {
       var fields = this.computedFields, stacked = this.stacked, tbodyTrClass = this.tbodyTrClass, tbodyTrAttr = this.tbodyTrAttr;
@@ -28099,8 +34523,8 @@ var topRowMixin = extend({
       }
       return h(BTr, {
         staticClass: "b-table-top-row",
-        class: [isFunction(tbodyTrClass) ? tbodyTrClass(null, "row-top") : tbodyTrClass],
-        attrs: isFunction(tbodyTrAttr) ? tbodyTrAttr(null, "row-top") : tbodyTrAttr,
+        class: [isFunction2(tbodyTrClass) ? tbodyTrClass(null, "row-top") : tbodyTrClass],
+        attrs: isFunction2(tbodyTrAttr) ? tbodyTrAttr(null, "row-top") : tbodyTrAttr,
         key: "b-top-row"
       }, [this.normalizeSlot(SLOT_NAME_TOP_ROW, {
         columns: fields.length,
@@ -28121,16 +34545,16 @@ function ownKeys97(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread97(target) {
+function _objectSpread97(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys97(Object(source), true).forEach(function(key) {
-      _defineProperty120(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys97(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty120(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys97(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty120(obj, key, value2) {
   if (key in obj) {
@@ -28140,8 +34564,8 @@ function _defineProperty120(obj, key, value2) {
   }
   return obj;
 }
-var props143 = makePropsConfigurable(sortKeys(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97({}, props17), props120), props122), props123), props124), props125), props126), props127), props128), props129), props130), props131), props132), props133), props137), props139), props141), props142)), NAME_TABLE);
-var BTable = extend({
+var props144 = makePropsConfigurable(sortKeys(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97(_objectSpread97({}, props18), props121), props123), props124), props125), props126), props127), props128), props129), props130), props131), props132), props133), props134), props138), props140), props142), props143)), NAME_TABLE);
+var BTable = extend2({
   name: NAME_TABLE,
   // Order of mixins is important!
   // They are merged from first to last, followed by this component
@@ -28172,7 +34596,7 @@ var BTable = extend({
     busyMixin,
     providerMixin
   ],
-  props: props143
+  props: props144
   // Render function is provided by `tableRendererMixin`
 });
 
@@ -28187,16 +34611,16 @@ function ownKeys98(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread98(target) {
+function _objectSpread98(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys98(Object(source), true).forEach(function(key) {
-      _defineProperty121(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys98(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty121(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys98(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty121(obj, key, value2) {
   if (key in obj) {
@@ -28206,8 +34630,8 @@ function _defineProperty121(obj, key, value2) {
   }
   return obj;
 }
-var props144 = makePropsConfigurable(sortKeys(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98({}, props17), props123), props124), props127), props132), props133), props137), props139), props141)), NAME_TABLE_LITE);
-var BTableLite = extend({
+var props145 = makePropsConfigurable(sortKeys(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98(_objectSpread98({}, props18), props124), props125), props128), props133), props134), props138), props140), props142)), NAME_TABLE_LITE);
+var BTableLite = extend2({
   name: NAME_TABLE_LITE,
   // Order of mixins is important!
   // They are merged from first to last, followed by this component
@@ -28229,7 +34653,7 @@ var BTableLite = extend({
     captionMixin,
     colgroupMixin
   ],
-  props: props144
+  props: props145
   // Render function is provided by `tableRendererMixin`
 });
 
@@ -28244,16 +34668,16 @@ function ownKeys99(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread99(target) {
+function _objectSpread99(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys99(Object(source), true).forEach(function(key) {
-      _defineProperty122(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys99(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty122(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys99(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty122(obj, key, value2) {
   if (key in obj) {
@@ -28263,8 +34687,8 @@ function _defineProperty122(obj, key, value2) {
   }
   return obj;
 }
-var props145 = makePropsConfigurable(sortKeys(_objectSpread99(_objectSpread99(_objectSpread99({}, props17), props132), props133)), NAME_TABLE_SIMPLE);
-var BTableSimple = extend({
+var props146 = makePropsConfigurable(sortKeys(_objectSpread99(_objectSpread99(_objectSpread99({}, props18), props133), props134)), NAME_TABLE_SIMPLE);
+var BTableSimple = extend2({
   name: NAME_TABLE_SIMPLE,
   // Order of mixins is important!
   // They are merged from first to last, followed by this component
@@ -28281,7 +34705,7 @@ var BTableSimple = extend({
     // the table cell `stacked-heading` prop
     stackedMixin
   ],
-  props: props145,
+  props: props146,
   computed: {
     isTableSimple: function isTableSimple2() {
       return true;
@@ -28328,16 +34752,16 @@ function ownKeys100(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread100(target) {
+function _objectSpread100(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys100(Object(source), true).forEach(function(key) {
-      _defineProperty123(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys100(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty123(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys100(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty123(obj, key, value2) {
   if (key in obj) {
@@ -28350,7 +34774,7 @@ function _defineProperty123(obj, key, value2) {
 var isPositiveNumber = function isPositiveNumber2(value2) {
   return value2 > 0;
 };
-var props146 = makePropsConfigurable({
+var props147 = makePropsConfigurable({
   animation: makeProp(PROP_TYPE_STRING),
   columns: makeProp(PROP_TYPE_NUMBER, 5, isPositiveNumber),
   hideHeader: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -28358,13 +34782,13 @@ var props146 = makePropsConfigurable({
   showFooter: makeProp(PROP_TYPE_BOOLEAN, false),
   tableProps: makeProp(PROP_TYPE_OBJECT, {})
 }, NAME_SKELETON_TABLE);
-var BSkeletonTable = extend({
+var BSkeletonTable = extend2({
   name: NAME_SKELETON_TABLE,
   functional: true,
-  props: props146,
+  props: props147,
   render: function render112(h, _ref) {
-    var data48 = _ref.data, props152 = _ref.props;
-    var animation = props152.animation, columns = props152.columns;
+    var data48 = _ref.data, props153 = _ref.props;
+    var animation = props153.animation, columns = props153.columns;
     var $th = h("th", [h(BSkeleton, {
       props: {
         animation
@@ -28378,29 +34802,29 @@ var BSkeletonTable = extend({
       }
     })]);
     var $tdTr = h("tr", createArray(columns, $td));
-    var $tbody = h("tbody", createArray(props152.rows, $tdTr));
-    var $thead = !props152.hideHeader ? h("thead", [$thTr]) : h();
-    var $tfoot = props152.showFooter ? h("tfoot", [$thTr]) : h();
+    var $tbody = h("tbody", createArray(props153.rows, $tdTr));
+    var $thead = !props153.hideHeader ? h("thead", [$thTr]) : h();
+    var $tfoot = props153.showFooter ? h("tfoot", [$thTr]) : h();
     return h(BTableSimple, a(data48, {
-      props: _objectSpread100({}, props152.tableProps)
+      props: _objectSpread100({}, props153.tableProps)
     }), [$thead, $tbody, $tfoot]);
   }
 });
 
 // node_modules/bootstrap-vue/esm/components/skeleton/skeleton-wrapper.js
-var props147 = makePropsConfigurable({
+var props148 = makePropsConfigurable({
   loading: makeProp(PROP_TYPE_BOOLEAN, false)
 }, NAME_SKELETON_WRAPPER);
-var BSkeletonWrapper = extend({
+var BSkeletonWrapper = extend2({
   name: NAME_SKELETON_WRAPPER,
   functional: true,
-  props: props147,
+  props: props148,
   render: function render113(h, _ref) {
-    var data48 = _ref.data, props152 = _ref.props, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
+    var data48 = _ref.data, props153 = _ref.props, slots = _ref.slots, scopedSlots = _ref.scopedSlots;
     var $slots = slots();
     var $scopedSlots = scopedSlots || {};
     var slotScope6 = {};
-    if (props152.loading) {
+    if (props153.loading) {
       return h("div", a(data48, {
         attrs: {
           role: "alert",
@@ -28445,16 +34869,16 @@ function ownKeys101(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread101(target) {
+function _objectSpread101(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys101(Object(source), true).forEach(function(key) {
-      _defineProperty124(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys101(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty124(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys101(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty124(obj, key, value2) {
   if (key in obj) {
@@ -28474,7 +34898,7 @@ var MODEL_EVENT_NAME19 = _makeModelMixin20.event;
 var notDisabled = function notDisabled2(tab) {
   return !tab.disabled;
 };
-var BVTabButton = extend({
+var BVTabButton = extend2({
   name: NAME_TAB_BUTTON_HELPER,
   inject: {
     getBvTabs: {
@@ -28579,8 +35003,8 @@ var BVTabButton = extend({
     }, [$link]);
   }
 });
-var navProps = omit(props94, ["tabs", "isNavBar", "cardHeader"]);
-var props148 = makePropsConfigurable(sortKeys(_objectSpread101(_objectSpread101(_objectSpread101(_objectSpread101({}, props17), modelProps19), navProps), {}, {
+var navProps = omit(props95, ["tabs", "isNavBar", "cardHeader"]);
+var props149 = makePropsConfigurable(sortKeys(_objectSpread101(_objectSpread101(_objectSpread101(_objectSpread101({}, props18), modelProps19), navProps), {}, {
   // Only applied to the currently active `<b-nav-item>`
   activeNavItemClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
   // Only applied to the currently active `<b-tab>`
@@ -28599,7 +35023,7 @@ var props148 = makePropsConfigurable(sortKeys(_objectSpread101(_objectSpread101(
   noNavStyle: makeProp(PROP_TYPE_BOOLEAN, false),
   tag: makeProp(PROP_TYPE_STRING, "div")
 })), NAME_TABS);
-var BTabs = extend({
+var BTabs = extend2({
   name: NAME_TABS,
   mixins: [idMixin, modelMixin19, normalizeSlotMixin],
   provide: function provide13() {
@@ -28610,7 +35034,7 @@ var BTabs = extend({
       }
     };
   },
-  props: props148,
+  props: props149,
   data: function data41() {
     return {
       // Index of current tab
@@ -28649,19 +35073,19 @@ var BTabs = extend({
       }
     }
   }), _defineProperty124(_watch19, "currentTab", function currentTab(newValue) {
-    var index2 = -1;
+    var index3 = -1;
     this.tabs.forEach(function($tab, i) {
       if (i === newValue && !$tab.disabled) {
         $tab.localActive = true;
-        index2 = i;
+        index3 = i;
       } else {
         $tab.localActive = false;
       }
     });
-    this.$emit(MODEL_EVENT_NAME19, index2);
+    this.$emit(MODEL_EVENT_NAME19, index3);
   }), _defineProperty124(_watch19, "tabs", function tabs(newValue, oldValue) {
     var _this2 = this;
-    if (!looseEqual(newValue.map(function($tab) {
+    if (!looseEqual2(newValue.map(function($tab) {
       return $tab[COMPONENT_UID_KEY];
     }), oldValue.map(function($tab) {
       return $tab[COMPONENT_UID_KEY];
@@ -28725,7 +35149,7 @@ var BTabs = extend({
         }).join(", ");
         order = selectAll(selector, this.$el).map(function($el) {
           return $el.id;
-        }).filter(identity);
+        }).filter(identity2);
       }
       return stableSort($tabs, function(a2, b) {
         return order.indexOf(a2.safeId()) - order.indexOf(b.safeId());
@@ -28747,8 +35171,8 @@ var BTabs = extend({
       if (tabIndex < 0) {
         tabIndex = $tabs.indexOf($tabs.find(notDisabled));
       }
-      $tabs.forEach(function($tab, index2) {
-        $tab.localActive = index2 === tabIndex;
+      $tabs.forEach(function($tab, index3) {
+        $tab.localActive = index3 === tabIndex;
       });
       this.tabs = $tabs;
       this.currentTab = tabIndex;
@@ -28774,16 +35198,16 @@ var BTabs = extend({
       var currentTab2 = this.currentTab, $tabs = this.tabs;
       var result = false;
       if ($tab) {
-        var index2 = $tabs.indexOf($tab);
-        if (index2 !== currentTab2 && index2 > -1 && !$tab.disabled) {
+        var index3 = $tabs.indexOf($tab);
+        if (index3 !== currentTab2 && index3 > -1 && !$tab.disabled) {
           var tabEvent = new BvEvent(EVENT_NAME_ACTIVATE_TAB, {
             cancelable: true,
             vueTarget: this,
             componentId: this.safeId()
           });
-          this.$emit(tabEvent.type, index2, currentTab2, tabEvent);
+          this.$emit(tabEvent.type, index3, currentTab2, tabEvent);
           if (!tabEvent.defaultPrevented) {
-            this.currentTab = index2;
+            this.currentTab = index3;
             result = true;
           }
         }
@@ -28865,7 +35289,7 @@ var BTabs = extend({
     var $fallbackTab = $tabs.find(function($tab) {
       return !$tab.disabled;
     });
-    var $buttons = $tabs.map(function($tab, index2) {
+    var $buttons = $tabs.map(function($tab, index3) {
       var _on;
       var safeId2 = $tab.safeId;
       var tabIndex = null;
@@ -28880,7 +35304,7 @@ var BTabs = extend({
           controls: safeId2 ? safeId2() : null,
           id: $tab.controlledBy || (safeId2 ? safeId2("_BV_tab_button_") : null),
           noKeyNav,
-          posInSet: index2 + 1,
+          posInSet: index3 + 1,
           setSize: $tabs.length,
           tab: $tab,
           tabIndex
@@ -28888,7 +35312,7 @@ var BTabs = extend({
         on: (_on = {}, _defineProperty124(_on, EVENT_NAME_CLICK, function(event2) {
           _this5.clickTab($tab, event2);
         }), _defineProperty124(_on, EVENT_NAME_FIRST, firstTab2), _defineProperty124(_on, EVENT_NAME_PREV, previousTab2), _defineProperty124(_on, EVENT_NAME_NEXT, nextTab2), _defineProperty124(_on, EVENT_NAME_LAST, lastTab2), _on),
-        key: $tab[COMPONENT_UID_KEY] || index2,
+        key: $tab[COMPONENT_UID_KEY] || index3,
         ref: "buttons"
       }, REF_FOR_KEY, true));
     });
@@ -28965,16 +35389,16 @@ function ownKeys102(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread102(target) {
+function _objectSpread102(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys102(Object(source), true).forEach(function(key) {
-      _defineProperty125(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys102(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty125(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys102(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty125(obj, key, value2) {
   if (key in obj) {
@@ -28986,8 +35410,8 @@ function _defineProperty125(obj, key, value2) {
 }
 var MODEL_PROP_NAME_ACTIVE = "active";
 var MODEL_EVENT_NAME_ACTIVE = MODEL_EVENT_NAME_PREFIX + MODEL_PROP_NAME_ACTIVE;
-var props149 = makePropsConfigurable(sortKeys(_objectSpread102(_objectSpread102({}, props17), {}, (_objectSpread212 = {}, _defineProperty125(_objectSpread212, MODEL_PROP_NAME_ACTIVE, makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty125(_objectSpread212, "buttonId", makeProp(PROP_TYPE_STRING)), _defineProperty125(_objectSpread212, "disabled", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty125(_objectSpread212, "lazy", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty125(_objectSpread212, "noBody", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty125(_objectSpread212, "tag", makeProp(PROP_TYPE_STRING, "div")), _defineProperty125(_objectSpread212, "title", makeProp(PROP_TYPE_STRING)), _defineProperty125(_objectSpread212, "titleItemClass", makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)), _defineProperty125(_objectSpread212, "titleLinkAttributes", makeProp(PROP_TYPE_OBJECT)), _defineProperty125(_objectSpread212, "titleLinkClass", makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)), _objectSpread212))), NAME_TAB);
-var BTab = extend({
+var props150 = makePropsConfigurable(sortKeys(_objectSpread102(_objectSpread102({}, props18), {}, (_objectSpread212 = {}, _defineProperty125(_objectSpread212, MODEL_PROP_NAME_ACTIVE, makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty125(_objectSpread212, "buttonId", makeProp(PROP_TYPE_STRING)), _defineProperty125(_objectSpread212, "disabled", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty125(_objectSpread212, "lazy", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty125(_objectSpread212, "noBody", makeProp(PROP_TYPE_BOOLEAN, false)), _defineProperty125(_objectSpread212, "tag", makeProp(PROP_TYPE_STRING, "div")), _defineProperty125(_objectSpread212, "title", makeProp(PROP_TYPE_STRING)), _defineProperty125(_objectSpread212, "titleItemClass", makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)), _defineProperty125(_objectSpread212, "titleLinkAttributes", makeProp(PROP_TYPE_OBJECT)), _defineProperty125(_objectSpread212, "titleLinkClass", makeProp(PROP_TYPE_ARRAY_OBJECT_STRING)), _objectSpread212))), NAME_TAB);
+var BTab = extend2({
   name: NAME_TAB,
   mixins: [idMixin, normalizeSlotMixin],
   inject: {
@@ -28999,7 +35423,7 @@ var BTab = extend({
       }
     }
   },
-  props: props149,
+  props: props150,
   data: function data42() {
     return {
       localActive: this[MODEL_PROP_NAME_ACTIVE] && !this.disabled
@@ -29168,7 +35592,7 @@ function _iterableToArray9(iter) {
 function _nonIterableSpread9() {
   throw new TypeError("Invalid attempt to spread non-iterable instance");
 }
-var inBrowser = typeof window !== "undefined";
+var inBrowser2 = typeof window !== "undefined";
 function freeze(item) {
   if (Array.isArray(item) || _typeof5(item) === "object") {
     return Object.freeze(item);
@@ -29203,18 +35627,18 @@ function pick3(obj, keys3) {
 var transports = {};
 var targets = {};
 var sources = {};
-var Wormhole = Vue$1.extend({
+var Wormhole = Vue.extend({
   data: function data43() {
     return {
       transports,
       targets,
       sources,
-      trackInstances: inBrowser
+      trackInstances: inBrowser2
     };
   },
   methods: {
     open: function open(transport) {
-      if (!inBrowser)
+      if (!inBrowser2)
         return;
       var to2 = transport.to, from3 = transport.from, passengers2 = transport.passengers, _transport$order = transport.order, order = _transport$order === void 0 ? Infinity : _transport$order;
       if (!to2 || !from3 || !passengers2)
@@ -29227,7 +35651,7 @@ var Wormhole = Vue$1.extend({
       };
       var keys3 = Object.keys(this.transports);
       if (keys3.indexOf(to2) === -1) {
-        Vue$1.set(this.transports, to2, []);
+        Vue.set(this.transports, to2, []);
       }
       var currentIndex = this.$_getTransportIndex(newTransport);
       var newTransports = this.transports[to2].slice(0);
@@ -29251,27 +35675,27 @@ var Wormhole = Vue$1.extend({
       if (force) {
         this.transports[to2] = [];
       } else {
-        var index2 = this.$_getTransportIndex(transport);
-        if (index2 >= 0) {
+        var index3 = this.$_getTransportIndex(transport);
+        if (index3 >= 0) {
           var newTransports = this.transports[to2].slice(0);
-          newTransports.splice(index2, 1);
+          newTransports.splice(index3, 1);
           this.transports[to2] = newTransports;
         }
       }
     },
-    registerTarget: function registerTarget(target, vm, force) {
-      if (!inBrowser)
+    registerTarget: function registerTarget(target2, vm, force) {
+      if (!inBrowser2)
         return;
-      if (this.trackInstances && !force && this.targets[target]) {
-        console.warn("[portal-vue]: Target ".concat(target, " already exists"));
+      if (this.trackInstances && !force && this.targets[target2]) {
+        console.warn("[portal-vue]: Target ".concat(target2, " already exists"));
       }
-      this.$set(this.targets, target, Object.freeze([vm]));
+      this.$set(this.targets, target2, Object.freeze([vm]));
     },
-    unregisterTarget: function unregisterTarget(target) {
-      this.$delete(this.targets, target);
+    unregisterTarget: function unregisterTarget(target2) {
+      this.$delete(this.targets, target2);
     },
     registerSource: function registerSource(source, vm, force) {
-      if (!inBrowser)
+      if (!inBrowser2)
         return;
       if (this.trackInstances && !force && this.sources[source]) {
         console.warn("[portal-vue]: source ".concat(source, " already exists"));
@@ -29304,7 +35728,7 @@ var Wormhole = Vue$1.extend({
 });
 var wormhole = new Wormhole(transports);
 var _id = 1;
-var Portal = Vue$1.extend({
+var Portal = Vue.extend({
   name: "portal",
   props: {
     disabled: {
@@ -29369,10 +35793,10 @@ var Portal = Vue$1.extend({
     }
   },
   methods: {
-    clear: function clear(target) {
+    clear: function clear(target2) {
       var closer = {
         from: this.name,
-        to: target || this.to
+        to: target2 || this.to
       };
       wormhole.close(closer);
     },
@@ -29415,7 +35839,7 @@ var Portal = Vue$1.extend({
     }
   }
 });
-var PortalTarget = Vue$1.extend({
+var PortalTarget = Vue.extend({
   name: "portalTarget",
   props: {
     multiple: {
@@ -29520,7 +35944,7 @@ var PortalTarget = Vue$1.extend({
 var _id$1 = 0;
 var portalProps = ["disabled", "name", "order", "slim", "slotProps", "tag", "to"];
 var targetProps = ["multiple", "transition"];
-var MountingPortal = Vue$1.extend({
+var MountingPortal = Vue.extend({
   name: "MountingPortal",
   inheritAttrs: false,
   props: {
@@ -29599,16 +36023,16 @@ var MountingPortal = Vue$1.extend({
       console.error("[portal-vue]: Mount Point '".concat(this.mountTo, "' not found in document"));
       return;
     }
-    var props152 = this.$props;
-    if (wormhole.targets[props152.name]) {
-      if (props152.bail) {
-        console.warn("[portal-vue]: Target ".concat(props152.name, " is already mounted.\n        Aborting because 'bail: true' is set"));
+    var props153 = this.$props;
+    if (wormhole.targets[props153.name]) {
+      if (props153.bail) {
+        console.warn("[portal-vue]: Target ".concat(props153.name, " is already mounted.\n        Aborting because 'bail: true' is set"));
       } else {
-        this.portalTarget = wormhole.targets[props152.name];
+        this.portalTarget = wormhole.targets[props153.name];
       }
       return;
     }
-    var append = props152.append;
+    var append = props153.append;
     if (append) {
       var type2 = typeof append === "string" ? append : "DIV";
       var mountEl = document.createElement(type2);
@@ -29627,12 +36051,12 @@ var MountingPortal = Vue$1.extend({
     });
   },
   beforeDestroy: function beforeDestroy29() {
-    var target = this.portalTarget;
+    var target2 = this.portalTarget;
     if (this.append) {
-      var el = target.$el;
+      var el = target2.$el;
       el.parentNode.removeChild(el);
     }
-    target.$destroy();
+    target2.$destroy();
   },
   render: function render119(h) {
     if (!this.portalTarget) {
@@ -29640,9 +36064,9 @@ var MountingPortal = Vue$1.extend({
       return h();
     }
     if (!this.$scopedSlots.manual) {
-      var props152 = pick3(this.$props, portalProps);
+      var props153 = pick3(this.$props, portalProps);
       return h(Portal, {
-        props: props152,
+        props: props153,
         attrs: this.$attrs,
         on: this.$listeners,
         scopedSlots: this.$scopedSlots
@@ -29661,7 +36085,7 @@ var MountingPortal = Vue$1.extend({
 });
 
 // node_modules/bootstrap-vue/esm/components/toast/toaster.js
-var DefaultTransition = extend({
+var DefaultTransition = extend2({
   mixins: [normalizeSlotMixin],
   data: function data45() {
     return {
@@ -29673,7 +36097,7 @@ var DefaultTransition = extend({
     onAfterEnter: function onAfterEnter6(el) {
       var _this = this;
       requestAF(function() {
-        removeClass(el, "".concat(_this.name, "-enter-to"));
+        removeClass2(el, "".concat(_this.name, "-enter-to"));
       });
     }
   },
@@ -29689,7 +36113,7 @@ var DefaultTransition = extend({
     }, this.normalizeSlot());
   }
 });
-var props150 = makePropsConfigurable({
+var props151 = makePropsConfigurable({
   // Allowed: 'true' or 'false' or `null`
   ariaAtomic: makeProp(PROP_TYPE_STRING),
   ariaLive: makeProp(PROP_TYPE_STRING),
@@ -29698,10 +36122,10 @@ var props150 = makePropsConfigurable({
   // Aria role
   role: makeProp(PROP_TYPE_STRING)
 }, NAME_TOASTER);
-var BToaster = extend({
+var BToaster = extend2({
   name: NAME_TOASTER,
   mixins: [listenOnRootMixin],
-  props: props150,
+  props: props151,
   data: function data46() {
     return {
       // We don't render on SSR or if a an existing target found
@@ -29715,7 +36139,7 @@ var BToaster = extend({
     var name2 = this.name;
     this.staticName = name2;
     if (wormhole.hasTarget(name2)) {
-      warn('A "<portal-target>" with name "'.concat(name2, '" already exists in the document.'), NAME_TOASTER);
+      warn2('A "<portal-target>" with name "'.concat(name2, '" already exists in the document.'), NAME_TOASTER);
       this.dead = true;
     } else {
       this.doRender = true;
@@ -29778,16 +36202,16 @@ function ownKeys103(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread103(target) {
+function _objectSpread103(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys103(Object(source), true).forEach(function(key) {
-      _defineProperty126(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys103(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty126(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys103(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty126(obj, key, value2) {
   if (key in obj) {
@@ -29807,8 +36231,8 @@ var modelProps20 = _makeModelMixin21.props;
 var MODEL_PROP_NAME20 = _makeModelMixin21.prop;
 var MODEL_EVENT_NAME20 = _makeModelMixin21.event;
 var MIN_DURATION = 1e3;
-var linkProps10 = pick(props7, ["href", "to"]);
-var props151 = makePropsConfigurable(sortKeys(_objectSpread103(_objectSpread103(_objectSpread103(_objectSpread103({}, props17), modelProps20), linkProps10), {}, {
+var linkProps10 = pick(props8, ["href", "to"]);
+var props152 = makePropsConfigurable(sortKeys(_objectSpread103(_objectSpread103(_objectSpread103(_objectSpread103({}, props18), modelProps20), linkProps10), {}, {
   appendToast: makeProp(PROP_TYPE_BOOLEAN, false),
   autoHideDelay: makeProp(PROP_TYPE_NUMBER_STRING, 5e3),
   bodyClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
@@ -29828,11 +36252,11 @@ var props151 = makePropsConfigurable(sortKeys(_objectSpread103(_objectSpread103(
   toaster: makeProp(PROP_TYPE_STRING, "b-toaster-top-right"),
   variant: makeProp(PROP_TYPE_STRING)
 })), NAME_TOAST);
-var BToast = extend({
+var BToast = extend2({
   name: NAME_TOAST,
   mixins: [attrsMixin, idMixin, modelMixin20, listenOnRootMixin, normalizeSlotMixin, scopedStyleMixin],
   inheritAttrs: false,
-  props: props151,
+  props: props152,
   data: function data47() {
     return {
       isMounted: false,
@@ -29927,7 +36351,7 @@ var BToast = extend({
     this.clearDismissTimer();
   },
   methods: {
-    show: function show5() {
+    show: function show6() {
       var _this2 = this;
       if (!this.localShow) {
         this.ensureToaster();
@@ -30142,14 +36566,14 @@ function _classCallCheck7(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-function _defineProperties6(target, props152) {
-  for (var i = 0; i < props152.length; i++) {
-    var descriptor = props152[i];
+function _defineProperties6(target2, props153) {
+  for (var i = 0; i < props153.length; i++) {
+    var descriptor = props153[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
       descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target2, descriptor.key, descriptor);
   }
 }
 function _createClass6(Constructor, protoProps, staticProps) {
@@ -30170,16 +36594,16 @@ function ownKeys104(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread104(target) {
+function _objectSpread104(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys104(Object(source), true).forEach(function(key) {
-      _defineProperty127(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys104(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty127(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys104(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty127(obj, key, value2) {
   if (key in obj) {
@@ -30226,7 +36650,7 @@ function _arrayLikeToArray12(arr, len) {
 }
 var PROP_NAME3 = "$bvToast";
 var PROP_NAME_PRIV2 = "_bv__toast";
-var BASE_PROPS2 = ["id"].concat(_toConsumableArray10(keys(omit(props151, ["static", "visible"]))));
+var BASE_PROPS2 = ["id"].concat(_toConsumableArray10(keys(omit(props152, ["static", "visible"]))));
 var propsToSlots2 = {
   toastContent: "default",
   title: "toast-title"
@@ -30239,8 +36663,8 @@ var filterOptions3 = function filterOptions4(options) {
     return memo;
   }, {});
 };
-var plugin3 = function plugin4(Vue) {
-  var BVToastPop = Vue.extend({
+var plugin3 = function plugin4(Vue2) {
+  var BVToastPop = Vue2.extend({
     name: NAME_TOAST_POP,
     extends: BToast,
     mixins: [useParentMixin],
@@ -30272,28 +36696,28 @@ var plugin3 = function plugin4(Vue) {
       });
     }
   });
-  var makeToast2 = function makeToast3(props152, parent) {
+  var makeToast2 = function makeToast3(props153, parent) {
     if (warnNotClient(PROP_NAME3)) {
       return;
     }
     var toast = createNewChildComponent(parent, BVToastPop, {
       // We set parent as the local VM so these toasts can emit events on the
       // app `$root`, and it ensures `BToast` is destroyed when parent is destroyed
-      propsData: _objectSpread104(_objectSpread104(_objectSpread104({}, filterOptions3(getComponentConfig(NAME_TOAST))), omit(props152, keys(propsToSlots2))), {}, {
+      propsData: _objectSpread104(_objectSpread104(_objectSpread104({}, filterOptions3(getComponentConfig(NAME_TOAST))), omit(props153, keys(propsToSlots2))), {}, {
         // Props that can't be overridden
         static: false,
         visible: true
       })
     });
     keys(propsToSlots2).forEach(function(prop2) {
-      var value2 = props152[prop2];
+      var value2 = props153[prop2];
       if (!isUndefined(value2)) {
         if (prop2 === "title" && isString(value2)) {
           value2 = [parent.$createElement("strong", {
             class: "mr-2"
           }, value2)];
         }
-        toast.$slots[propsToSlots2[prop2]] = concat(value2);
+        toast.$slots[propsToSlots2[prop2]] = concat2(value2);
       }
     });
     var div = document.createElement("div");
@@ -30326,7 +36750,7 @@ var plugin3 = function plugin4(Vue) {
       // shows a `<b-toast>` component with the specified ID
     }, {
       key: "show",
-      value: function show6(id) {
+      value: function show7(id) {
         if (id) {
           this._root.$emit(getRootActionEventName(NAME_TOAST, EVENT_NAME_SHOW), id);
         }
@@ -30341,16 +36765,16 @@ var plugin3 = function plugin4(Vue) {
     }]);
     return BvToast2;
   }();
-  Vue.mixin({
+  Vue2.mixin({
     beforeCreate: function beforeCreate3() {
       this[PROP_NAME_PRIV2] = new BvToast(this);
     }
   });
-  if (!hasOwnProperty(Vue.prototype, PROP_NAME3)) {
-    defineProperty(Vue.prototype, PROP_NAME3, {
+  if (!hasOwnProperty2(Vue2.prototype, PROP_NAME3)) {
+    defineProperty(Vue2.prototype, PROP_NAME3, {
       get: function get10() {
         if (!this || !this[PROP_NAME_PRIV2]) {
-          warn('"'.concat(PROP_NAME3, '" must be accessed from a Vue instance "this" context.'), NAME_TOAST);
+          warn2('"'.concat(PROP_NAME3, '" must be accessed from a Vue instance "this" context.'), NAME_TOAST);
         }
         return this[PROP_NAME_PRIV2];
       }
@@ -30386,16 +36810,16 @@ function ownKeys105(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread105(target) {
+function _objectSpread105(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys105(Object(source), true).forEach(function(key) {
-      _defineProperty128(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys105(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty128(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys105(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty128(obj, key, value2) {
   if (key in obj) {
@@ -30426,7 +36850,7 @@ var offsetRE2 = /^o-?\d+$/i;
 var variantRE2 = /^v-.+$/i;
 var spacesRE2 = /\s+/;
 var parseBindings3 = function parseBindings4(bindings, vnode) {
-  var config = {
+  var config2 = {
     title: void 0,
     trigger: "",
     // Default set below if needed
@@ -30447,55 +36871,55 @@ var parseBindings3 = function parseBindings4(bindings, vnode) {
     customClass: getComponentConfig(NAME_TOOLTIP, "customClass")
   };
   if (isString(bindings.value) || isNumber(bindings.value)) {
-    config.title = bindings.value;
-  } else if (isFunction(bindings.value)) {
-    config.title = bindings.value;
-  } else if (isPlainObject(bindings.value)) {
-    config = _objectSpread105(_objectSpread105({}, config), bindings.value);
+    config2.title = bindings.value;
+  } else if (isFunction2(bindings.value)) {
+    config2.title = bindings.value;
+  } else if (isPlainObject2(bindings.value)) {
+    config2 = _objectSpread105(_objectSpread105({}, config2), bindings.value);
   }
-  if (isUndefined(config.title)) {
-    var attrs = isVue3 ? vnode.props : (vnode.data || {}).attrs;
-    config.title = attrs && !isUndefinedOrNull(attrs.title) ? attrs.title : void 0;
+  if (isUndefined(config2.title)) {
+    var attrs2 = isVue3 ? vnode.props : (vnode.data || {}).attrs;
+    config2.title = attrs2 && !isUndefinedOrNull(attrs2.title) ? attrs2.title : void 0;
   }
-  if (!isPlainObject(config.delay)) {
-    config.delay = {
-      show: toInteger(config.delay, 0),
-      hide: toInteger(config.delay, 0)
+  if (!isPlainObject2(config2.delay)) {
+    config2.delay = {
+      show: toInteger(config2.delay, 0),
+      hide: toInteger(config2.delay, 0)
     };
   }
   if (bindings.arg) {
-    config.container = "#".concat(bindings.arg);
+    config2.container = "#".concat(bindings.arg);
   }
   keys(bindings.modifiers).forEach(function(mod) {
     if (htmlRE2.test(mod)) {
-      config.html = true;
+      config2.html = true;
     } else if (noninteractiveRE.test(mod)) {
-      config.interactive = false;
+      config2.interactive = false;
     } else if (noFadeRE2.test(mod)) {
-      config.animation = false;
+      config2.animation = false;
     } else if (placementRE2.test(mod)) {
-      config.placement = mod;
+      config2.placement = mod;
     } else if (boundaryRE2.test(mod)) {
       mod = mod === "scrollparent" ? "scrollParent" : mod;
-      config.boundary = mod;
+      config2.boundary = mod;
     } else if (delayRE2.test(mod)) {
       var delay = toInteger(mod.slice(1), 0);
-      config.delay.show = delay;
-      config.delay.hide = delay;
+      config2.delay.show = delay;
+      config2.delay.hide = delay;
     } else if (delayShowRE2.test(mod)) {
-      config.delay.show = toInteger(mod.slice(2), 0);
+      config2.delay.show = toInteger(mod.slice(2), 0);
     } else if (delayHideRE2.test(mod)) {
-      config.delay.hide = toInteger(mod.slice(2), 0);
+      config2.delay.hide = toInteger(mod.slice(2), 0);
     } else if (offsetRE2.test(mod)) {
-      config.offset = toInteger(mod.slice(1), 0);
+      config2.offset = toInteger(mod.slice(1), 0);
     } else if (variantRE2.test(mod)) {
-      config.variant = mod.slice(2) || null;
+      config2.variant = mod.slice(2) || null;
     }
   });
   var selectedTriggers = {};
-  concat(config.trigger || "").filter(identity).join(" ").trim().toLowerCase().split(spacesRE2).forEach(function(trigger) {
-    if (validTriggers2[trigger]) {
-      selectedTriggers[trigger] = true;
+  concat2(config2.trigger || "").filter(identity2).join(" ").trim().toLowerCase().split(spacesRE2).forEach(function(trigger2) {
+    if (validTriggers2[trigger2]) {
+      selectedTriggers[trigger2] = true;
     }
   });
   keys(bindings.modifiers).forEach(function(mod) {
@@ -30504,20 +36928,20 @@ var parseBindings3 = function parseBindings4(bindings, vnode) {
       selectedTriggers[mod] = true;
     }
   });
-  config.trigger = keys(selectedTriggers).join(" ");
-  if (config.trigger === "blur") {
-    config.trigger = "focus";
+  config2.trigger = keys(selectedTriggers).join(" ");
+  if (config2.trigger === "blur") {
+    config2.trigger = "focus";
   }
-  if (!config.trigger) {
-    config.trigger = DefaultTrigger2;
+  if (!config2.trigger) {
+    config2.trigger = DefaultTrigger2;
   }
-  return config;
+  return config2;
 };
 var applyTooltip = function applyTooltip2(el, bindings, vnode) {
   if (!IS_BROWSER) {
     return;
   }
-  var config = parseBindings3(bindings, vnode);
+  var config2 = parseBindings3(bindings, vnode);
   if (!el[BV_TOOLTIP]) {
     var parent = getInstanceFromDirective(vnode, bindings);
     el[BV_TOOLTIP] = createNewChildComponent(parent, BVTooltip, {
@@ -30526,39 +36950,39 @@ var applyTooltip = function applyTooltip2(el, bindings, vnode) {
     });
     el[BV_TOOLTIP].__bv_prev_data__ = {};
     el[BV_TOOLTIP].$on(EVENT_NAME_SHOW, function() {
-      if (isFunction(config.title)) {
+      if (isFunction2(config2.title)) {
         el[BV_TOOLTIP].updateData({
-          title: config.title(el)
+          title: config2.title(el)
         });
       }
     });
   }
   var data48 = {
-    title: config.title,
-    triggers: config.trigger,
-    placement: config.placement,
-    fallbackPlacement: config.fallbackPlacement,
-    variant: config.variant,
-    customClass: config.customClass,
-    container: config.container,
-    boundary: config.boundary,
-    delay: config.delay,
-    offset: config.offset,
-    noFade: !config.animation,
-    id: config.id,
-    interactive: config.interactive,
-    disabled: config.disabled,
-    html: config.html
+    title: config2.title,
+    triggers: config2.trigger,
+    placement: config2.placement,
+    fallbackPlacement: config2.fallbackPlacement,
+    variant: config2.variant,
+    customClass: config2.customClass,
+    container: config2.container,
+    boundary: config2.boundary,
+    delay: config2.delay,
+    offset: config2.offset,
+    noFade: !config2.animation,
+    id: config2.id,
+    interactive: config2.interactive,
+    disabled: config2.disabled,
+    html: config2.html
   };
   var oldData = el[BV_TOOLTIP].__bv_prev_data__;
   el[BV_TOOLTIP].__bv_prev_data__ = data48;
-  if (!looseEqual(data48, oldData)) {
+  if (!looseEqual2(data48, oldData)) {
     var newData = {
       target: el
     };
     keys(data48).forEach(function(prop2) {
       if (data48[prop2] !== oldData[prop2]) {
-        newData[prop2] = prop2 === "title" && isFunction(data48[prop2]) ? data48[prop2](el) : data48[prop2];
+        newData[prop2] = prop2 === "title" && isFunction2(data48[prop2]) ? data48[prop2](el) : data48[prop2];
       }
     });
     el[BV_TOOLTIP].updateData(newData);
@@ -30572,13 +36996,13 @@ var removeTooltip = function removeTooltip2(el) {
   delete el[BV_TOOLTIP];
 };
 var VBTooltip = {
-  bind: function bind7(el, bindings, vnode) {
+  bind: function bind8(el, bindings, vnode) {
     applyTooltip(el, bindings, vnode);
   },
   // We use `componentUpdated` here instead of `update`, as the former
   // waits until the containing component and children have finished updating
   componentUpdated: function componentUpdated6(el, bindings, vnode) {
-    nextTick(function() {
+    nextTick2(function() {
       applyTooltip(el, bindings, vnode);
     });
   },
@@ -30685,16 +37109,16 @@ function ownKeys106(object, enumerableOnly) {
   }
   return keys3;
 }
-function _objectSpread106(target) {
+function _objectSpread106(target2) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
     i % 2 ? ownKeys106(Object(source), true).forEach(function(key) {
-      _defineProperty129(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys106(Object(source)).forEach(function(key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      _defineProperty129(target2, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source)) : ownKeys106(Object(source)).forEach(function(key) {
+      Object.defineProperty(target2, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-  return target;
+  return target2;
 }
 function _defineProperty129(obj, key, value2) {
   if (key in obj) {
@@ -30709,14 +37133,14 @@ function _classCallCheck8(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-function _defineProperties7(target, props152) {
-  for (var i = 0; i < props152.length; i++) {
-    var descriptor = props152[i];
+function _defineProperties7(target2, props153) {
+  for (var i = 0; i < props153.length; i++) {
+    var descriptor = props153[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
       descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target2, descriptor.key, descriptor);
   }
 }
 function _createClass7(Constructor, protoProps, staticProps) {
@@ -30754,23 +37178,23 @@ var DefaultType = {
 };
 var TransitionEndEvents2 = ["webkitTransitionEnd", "transitionend", "otransitionend", "oTransitionEnd"];
 var toType3 = function toType4(obj) {
-  return toString(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+  return toString2(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 };
-var typeCheckConfig = function typeCheckConfig2(componentName, config, configTypes) {
+var typeCheckConfig = function typeCheckConfig2(componentName, config2, configTypes) {
   for (var property in configTypes) {
-    if (hasOwnProperty(configTypes, property)) {
+    if (hasOwnProperty2(configTypes, property)) {
       var expectedTypes = configTypes[property];
-      var value2 = config[property];
+      var value2 = config2[property];
       var valueType = value2 && isElement(value2) ? "element" : toType3(value2);
       valueType = value2 && value2._isVue ? "component" : valueType;
       if (!new RegExp(expectedTypes).test(valueType)) {
-        warn("".concat(componentName, ': Option "').concat(property, '" provided type "').concat(valueType, '" but expected type "').concat(expectedTypes, '"'));
+        warn2("".concat(componentName, ': Option "').concat(property, '" provided type "').concat(valueType, '" but expected type "').concat(expectedTypes, '"'));
       }
     }
   }
 };
 var BVScrollspy = function() {
-  function BVScrollspy2(element, config, $root) {
+  function BVScrollspy2(element, config2, $root) {
     _classCallCheck8(this, BVScrollspy2);
     this.$el = element;
     this.$scroller = null;
@@ -30784,16 +37208,16 @@ var BVScrollspy = function() {
     this.$targetsObserver = null;
     this.$root = $root || null;
     this.$config = null;
-    this.updateConfig(config);
+    this.updateConfig(config2);
   }
   _createClass7(BVScrollspy2, [{
     key: "updateConfig",
-    value: function updateConfig(config, $root) {
+    value: function updateConfig(config2, $root) {
       if (this.$scroller) {
         this.unlisten();
         this.$scroller = null;
       }
-      var cfg = _objectSpread106(_objectSpread106({}, this.constructor.Default), config);
+      var cfg = _objectSpread106(_objectSpread106({}, this.constructor.Default), config2);
       if ($root) {
         this.$root = $root;
       }
@@ -30941,7 +37365,7 @@ var BVScrollspy = function() {
           };
         }
         return null;
-      }).filter(identity).sort(function(a2, b) {
+      }).filter(identity2).sort(function(a2, b) {
         return a2.offset - b.offset;
       }).reduce(function(memo, item) {
         if (!memo[item.target]) {
@@ -30964,9 +37388,9 @@ var BVScrollspy = function() {
         this.refresh();
       }
       if (scrollTop >= maxScroll) {
-        var target = this.$targets[this.$targets.length - 1];
-        if (this.$activeTarget !== target) {
-          this.activate(target);
+        var target2 = this.$targets[this.$targets.length - 1];
+        if (this.$activeTarget !== target2) {
+          this.activate(target2);
         }
         return;
       }
@@ -31021,12 +37445,12 @@ var BVScrollspy = function() {
     }
   }, {
     key: "activate",
-    value: function activate2(target) {
+    value: function activate2(target2) {
       var _this5 = this;
-      this.$activeTarget = target;
+      this.$activeTarget = target2;
       this.clear();
       var links = selectAll(this.$selector.split(",").map(function(selector) {
-        return "".concat(selector, '[href$="').concat(target, '"]');
+        return "".concat(selector, '[href$="').concat(target2, '"]');
       }).join(","), this.$el);
       links.forEach(function(link) {
         if (hasClass(link, CLASS_NAME_DROPDOWN_ITEM)) {
@@ -31037,17 +37461,17 @@ var BVScrollspy = function() {
           _this5.setActiveState(link, true);
         } else {
           _this5.setActiveState(link, true);
-          if (matches(link.parentElement, SELECTOR_NAV_ITEMS)) {
+          if (matches2(link.parentElement, SELECTOR_NAV_ITEMS)) {
             _this5.setActiveState(link.parentElement, true);
           }
           var el = link;
           while (el) {
             el = closest(SELECTOR_NAV_LIST_GROUP, el);
             var sibling = el ? el.previousElementSibling : null;
-            if (sibling && matches(sibling, "".concat(SELECTOR_NAV_LINKS, ", ").concat(SELECTOR_LIST_ITEMS))) {
+            if (sibling && matches2(sibling, "".concat(SELECTOR_NAV_LINKS, ", ").concat(SELECTOR_LIST_ITEMS))) {
               _this5.setActiveState(sibling, true);
             }
-            if (sibling && matches(sibling, SELECTOR_NAV_ITEMS)) {
+            if (sibling && matches2(sibling, SELECTOR_NAV_ITEMS)) {
               _this5.setActiveState(select(SELECTOR_NAV_LINKS, sibling), true);
               _this5.setActiveState(sibling, true);
             }
@@ -31055,7 +37479,7 @@ var BVScrollspy = function() {
         }
       });
       if (links && links.length > 0 && this.$root) {
-        this.$root.$emit(ROOT_EVENT_NAME_ACTIVATE, target, links);
+        this.$root.$emit(ROOT_EVENT_NAME_ACTIVATE, target2, links);
       }
     }
   }, {
@@ -31075,9 +37499,9 @@ var BVScrollspy = function() {
         return;
       }
       if (active) {
-        addClass(el, CLASS_NAME_ACTIVE);
+        addClass2(el, CLASS_NAME_ACTIVE);
       } else {
-        removeClass(el, CLASS_NAME_ACTIVE);
+        removeClass2(el, CLASS_NAME_ACTIVE);
       }
     }
   }], [{
@@ -31104,39 +37528,39 @@ var BV_SCROLLSPY = "__BV_Scrollspy__";
 var onlyDigitsRE = /^\d+$/;
 var offsetRE3 = /^(auto|position|offset)$/;
 var parseBindings5 = function parseBindings6(bindings) {
-  var config = {};
+  var config2 = {};
   if (bindings.arg) {
-    config.element = "#".concat(bindings.arg);
+    config2.element = "#".concat(bindings.arg);
   }
   keys(bindings.modifiers).forEach(function(mod) {
     if (onlyDigitsRE.test(mod)) {
-      config.offset = toInteger(mod, 0);
+      config2.offset = toInteger(mod, 0);
     } else if (offsetRE3.test(mod)) {
-      config.method = mod;
+      config2.method = mod;
     }
   });
   if (isString(bindings.value)) {
-    config.element = bindings.value;
+    config2.element = bindings.value;
   } else if (isNumber(bindings.value)) {
-    config.offset = mathRound(bindings.value);
-  } else if (isObject(bindings.value)) {
+    config2.offset = mathRound(bindings.value);
+  } else if (isObject2(bindings.value)) {
     keys(bindings.value).filter(function(k) {
       return !!BVScrollspy.DefaultType[k];
     }).forEach(function(k) {
-      config[k] = bindings.value[k];
+      config2[k] = bindings.value[k];
     });
   }
-  return config;
+  return config2;
 };
 var applyScrollspy = function applyScrollspy2(el, bindings, vnode) {
   if (!IS_BROWSER) {
     return;
   }
-  var config = parseBindings5(bindings);
+  var config2 = parseBindings5(bindings);
   if (el[BV_SCROLLSPY]) {
-    el[BV_SCROLLSPY].updateConfig(config, getEventRoot(getInstanceFromDirective(vnode, bindings)));
+    el[BV_SCROLLSPY].updateConfig(config2, getEventRoot(getInstanceFromDirective(vnode, bindings)));
   } else {
-    el[BV_SCROLLSPY] = new BVScrollspy(el, config, getEventRoot(getInstanceFromDirective(vnode, bindings)));
+    el[BV_SCROLLSPY] = new BVScrollspy(el, config2, getEventRoot(getInstanceFromDirective(vnode, bindings)));
   }
 };
 var removeScrollspy = function removeScrollspy2(el) {
@@ -31148,7 +37572,7 @@ var removeScrollspy = function removeScrollspy2(el) {
 };
 var VBScrollspy = {
   /* istanbul ignore next: not easy to test */
-  bind: function bind8(el, bindings, vnode) {
+  bind: function bind9(el, bindings, vnode) {
     applyScrollspy(el, bindings, vnode);
   },
   /* istanbul ignore next: not easy to test */
@@ -32780,6 +39204,13 @@ export {
   install
 };
 /*! Bundled license information:
+
+vue/dist/vue.runtime.esm.js:
+  (*!
+   * Vue.js v2.7.14
+   * (c) 2014-2022 Evan You
+   * Released under the MIT License.
+   *)
 
 bootstrap-vue/esm/icons/icons.js:
   (*!

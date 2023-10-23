@@ -12,7 +12,6 @@ import {
   Text,
   Transition,
   TransitionGroup,
-  Vue$1,
   VueElement,
   assertNumber,
   callWithAsyncErrorHandling,
@@ -21,8 +20,8 @@ import {
   capitalize,
   cloneVNode,
   compatUtils,
+  compile,
   computed,
-  configureCompat,
   createApp,
   createBaseVNode,
   createBlock,
@@ -154,7 +153,7 @@ import {
   withMemo,
   withModifiers,
   withScopeId
-} from "./chunk-GAMRAGV7.js";
+} from "./chunk-QNGQRF5U.js";
 export {
   BaseTransition,
   BaseTransitionPropsValidators,
@@ -177,8 +176,8 @@ export {
   capitalize,
   cloneVNode,
   compatUtils,
+  compile,
   computed,
-  configureCompat,
   createApp,
   createBlock,
   createCommentVNode,
@@ -193,7 +192,6 @@ export {
   createTextVNode,
   createVNode,
   customRef,
-  Vue$1 as default,
   defineAsyncComponent,
   defineComponent,
   defineCustomElement,
