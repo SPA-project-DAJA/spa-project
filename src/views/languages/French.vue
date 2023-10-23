@@ -25,7 +25,7 @@
         below. We offer flexible schedules and a variety of course options to
         suit your needs.
       </p>
-      <button class="enroll-button">Enroll</button>
+      <button @click="addToCart(offer)">Add to Cart</button>
     </div>
     <TheWelcome />
   </main>
@@ -73,3 +73,19 @@ ul {
   background-color: #0056b3;
 }
 </style>
+
+
+<script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+
+const offer = ref({ 
+  description: "French language learning offer",
+  price: 18.99, // Dodaj cenę oferty
+});
+const store = useStore();
+
+const addToCart = (offer) => {
+  store.commit('addToCart', offer);
+}
+</script>

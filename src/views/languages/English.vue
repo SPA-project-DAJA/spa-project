@@ -76,8 +76,10 @@ ul {
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 
-const offer = ref({ description: "Opis oferty" }); // Zaktualizuj opis oferty
-
+const offer = ref({ 
+  description: "English language learning offer",
+  price: 19.99, // Dodaj cenę oferty
+});
 const store = useStore();
 
 const addToCart = (offer) => {
