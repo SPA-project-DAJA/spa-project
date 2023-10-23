@@ -25,8 +25,7 @@
         below. We offer flexible schedules and a variety of course options to
         suit your needs.
       </p>
-      <button @click="addToCart(offer)">Add to Cart</button>
-    </div>
+      <button @click="addToCart(offer)" v-if="offer.quantity <1">Add to Cart</button>    </div>
     <TheWelcome />
   </main>
 </template>
@@ -79,13 +78,20 @@ ul {
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 
-const offer = ref({ 
-  description: "French language learning offer",
-  price: 18.99, // Dodaj cenę oferty
+const offer = ref({
+  // Dodaj właściwości oferty, takie jak id, name, description, price itp.
+  id: 1,
+  name: 'French Course',
+  description: 'Our French training program...',
+  price: 19.99, // Cena kursu
+  quantity: 0, // Inicjalizacja quantity
 });
 const store = useStore();
 
-const addToCart = (offer) => {
-  store.commit('addToCart', offer);
+const addToCart = () => {
+  if (offer.value.quantity < 1) {
+    store.commit('addToCart', offer.value);
+    offer.value.quantity = 1; // Zwiększ quantity po dodaniu do koszyka
+  }
 }
 </script>
