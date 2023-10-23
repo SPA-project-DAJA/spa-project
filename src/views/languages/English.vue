@@ -23,6 +23,7 @@
         button below. We offer flexible schedules and affordable pricing.
       </p>
       <button @click="addToCart(offer)">Add to Cart</button>
+
     </div>
     <TheWelcome />
   </main>
@@ -71,4 +72,15 @@ ul {
 }
 </style>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+
+const offer = ref({ description: "Opis oferty" }); // Zaktualizuj opis oferty
+
+const store = useStore();
+
+const addToCart = (offer) => {
+  store.commit('addToCart', offer);
+}
+</script>
