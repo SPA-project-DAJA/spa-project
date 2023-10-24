@@ -20,10 +20,11 @@
       </ul>
       <h3>Enrollment</h3>
       <p>
-        To enroll in our Spanish training course, simply click the "Enroll"
+        To enroll in our Spanish training course, simply click the
         button below. We offer flexible schedules and a supportive learning
         environment.
       </p>
+      <h3>Price: ${{ offer.price }}</h3>
       <button @click="addToCart(offer)" v-if="offer.quantity <1">Add to Cart</button>    </div>
     <TheWelcome />
   </main>
@@ -31,44 +32,51 @@
 
 <style scoped>
 h2 {
-  font-size: 24px;
+  font-size: 28px;
   margin-bottom: 20px;
+  color: #333; /* Ciemny kolor tekstu */
 }
 
 .course-details {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5; /* Jasnoszare tło */
   padding: 20px;
   margin: 20px 0;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px; /* Maksymalna szerokość bloku oferty */
+  margin: 0 auto; /* Wyśrodkowanie bloku oferty */
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 24px;
   margin-bottom: 10px;
+  color: #4CAF50; /* Jasnoniebieski kolor tekstu */
 }
 
 p {
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 20px;
+  color: #555; /* Średni kolor tekstu */
 }
 
 ul {
-  list-style-type: disc;
-  padding-left: 20px;
+  list-style: inside disc; /* Tekst wewnątrz kropek */
+  padding-left: 0;
 }
 
-.enroll-button {
+button {
   background-color: #007bff;
-  color: white;
+  color: #fff; /* Biały kolor tekstu */
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Efekty przy najechaniu myszką */
 }
 
-.enroll-button:hover {
+button:hover {
   background-color: #0056b3;
+  transform: scale(1.05); /* Powiększenie przycisku przy najechaniu */
 }
 </style>
 
