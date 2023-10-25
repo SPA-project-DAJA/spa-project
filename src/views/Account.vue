@@ -22,8 +22,8 @@
           />
         </div>
         <button type="submit">Zaloguj się</button>
+        <p v-if="loginError" class="error">{{ loginError }}</p>
       </form>
-      <p v-if="loginError" class="error">{{ loginError }}</p>
     </div>
 
     <div v-else class="logged-in">
@@ -31,11 +31,11 @@
       <button @click="logout">Wyloguj się</button>
     </div>
 
-    <div class="registration-form">
+    <div v-if="!loggedIn && !registerSuccess" class="registration-form">
       <h2>Rejestracja</h2>
       <form @submit.prevent="register">
         <div class="form-group">
-          <label for="registerUsername">Nazwa użytkownika</label>
+          <label for="registerUsername" style="margin-right: 10px">Nazwa użytkownika</label>
           <input
             type="text"
             id="registerUsername"
@@ -44,7 +44,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="registerPassword">Hasło</label>
+          <label for="registerPassword" style="margin-right: 10px">Hasło</label>
           <input
             type="password"
             id="registerPassword"
@@ -53,9 +53,10 @@
           />
         </div>
         <button type="submit">Zarejestruj się</button>
+        <p v-if="registerError" class="error">{{ registerError }}</p>
       </form>
-      <p v-if="registerError" class="error">{{ registerError }}</p>
     </div>
+    <p v-if="registerSuccess" class="success">Poprawna rejestracja!</p>
   </div>
 </template>
 
@@ -74,6 +75,7 @@ export default {
       loggedInUser: JSON.parse(localStorage.getItem("loggedInUser")) || null,
       loginError: "",
       registerError: "",
+      registerSuccess: false,
       users: JSON.parse(localStorage.getItem("users")) || [],
     };
   },
@@ -84,21 +86,26 @@ export default {
   },
   methods: {
     login() {
-      // Sprawdź, czy użytkownik istnieje w tablicy users i hasło jest poprawne
-      const user = this.users.find(
-        (u) =>
-          u.username === this.loginData.username &&
-          u.password === this.loginData.password
-      );
+  // Sprawdź, czy użytkownik istnieje w tablicy users i hasło jest poprawne
+  const user = this.users.find(
+    (u) =>
+      u.username === this.loginData.username &&
+      u.password === this.loginData.password
+  );
 
-      if (user) {
-        this.loggedInUser = user;
-        this.loginError = "";
-        localStorage.setItem("loggedInUser", JSON.stringify(user));
-      } else {
-        this.loginError = "Nieprawidłowa nazwa użytkownika lub hasło";
-      }
-    },
+  if (user) {
+    this.loggedInUser = user;
+    this.loginError = "";
+
+    // Dodaj tę linię, aby ukryć napis o poprawnej rejestracji
+    this.registerSuccess = false;
+
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+  } else {
+    this.loginError = "Nieprawidłowa nazwa użytkownika lub hasło";
+  }
+},
+
     logout() {
       this.loggedInUser = null;
       localStorage.removeItem("loggedInUser");
@@ -112,7 +119,8 @@ export default {
       if (existingUser) {
         this.registerError = "Użytkownik o tej nazwie już istnieje";
       } else {
-        // Dodaj nowego użytkownika
+        // Poprawna rejestracja
+        this.registerSuccess = true;
         this.users.push(this.registerData);
         this.registerData = { username: "", password: "" };
         this.registerError = "";
@@ -127,11 +135,11 @@ export default {
 
 <style scoped>
 .login-panel {
-  background-color: #ecf0f1; /* Jasnoszary kolor tła */
+  background-color: #ecf0f1;
   padding: 20px;
   text-align: center;
   max-width: 800px;
-  margin: 30px auto; /* Centrowanie panelu */
+  margin: 30px auto;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -139,19 +147,19 @@ export default {
 .login-form,
 .logged-in,
 .registration-form {
-  background-color: #fff; /* Białe tło panelu */
+  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; /* Dodaj odstęp między panelami */
+  margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 10px; /* Dodaj odstęp między labelkami a miejscami do wpisywania */
+  margin-bottom: 10px;
 }
 
 label {
-  margin-bottom: 5px; /* Dodaj dodatkowy odstęp pod labelką */
+  margin-bottom: 5px;
 }
 
 h2 {
@@ -181,6 +189,11 @@ button:hover {
 
 .error {
   color: red;
+  margin: 10px 0;
+}
+
+.success {
+  color: #4caf50;
   margin: 10px 0;
 }
 </style>
