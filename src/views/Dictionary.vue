@@ -1,6 +1,6 @@
 <template>
   <main>
-    <label for="jezyk">Wybierz język:</label>
+    <label for="jezyk" style="margin-right: 10px">Wybierz język:</label>
     <select id="jezyk" v-model="wybranyJezyk">
       <option value="angielski">Angielski</option>
       <option value="hiszpański">Hiszpański</option>
@@ -10,11 +10,11 @@
     <br />
     <button @click="losujSlowko">Losuj słówko</button>
     <br />
+    <br />Wylosowane słówko to: 
+    <b>{{ wylosowaneSlowko }}</b>
     <br />
-    Wylosowane słówko to: {{ wylosowaneSlowko }}
     <br />
-    <br />
-    <label for="tlumaczenie">Podaj tłumaczenie na polski:</label>
+    <label for="tlumaczenie" style="margin-right: 10px">Podaj tłumaczenie na polski:</label>
     <input
       id="tlumaczenie"
       v-model="wprowadzoneTlumaczenie"
@@ -34,6 +34,7 @@
     </div>
   </main>
 </template>
+
 
 <script setup>
 import { ref } from "vue";
@@ -335,6 +336,7 @@ const losujSlowko = () => {
     slowkaWJezyku[Math.floor(Math.random() * slowkaWJezyku.length)];
   wylosowaneSlowko.value = losoweSlowko;
   wprowadzoneTlumaczenie.value = "";
+  wynikSprawdzenia.value = ""; // Resetujemy wynik po losowaniu nowego słówka
 };
 
 const resetujWynik = () => {
@@ -362,7 +364,7 @@ losujSlowko();
 main {
   text-align: center;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 50px auto;
   padding: 20px;
   background-color: #f5f5f5;
   border-radius: 10px;
@@ -411,4 +413,11 @@ input {
   font-size: 16px;
   padding: 5px;
 }
+b {
+  font-size: 24px;
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
 </style>
