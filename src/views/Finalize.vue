@@ -32,10 +32,7 @@
           <!-- Dodaj inne opcje płatności, jeśli to konieczne -->
         </select>
       </div>
-
-      <b-button class="ConfirmPurchase" to="/Confirmation"
-        >Confirm Purchase</b-button
-      >
+      <button @click="finalize">Confirm Purchase</button>
     </form>
 
     <!-- Komunikat z podziękowaniem (wyświetlany po naciśnięciu przycisku) -->
@@ -61,7 +58,7 @@ const deliveryData = ref({
 
 const purchaseCompleted = ref(false); // Początkowo zakup nie jest zakończony
 
-const submitPurchase = () => {
+const finalize = () => {
   // Logika finalizacji zakupów
 
   // Aktualizacja statusu koszyka
