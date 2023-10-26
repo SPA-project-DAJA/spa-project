@@ -31,6 +31,15 @@
 </template>
 
 <style scoped>
+main {
+  background-color: #ecf0f1; /* Jasnoszare tło */
+  padding: 20px;
+  text-align: center;
+  max-width: 800px;
+  margin: 30px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 h2 {
   font-size: 28px;
   margin-bottom: 20px;
@@ -38,7 +47,7 @@ h2 {
 }
 
 .course-details {
-  background-color: #f5f5f5; /* Jasnoszare tło */
+  background-color: #fff; /* Jasnoszare tło */
   padding: 20px;
   margin: 20px 0;
   border-radius: 10px;
