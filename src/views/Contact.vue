@@ -10,11 +10,13 @@
     </p>
 
     <h2>Contact Information:</h2>
-    <ul>
-      <li>Email: contact@duolingo.com</li>
-      <li>Phone: +1 (123) 456-7890</li>
-      <li>Website: <a href="https://www.duolingo.com">www.duolingo.com</a></li>
-    </ul>
+    <p>
+      Email: <a href="mailto:contact@duolingo.com">contact@duolingo.com</a>
+      <br />
+      Phone: +1 (123) 456-7890 <br />
+      Website:
+      <a href="https://www.duolingo.com">www.duolingo.com</a>
+    </p>
 
     <h2>Location on Google Maps:</h2>
     <iframe

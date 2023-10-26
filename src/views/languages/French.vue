@@ -21,12 +21,15 @@
       </ul>
       <h3>Enrollment</h3>
       <p>
-        To enroll in our French training course, click the button
-        below. We offer flexible schedules and a variety of course options to
-        suit your needs.
+        To enroll in our French training course, click the button below. We
+        offer flexible schedules and a variety of course options to suit your
+        needs.
       </p>
       <h3>Price: ${{ offer.price }}</h3>
-      <button @click="addToCart(offer)" v-if="offer.quantity <1">Add to Cart</button>    </div>
+      <button @click="addToCart(offer)" v-if="offer.quantity < 1">
+        Add to Cart
+      </button>
+    </div>
     <TheWelcome />
   </main>
 </template>
@@ -51,7 +54,7 @@ h2 {
 h3 {
   font-size: 24px;
   margin-bottom: 10px;
-  color: #4CAF50; /* Jasnoniebieski kolor tekstu */
+  color: #4caf50; /* Jasnoniebieski kolor tekstu */
 }
 
 p {
@@ -81,16 +84,15 @@ button:hover {
 }
 </style>
 
-
 <script setup>
-import { ref } from 'vue';
-import { useStore } from 'vuex';
+import { ref } from "vue";
+import { useStore } from "vuex";
 
 const offer = ref({
   // Dodaj właściwości oferty, takie jak id, name, description, price itp.
   id: 1,
-  name: 'French Course',
-  description: 'Our French training program...',
+  name: "French Course",
+  description: "Our French training program...",
   price: 19.99, // Cena kursu
   quantity: 0, // Inicjalizacja quantity
 });
@@ -98,8 +100,8 @@ const store = useStore();
 
 const addToCart = () => {
   if (offer.value.quantity < 1) {
-    store.commit('addToCart', offer.value);
+    store.commit("addToCart", offer.value);
     offer.value.quantity = 1; // Zwiększ quantity po dodaniu do koszyka
   }
-}
+};
 </script>
