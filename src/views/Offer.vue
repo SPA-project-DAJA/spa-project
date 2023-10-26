@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <main>
+  <main class="main-panel">
     <h2>Language Training Offers</h2>
     <div class="offer">
       <h3>English Training</h3>
@@ -32,6 +32,16 @@
 </template>
 
 <style scoped>
+.main-panel {
+  background-color: #ecf0f1;
+  padding: 20px;
+  text-align: center;
+  max-width: 800px;
+  margin: 30px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 h2 {
   font-size: 28px;
   margin-bottom: 20px;
@@ -39,7 +49,7 @@ h2 {
 }
 
 .offer {
-  background-color: #f5f5f5; /* Jasnoszare tło */
+  background-color: #fff; /* Jasnoszare tło */
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

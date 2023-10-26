@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
   <main>
     <h1>Company Name: Duolingo</h1>
@@ -38,3 +36,41 @@
     <TheWelcome />
   </main>
 </template>
+
+<style scoped>
+main {
+  background-color: #ecf0f1; /* Jasnoszare tło */
+  padding: 20px;
+  text-align: center;
+  max-width: 800px;
+  margin: 30px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 28px;
+  color: #333; /* Ciemny kolor tekstu */
+}
+
+h2 {
+  font-size: 24px;
+  margin-top: 20px;
+  color: #4caf50; /* Jasnoniebieski kolor tekstu */
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #555; /* Średni kolor tekstu */
+}
+
+a {
+  color: #007bff; /* Jasnoniebieski kolor tekstu */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>
