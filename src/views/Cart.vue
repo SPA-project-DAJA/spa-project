@@ -17,36 +17,43 @@
       </li>
     </ul>
     <p class="total-price">Total Price: ${{ formatPrice(totalPrice) }}</p>
+
+    <b-button class="finalizePurchase" to="/Finalize"
+      >Finalize Purchase</b-button
+    >
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useStore } from 'vuex';
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 
 const store = useStore();
 const cartItems = store.getters.cartItems;
 
 const removeFromCart = (index) => {
-  store.commit('removeFromCart', index);
-}
+  store.commit("removeFromCart", index);
+};
 
 const decreaseQuantity = (item) => {
   if (item.quantity > 1) {
     item.quantity--;
   }
-}
+};
 
 const increaseQuantity = (item) => {
   item.quantity++;
-}
+};
 
 const formatPrice = (price) => {
   return price.toFixed(2);
-}
+};
 
 const totalPrice = computed(() => {
-  return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  return cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 });
 </script>
 

@@ -8,6 +8,8 @@ import Offer from "../views/Offer.vue";
 import English from "../views/languages/English.vue";
 import Spanish from "../views/languages/Spanish.vue";
 import French from "../views/languages/French.vue";
+import Finalize from "../views/finalize.vue";
+import Confirmation from "../views/Confirmation.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +43,16 @@ const router = createRouter({
       path: "/offer",
       name: "offer",
       component: Offer,
+    },
+    {
+      path: "/finalize",
+      name: "finalize",
+      component: Finalize,
+    },
+    {
+      path: "/confirmation",
+      name: "confirmation",
+      component: Confirmation,
     },
 
     {
