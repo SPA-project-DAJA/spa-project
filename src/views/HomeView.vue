@@ -5,8 +5,8 @@
     <div class="main-content">
       <h2>Learn a New Language</h2>
       <p>
-        Start your language learning journey today with Duolingo. Choose from a
-        variety of languages and get started on your path to fluency.
+        Start your language learning journey today with Duolingo. <br />
+        Choose from a variety of languages and get started on your path to fluency.
       </p>
       <b-button id="getStarted" to="/offer">Get Started</b-button>
     </div>
@@ -14,15 +14,15 @@
 </template>
 
 <style scoped>
-  main {
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0; /* Tło całej strony */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height:85vh;
-  }
+ main {
+  background-color: #ecf0f1; /* Jasnoszare tło */
+  padding: 20px;
+  text-align: center;
+  max-width: 560px;
+  margin: 30px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
   .main-content {
     max-width: 800px;
@@ -31,7 +31,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin: 0 auto 150px;
+    margin: 0 auto;
     transition: transform 0.3s ease; /* Efekt powiększania */
   }
 
