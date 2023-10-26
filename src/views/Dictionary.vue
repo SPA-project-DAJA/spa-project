@@ -1,31 +1,31 @@
 <template>
   <main>
-    <label for="jezyk" style="margin-right: 10px">Wybierz język:</label>
+    <label for="jezyk" style="margin-right: 10px">Select language:</label>
     <select id="jezyk" v-model="wybranyJezyk">
-      <option value="angielski">Angielski</option>
-      <option value="hiszpański">Hiszpański</option>
-      <option value="francuski">Francuski</option>
+      <option value="angielski">English</option>
+      <option value="hiszpański">Spanish</option>
+      <option value="francuski">French</option>
     </select>
     <br />
     <br />
-    <button @click="losujSlowko">Losuj słówko</button>
+    <button @click="losujSlowko">Draw a word</button>
     <br />
-    <br />Wylosowane słówko to: 
+    <br />The word drawn is: 
     <b>{{ wylosowaneSlowko }}</b>
     <br />
     <br />
-    <label for="tlumaczenie" style="margin-right: 10px">Podaj tłumaczenie na polski:</label>
+    <label for="tlumaczenie" style="margin-right: 10px">Give the Polish translation:</label>
     <input
       id="tlumaczenie"
       v-model="wprowadzoneTlumaczenie"
       @input="resetujWynik"
     />&nbsp;&nbsp;
 
-    <button @click="sprawdzTlumaczenie">Sprawdź</button>
+    <button @click="sprawdzTlumaczenie">Check out</button>
     <div
       v-if="wynikSprawdzenia"
       :class="
-        wynikSprawdzenia === 'Poprawne tłumaczenie!'
+        wynikSprawdzenia === 'Correct translation!'
           ? 'result green'
           : 'result red'
       "
@@ -477,9 +477,9 @@ const sprawdzTlumaczenie = () => {
   );
 
   if (poprawneTlumaczenie) {
-    wynikSprawdzenia.value = "Poprawne tłumaczenie!";
+    wynikSprawdzenia.value = "Correct translation!";
   } else {
-    wynikSprawdzenia.value = "Błędne tłumaczenie. Spróbuj jeszcze raz.";
+    wynikSprawdzenia.value = "Incorrect translation. Try again.";
   }
 };
 
