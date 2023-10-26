@@ -90,7 +90,7 @@ import { useStore } from "vuex";
 
 const offer = ref({
   // Dodaj właściwości oferty, takie jak id, name, description, price itp.
-  id: 1,
+  id: 2,
   name: "French Course",
   description: "Our French training program...",
   price: 19.99, // Cena kursu
