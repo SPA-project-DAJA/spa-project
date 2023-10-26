@@ -1,10 +1,10 @@
 <template>
   <div class="login-panel">
     <div v-if="!loggedIn" class="login-form">
-      <h2>Logowanie</h2>
+      <h2>Logging in</h2>
       <form @submit.prevent="login">
         <div class="form-group">
-          <label for="loginUsername" style="margin-right: 10px">Nazwa użytkownika</label>
+          <label for="loginUsername" style="margin-right: 10px">Username</label>
           <input
             type="text"
             id="loginUsername"
@@ -13,7 +13,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="loginPassword" style="margin-right: 10px">Hasło</label>
+          <label for="loginPassword" style="margin-right: 10px">Password</label>
           <input
             type="password"
             id="loginPassword"
@@ -21,7 +21,7 @@
             required
           />
         </div>
-        <button type="submit">Zaloguj się</button>
+        <button type="submit">Log in</button>
         <p v-if="loginError" class="error">{{ loginError }}</p>
       </form>
     </div>
@@ -32,10 +32,10 @@
     </div>
 
     <div v-if="!loggedIn && !registerSuccess" class="registration-form">
-      <h2>Rejestracja</h2>
+      <h2>Registration</h2>
       <form @submit.prevent="register">
         <div class="form-group">
-          <label for="registerUsername" style="margin-right: 10px">Nazwa użytkownika</label>
+          <label for="registerUsername" style="margin-right: 10px">Username</label>
           <input
             type="text"
             id="registerUsername"
@@ -44,7 +44,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="registerPassword" style="margin-right: 10px">Hasło</label>
+          <label for="registerPassword" style="margin-right: 10px">Password</label>
           <input
             type="password"
             id="registerPassword"
@@ -52,11 +52,11 @@
             required
           />
         </div>
-        <button type="submit">Zarejestruj się</button>
+        <button type="submit">Register</button>
         <p v-if="registerError" class="error">{{ registerError }}</p>
       </form>
     </div>
-    <p v-if="registerSuccess" class="success">Poprawna rejestracja!</p>
+    <p v-if="registerSuccess" class="success">Correct registration!</p>
   </div>
 </template>
 
@@ -102,7 +102,7 @@ export default {
 
     localStorage.setItem("loggedInUser", JSON.stringify(user));
   } else {
-    this.loginError = "Nieprawidłowa nazwa użytkownika lub hasło";
+    this.loginError = "Incorrect username or password";
   }
 },
 
@@ -117,7 +117,7 @@ export default {
       );
 
       if (existingUser) {
-        this.registerError = "Użytkownik o tej nazwie już istnieje";
+        this.registerError = "A user with this name already exists.";
       } else {
         // Poprawna rejestracja
         this.registerSuccess = true;
