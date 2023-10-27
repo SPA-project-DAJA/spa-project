@@ -8,28 +8,29 @@ import "./assets/main.css";
   <div>
     <header>
       <div class="wrapper">
-        <div
-          id="navbar"
-          class="d-flex justify-content-between align-items-center"
-        >
-          <b-nav id="logo" class="d-flex align-items-center">
-            <div>
-              <b-navbar-brand to="/">
-                <img src="logo.png" id="logo-img" alt="Logo" />
-                Duolingo
-              </b-navbar-brand>
-            </div>
-          </b-nav>
-          <div>
-            <b-nav id="menu">
-              <RouterLink to="/dictionary" class="link">Flashcards</RouterLink>
-              <RouterLink to="/offer" class="link">Offer</RouterLink>
-              <RouterLink to="/account" class="link">Account</RouterLink>
-              <RouterLink to="/cart" class="link">Cart</RouterLink>
-              <RouterLink to="/contact" class="link">Contact</RouterLink>
-            </b-nav>
-          </div>
+        <div>
+          <b-navbar toggleable="lg" type="dark">
+            <b-navbar-brand to="/"
+              ><img src="logo.png" id="logo-img" alt="Logo" />
+              Duolingo</b-navbar-brand
+            >
+
+            <b-navbar-toggle target="menu"></b-navbar-toggle>
+
+            <b-collapse id="menu" is-nav>
+              <b-navbar-nav class="text-center">
+                <RouterLink to="/dictionary" class="link"
+                  >Flashcards</RouterLink
+                >
+                <RouterLink to="/offer" class="link">Offer</RouterLink>
+                <RouterLink to="/account" class="link">Account</RouterLink>
+                <RouterLink to="/cart" class="link">Cart</RouterLink>
+                <RouterLink to="/contact" class="link">Contact</RouterLink>
+              </b-navbar-nav>
+            </b-collapse>
+          </b-navbar>
         </div>
+        <!--  -->
       </div>
     </header>
     <RouterView />
