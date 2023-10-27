@@ -26,7 +26,8 @@
         environment.
       </p>
       <h3>Price: ${{ offer.price }}</h3>
-      <button @click="addToCart(offer)" v-if="offer.quantity <1">Add to Cart</button>    </div>
+      <button @click="addToCart(offer)" v-if="!offer.purchased">Add to Cart</button>
+      <button v-else disabled>Purchased</button>    </div>
     <TheWelcome />
   </main>
 </template>
@@ -102,6 +103,8 @@ const offer = ref({
   description: 'Our Spanish training program...',
   price: 19.99, // Cena kursu
   quantity: 0, // Inicjalizacja quantity
+  purchased: false, // Dodaj pole, które będzie śledzić zakup
+
 });
 const store = useStore();
 
@@ -109,6 +112,7 @@ const addToCart = () => {
   if (offer.value.quantity < 1) {
     store.commit('addToCart', offer.value);
     offer.value.quantity = 1; // Zwiększ quantity po dodaniu do koszyka
+    offer.value.purchased = true; // Ustaw purchased na true po zakupie
   }
-}
+};
 </script>
