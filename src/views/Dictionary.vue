@@ -42,7 +42,8 @@
     </div>
     <div v-else>
       <p>Access to the course is blocked. First you need to unlock it.</p>
-      <button @click="unlockCourse">Unblock course</button>
+      <button @click="unlockCourse">Unblock course</button> 
+      <!-- Ten fragment niestety jeszcze nie działa -->
     </div>
   </div>
   </main>
