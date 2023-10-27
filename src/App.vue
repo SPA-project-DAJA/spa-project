@@ -29,7 +29,7 @@ export default {
             <b-navbar-toggle target="menu"></b-navbar-toggle>
 
             <b-collapse id="menu" is-nav>
-              <b-navbar-nav class="text-center">
+              <b-navbar-nav class="text-center mx-auto">
                 <RouterLink to="/dictionary" class="link"
                   >Flashcards</RouterLink
                 >
