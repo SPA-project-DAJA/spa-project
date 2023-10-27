@@ -1,3 +1,4 @@
+<!-- Account.vue -->
 <template>
   <div class="login-panel">
     <div v-if="!loggedIn" class="login-form">

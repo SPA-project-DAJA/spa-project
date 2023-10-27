@@ -1,3 +1,4 @@
+<!-- Cart.vue -->
 <template>
   <div class="cart">
     <h2>Your Cart</h2>
