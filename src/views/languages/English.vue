@@ -1,3 +1,4 @@
+<!-- English.vue -->
 <template>
   <main>
     <h2>English Training Course</h2>

@@ -1,3 +1,4 @@
+<!-- Dictionary.vue -->
 <template>
   <main>
     <label for="jezyk" style="margin-right: 10px">Select language:</label>

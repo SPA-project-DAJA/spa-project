@@ -1,3 +1,4 @@
+<!-- French.vue -->
 <script setup></script>
 
 <template>
