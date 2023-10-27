@@ -33,12 +33,25 @@
     >
       {{ wynikSprawdzenia }}
     </div>
+    <div>
+    <h1>Dictionary</h1>
+    <div v-if="!isCourseLocked">
+      <!-- Zawartość słownika dostępna, gdy kurs nie jest zablokowany -->
+      <!-- Umieść tutaj kod komponentu słownika -->
+    </div>
+    <div v-else>
+      <p>Access to the course is blocked. First you need to unlock it.</p>
+      <button @click="unlockCourse">Unblock course</button>
+    </div>
+  </div>
   </main>
 </template>
 
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useStore } from 'vuex';
+
 
 const slowka = {
   angielski: [
@@ -453,7 +466,6 @@ const slowka = {
 
 const wylosowaneSlowko = ref("");
 const wybranyJezyk = ref("angielski");
-const polski = ref("polski");
 const wprowadzoneTlumaczenie = ref("");
 const wynikSprawdzenia = ref("");
 
@@ -471,11 +483,8 @@ const resetujWynik = () => {
 };
 
 const sprawdzTlumaczenie = () => {
-  const slowkaWJezyku = slowka[polski.value];
-  const poprawneTlumaczenie = slowkaWJezyku.find(
-    (slowo) =>
-      slowo.toLowerCase() === wprowadzoneTlumaczenie.value.toLowerCase()
-  );
+  const slowkaWJezyku = slowka.polski;
+  const poprawneTlumaczenie = slowkaWJezyku.includes(wprowadzoneTlumaczenie.value.toLowerCase());
 
   if (poprawneTlumaczenie) {
     wynikSprawdzenia.value = "Correct translation!";
@@ -483,10 +492,19 @@ const sprawdzTlumaczenie = () => {
     wynikSprawdzenia.value = "Incorrect translation. Try again.";
   }
 };
+const store = useStore();
 
-// Dodajemy kod, aby zainicjować losowanie słowa po otwarciu strony
+// Zakładam, że w sklepie masz getter o nazwie 'isCourseLocked' oraz akcję 'unlockCourse'
+const isCourseLocked = computed(() => store.getters.isCourseLocked);
+const unlockCourse = () => {
+  store.dispatch('unlockCourse');
+};
+
+// Losowanie słowa po otwarciu strony
 losujSlowko();
 </script>
+
+
 <style scoped>
 main {
   text-align: center;
