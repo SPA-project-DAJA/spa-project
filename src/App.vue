@@ -1,7 +1,18 @@
-<script setup>
+<script>
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import "./assets/main.css";
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+export default {
+  setup() {
+    const store = useStore();
+    const cartItems = computed(() => store.getters.cartItems);
+
+    return { cartItems };
+  },
+};
 </script>
 
 <template>
@@ -25,7 +36,9 @@ import "./assets/main.css";
               <RouterLink to="/dictionary" class="link">Flashcards</RouterLink>
               <RouterLink to="/offer" class="link">Offer</RouterLink>
               <RouterLink to="/account" class="link">Account</RouterLink>
-              <RouterLink to="/cart" class="link">Cart</RouterLink>
+              <RouterLink to="/cart" class="link">Cart
+                <span v-if="cartItems.length > 0" class="cart-notification">(!)</span>
+              </RouterLink>
               <RouterLink to="/contact" class="link">Contact</RouterLink>
             </b-nav>
           </div>
