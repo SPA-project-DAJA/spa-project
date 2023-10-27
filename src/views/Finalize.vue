@@ -35,9 +35,10 @@
       <button type="submit">Confirm Purchase</button>
     </form>
 
-    <!-- Komunikat z podziękowaniem (wyświetlany po naciśnięciu przycisku) -->
-    <div class="thank-you-message" v-if="purchaseCompleted">
+    <!-- Komunikat z podziękaniem (wyświetlany po naciśnięciu przycisku) -->
+    <div class="thank-you-message" v-if="showAlert">
       <p>Thank you for your purchase!</p>
+      <p>In a moment you will be redirected to the home page</p>
     </div>
   </div>
 </template>
@@ -56,7 +57,7 @@ const deliveryData = ref({
   paymentMethod: "credit_card",
 });
 
-const purchaseCompleted = ref(false); // Początkowo zakup nie jest zakończony
+const showAlert = ref(false); // Dodajmy flagę do kontrolowania wyświetlania alertu
 
 const submitPurchase = () => {
   // Logika finalizacji zakupów
@@ -65,18 +66,24 @@ const submitPurchase = () => {
   store.commit("updateCartStatus", "Completed");
 
   // Ustawienie zakupu jako zakończony
-  purchaseCompleted.value = true;
+  showAlert.value = true;
 
-  // Przekierowanie na stronę potwierdzenia
-  router.push("/confirmation");
+  // Po kolejnych 3 sekundach przekieruj na stronę główną
+  setTimeout(() => {
+    router.push("/");
+  }, 5000);
 };
 </script>
 
 <style scoped>
 .finalize-purchase {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 30px auto;
   padding: 20px;
+  background-color: #ecf0f1; /* Jasnoszare tło */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left; /* Tekst dostosowany do lewej strony */
 }
 
 .form-group {
@@ -86,6 +93,7 @@ const submitPurchase = () => {
 label {
   display: block;
   font-weight: bold;
+  color: #333; /* Ciemny kolor tekstu */
 }
 
 input[type="text"],
@@ -95,6 +103,10 @@ select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+select {
+  background-color: #fff; /* Jasnoszare tło */
 }
 
 button {
@@ -109,5 +121,12 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.thank-you-message {
+  margin-top: 20px;
+  text-align: left; /* Tekst dostosowany do lewej strony */
+  font-weight: bold;
+  color: #4CAF50; /* Jasnoniebieski kolor tekstu */
 }
 </style>

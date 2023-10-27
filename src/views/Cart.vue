@@ -18,7 +18,7 @@
     </ul>
     <p class="total-price">Total Price: ${{ formatPrice(totalPrice) }}</p>
 
-    <b-button class="finalizePurchase" to="/Finalize"
+    <b-button class="finalizePurchase" to="/Finalize" :disabled="cartIsEmpty"
       >Finalize Purchase</b-button
     >
   </div>
@@ -54,6 +54,9 @@ const totalPrice = computed(() => {
     (total, item) => total + item.price * item.quantity,
     0
   );
+});
+const cartIsEmpty = computed(() => {
+  return cartItems.length === 0; // Sprawdź, czy koszyk jest pusty
 });
 </script>
 
