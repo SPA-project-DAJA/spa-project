@@ -1,7 +1,18 @@
-<script setup>
+<script>
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import "./assets/main.css";
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+export default {
+  setup() {
+    const store = useStore();
+    const cartItems = computed(() => store.getters.cartItems);
+
+    return { cartItems };
+  },
+};
 </script>
 
 <template>
