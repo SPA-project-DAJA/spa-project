@@ -32,6 +32,7 @@
       "
     >
       {{ wynikSprawdzenia }}
+      
     </div>
     <div>
     <h1>Dictionary</h1>
@@ -49,6 +50,7 @@
 
 
 <script setup>
+
 import { ref, computed } from "vue";
 import { useStore } from 'vuex';
 
@@ -466,6 +468,7 @@ const slowka = {
 
 const wylosowaneSlowko = ref("");
 const wybranyJezyk = ref("angielski");
+const polski = ref("polski");
 const wprowadzoneTlumaczenie = ref("");
 const wynikSprawdzenia = ref("");
 
@@ -483,8 +486,11 @@ const resetujWynik = () => {
 };
 
 const sprawdzTlumaczenie = () => {
-  const slowkaWJezyku = slowka.polski;
-  const poprawneTlumaczenie = slowkaWJezyku.includes(wprowadzoneTlumaczenie.value.toLowerCase());
+  const slowkaWJezyku = slowka[polski.value];
+  const poprawneTlumaczenie = slowkaWJezyku.find(
+    (slowo) =>
+      slowo.toLowerCase() === wprowadzoneTlumaczenie.value.toLowerCase()
+  );
 
   if (poprawneTlumaczenie) {
     wynikSprawdzenia.value = "Correct translation!";
@@ -499,6 +505,8 @@ const isCourseLocked = computed(() => store.getters.isCourseLocked);
 const unlockCourse = () => {
   store.dispatch('unlockCourse');
 };
+
+
 
 // Losowanie słowa po otwarciu strony
 losujSlowko();
