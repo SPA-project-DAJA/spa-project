@@ -26,8 +26,8 @@
         environment.
       </p>
       <h3>Price: ${{ offer.price }}</h3>
-      <button @click="addToCart(offer)" v-if="!offer.purchased">Add to Cart</button>
-      <button v-else disabled>Purchased</button>    </div>
+      <button @click="addToCart(offer)" v-if="!offer.purchased && offer.quantity < 1">Add to Cart</button>
+      <button v-else enabled>Purchased</button>    </div>
     <TheWelcome />
   </main>
 </template>

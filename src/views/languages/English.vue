@@ -24,8 +24,8 @@
         button below. We offer flexible schedules and affordable pricing.
       </p>
       <h3>Price: ${{ offer.price }}</h3>
-      <button @click="addToCart(offer)" v-if="!offer.purchased">Add to Cart</button>
-      <button v-else disabled>Purchased</button>
+      <button @click="addToCart(offer)" v-if="!offer.purchased && offer.quantity < 1">Add to Cart</button>
+      <button v-else enabled>Purchased</button>
 
     </div>
     <TheWelcome />
